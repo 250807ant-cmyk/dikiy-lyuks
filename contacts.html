@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Контакты — Дикий Люкс</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #F2F1ED; min-height: 100vh; font-family: 'Inter', sans-serif; overflow-x: hidden; color: #0B0B0E; }
+        ::-webkit-scrollbar { display: none; width: 0; height: 0; }
+        html, body { scrollbar-width: none; -ms-overflow-style: none; }
+
+        .navbar { position: fixed; top: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; padding: 2.5vh 4.58vw; z-index: 100; background: #FFFFFF; box-shadow: 0 1px 0 rgba(11,11,14,0.06); }
+        .nav-left { display: flex; gap: 1.94vw; }
+        .nav-left a, .nav-right a { font-size: 0.62vw; font-weight: 500; letter-spacing: 0.08vw; text-transform: uppercase; color: #0B0B0E; text-decoration: none; transition: opacity 0.3s; }
+        .nav-left a:hover, .nav-right a:hover { opacity: 0.6; }
+        .nav-left a.is-current { color: #C9A04E; }
+        .nav-center { position: absolute; left: 50%; transform: translateX(-50%); font-size: 1.04vw; font-weight: 500; letter-spacing: 0.32vw; text-transform: uppercase; color: #C9A04E; text-decoration: none; }
+        .nav-right a { font-size: 0.62vw; }
+
+        /* HERO — matches catalog/about pattern */
+        .ct-hero {
+            padding: 200px 66px 60px;
+            max-width: 1240px;
+            margin: 0 auto;
+        }
+        .ct-eyebrow {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(11,11,14,0.4);
+            margin-bottom: 28px;
+            display: block;
+        }
+        .ct-hero h1 {
+            font-size: clamp(56px, 6.4vw, 96px);
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            line-height: 1.0;
+            margin-bottom: 28px;
+        }
+        .ct-hero h1 .muted { color: rgba(11,11,14,0.32); }
+        .ct-hero p {
+            font-size: 15px;
+            font-weight: 300;
+            color: rgba(11,11,14,0.6);
+            line-height: 1.75;
+            max-width: 560px;
+        }
+
+        /* MAIN GRID */
+        .ct-wrap {
+            max-width: 1240px;
+            margin: 0 auto 100px;
+            padding: 0 66px;
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            gap: 28px;
+            align-items: start;
+        }
+
+        /* INFO CARDS */
+        .ct-info {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .ct-card {
+            background: #FFFFFF;
+            border-radius: 32px;
+            padding: 36px 36px 32px;
+            box-shadow: 0 12px 36px rgba(11,11,14,0.04);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        .ct-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 44px rgba(11,11,14,0.07);
+        }
+        .ct-card-eyebrow {
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(11,11,14,0.45);
+            margin-bottom: 14px;
+        }
+        .ct-card-val {
+            font-size: 22px;
+            font-weight: 400;
+            color: #0B0B0E;
+            line-height: 1.3;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 6px;
+            transition: color 0.3s;
+        }
+        a.ct-card-val:hover { color: #29457C; }
+        .ct-card-sub {
+            font-size: 13px;
+            font-weight: 300;
+            color: rgba(11,11,14,0.55);
+            line-height: 1.6;
+        }
+
+        .ct-socials-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+        .ct-soc {
+            padding: 10px 22px;
+            border-radius: 999px;
+            border: 1px solid rgba(11,11,14,0.12);
+            background: transparent;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: #0B0B0E;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .ct-soc:hover {
+            background: #0B0B0E;
+            color: #FFFFFF;
+            border-color: #0B0B0E;
+        }
+
+        /* FORM — matches brand-statement gradient pattern */
+        .ct-form-wrap {
+            background:
+                radial-gradient(ellipse 80% 50% at 50% 0%, rgba(201,160,78,0.16), transparent 70%),
+                linear-gradient(180deg, #29457C 0%, #1B3060 100%);
+            color: #FFFFFF;
+            border-radius: 32px;
+            padding: 48px 48px 44px;
+            position: sticky;
+            top: 100px;
+        }
+        .ct-form-wrap h2 {
+            font-size: 28px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            line-height: 1.1;
+            margin-bottom: 14px;
+        }
+        .ct-form-wrap p {
+            font-size: 13px;
+            font-weight: 300;
+            color: rgba(255,255,255,0.65);
+            line-height: 1.7;
+            margin-bottom: 32px;
+        }
+        .ct-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .ct-form label {
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 6px;
+        }
+        .ct-form input,
+        .ct-form textarea {
+            background: #FFFFFF;
+            border: 1px solid transparent;
+            border-radius: 16px;
+            padding: 14px 18px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: #0B0B0E;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .ct-form input::placeholder,
+        .ct-form textarea::placeholder { color: rgba(11,11,14,0.4); }
+        .ct-form input:focus,
+        .ct-form textarea:focus {
+            border-color: #C9A04E;
+            box-shadow: 0 0 0 3px rgba(201,160,78,0.18);
+        }
+        .ct-form textarea {
+            resize: vertical;
+            min-height: 110px;
+            font-family: 'Inter', sans-serif;
+        }
+        .ct-field { display: flex; flex-direction: column; }
+        .ct-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .ct-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-top: 8px;
+            font-size: 11px;
+            font-weight: 300;
+            color: rgba(255,255,255,0.55);
+            line-height: 1.5;
+        }
+        .ct-checkbox input { margin-top: 3px; accent-color: #C9A04E; }
+        .ct-submit {
+            margin-top: 18px;
+            background: #FFFFFF;
+            color: #0B0B0E;
+            border: none;
+            border-radius: 999px;
+            padding: 18px 32px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .ct-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 36px rgba(0,0,0,0.18);
+        }
+
+        /* MAP STRIP — matches brand-statement style */
+        .ct-map {
+            max-width: 1240px;
+            margin: 0 auto 100px;
+            padding: 0 66px;
+        }
+        .ct-map-inner {
+            border-radius: 40px;
+            overflow: hidden;
+            height: 50vh;
+            min-height: 380px;
+            background:
+                radial-gradient(ellipse 60% 50% at 50% 0%, rgba(201,160,78,0.18), transparent 70%),
+                linear-gradient(180deg, #29457C 0%, #1B3060 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: rgba(255,255,255,0.7);
+            position: relative;
+        }
+        .ct-map-inner span {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+            display: block;
+            margin-bottom: 12px;
+        }
+        .ct-map-inner h3 {
+            font-size: clamp(28px, 3.2vw, 44px);
+            font-weight: 300;
+            color: #FFFFFF;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            line-height: 1.1;
+        }
+        .ct-map-inner h3 .muted { color: rgba(255,255,255,0.4); }
+
+        /* FOOTER */
+        #footer { background: #0B0B0E; width: 100vw; padding: 80px 66px 48px; }
+        .footer-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; padding-bottom: 60px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .footer-col h4 { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 20px; }
+        .footer-col a { display: block; font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.7); text-decoration: none; line-height: 2; transition: color 0.3s; }
+        .footer-col a:hover { color: #FFFFFF; }
+        .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 32px; }
+        .footer-copy { font-size: 11px; font-weight: 300; color: rgba(255,255,255,0.35); }
+        .footer-socials { display: flex; gap: 20px; }
+        .footer-socials a { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.5); text-decoration: none; text-transform: uppercase; letter-spacing: 0.1em; transition: color 0.3s; }
+        .footer-socials a:hover { color: #FFF; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="catalog.html">Каталог</a>
+            <a href="about.html">О бренде</a>
+            <a href="blog.html">Блог</a>
+            <a href="contacts.html" class="is-current">Контакты</a>
+        </div>
+        <a href="index.html" class="nav-center">ДИКИЙ ЛЮКС</a>
+        <div class="nav-right">
+            <a href="cart.html">Корзина</a>
+        </div>
+    </nav>
+
+    <section class="ct-hero">
+        <span class="ct-eyebrow">Контакты</span>
+        <h1>Дикий Люкс. <span class="muted">Свяжитесь с&nbsp;нами.</span></h1>
+        <p>Бутик косметологии Biologique&nbsp;Recherche в&nbsp;Москве. Бесплатная консультация косметолога перед покупкой — онлайн или&nbsp;в&nbsp;кабинете.</p>
+    </section>
+
+    <div class="ct-wrap">
+        <div class="ct-info">
+            <div class="ct-card">
+                <div class="ct-card-eyebrow">Адрес</div>
+                <span class="ct-card-val">Москва, ул.&nbsp;Пример,&nbsp;1</span>
+                <div class="ct-card-sub">м. Пушкинская / Тверская, 5&nbsp;минут пешком от&nbsp;метро.</div>
+            </div>
+            <div class="ct-card">
+                <div class="ct-card-eyebrow">Часы работы</div>
+                <span class="ct-card-val">10:00 – 21:00</span>
+                <div class="ct-card-sub">Без выходных. Перед визитом удобнее записаться, чтобы косметолог был на&nbsp;месте.</div>
+            </div>
+            <div class="ct-card">
+                <div class="ct-card-eyebrow">Телефон</div>
+                <a href="tel:+74951234567" class="ct-card-val">+7 (495) 123-45-67</a>
+                <div class="ct-card-sub">Звонок и&nbsp;WhatsApp. Принимаем заказы и&nbsp;консультируем по&nbsp;продуктам.</div>
+            </div>
+            <div class="ct-card">
+                <div class="ct-card-eyebrow">Почта</div>
+                <a href="mailto:hello@biologique-recherche.ru" class="ct-card-val">hello@biologique-recherche.ru</a>
+                <div class="ct-card-sub">Ответ в&nbsp;течение дня в&nbsp;рабочее время.</div>
+            </div>
+            <div class="ct-card">
+                <div class="ct-card-eyebrow">Соцсети</div>
+                <span class="ct-card-val">Подпишитесь</span>
+                <div class="ct-card-sub">Разборы протоколов, новости поставок, прямые эфиры с&nbsp;косметологами.</div>
+                <div class="ct-socials-row">
+                    <a href="#" class="ct-soc">Telegram</a>
+                    <a href="#" class="ct-soc">VK</a>
+                    <a href="#" class="ct-soc">Instagram</a>
+                </div>
+            </div>
+        </div>
+
+        <aside class="ct-form-wrap">
+            <h2>Запишитесь на&nbsp;консультацию</h2>
+            <p>Косметолог свяжется с&nbsp;вами в&nbsp;течение дня, поможет с&nbsp;подбором протокола и&nbsp;ответит на&nbsp;все&nbsp;вопросы. Бесплатно.</p>
+            <form class="ct-form" onsubmit="return false;">
+                <div class="ct-field">
+                    <label>Ваше имя</label>
+                    <input type="text" placeholder="Имя">
+                </div>
+                <div class="ct-form-row">
+                    <div class="ct-field">
+                        <label>Телефон</label>
+                        <input type="tel" placeholder="+7 (___) ___-__-__">
+                    </div>
+                    <div class="ct-field">
+                        <label>Почта</label>
+                        <input type="email" placeholder="email@example.com">
+                    </div>
+                </div>
+                <div class="ct-field">
+                    <label>Сообщение</label>
+                    <textarea placeholder="Опишите состояние кожи или&nbsp;задайте вопрос — это поможет нам подготовиться."></textarea>
+                </div>
+                <label class="ct-checkbox">
+                    <input type="checkbox" checked>
+                    <span>Соглашаюсь с&nbsp;офертой и&nbsp;политикой обработки персональных данных.</span>
+                </label>
+                <button type="submit" class="ct-submit">Отправить заявку</button>
+            </form>
+        </aside>
+    </div>
+
+    <div class="ct-map">
+        <div class="ct-map-inner">
+            <div>
+                <span>Карта</span>
+                <h3>Москва, ул.&nbsp;Пример,&nbsp;1. <span class="muted">Бутик &amp; кабинет.</span></h3>
+            </div>
+        </div>
+    </div>
+
+    <footer id="footer">
+        <div class="footer-cols">
+            <div class="footer-col"><h4>Каталог</h4><a href="catalog.html">Тоники и лосьоны</a><a href="catalog.html">Сыворотки</a><a href="catalog.html">Кремы для лица</a><a href="catalog.html">Маски</a></div>
+            <div class="footer-col"><h4>Компания</h4><a href="about.html">О бренде</a><a href="index.html#protocol">Методология</a><a href="blog.html">Блог</a><a href="contacts.html">Контакты</a></div>
+            <div class="footer-col"><h4>Помощь</h4><a href="#">Доставка</a><a href="#">Оплата</a><a href="#">Возврат</a><a href="index.html#faq">FAQ</a></div>
+            <div class="footer-col"><h4>Контакты</h4><a href="mailto:hello@biologique-recherche.ru">hello@biologique-recherche.ru</a><a href="tel:+74951234567">+7 (495) 123-45-67</a><a href="contacts.html">Москва, ул. Пример, 1</a></div>
+        </div>
+        <div class="footer-bottom"><span class="footer-copy">© 2026 Дикий Люкс. Магазин косметики Biologique Recherche.</span><div class="footer-socials"><a href="#">TG</a><a href="#">VK</a><a href="#">IG</a></div></div>
+    </footer>
+</body>
+</html>

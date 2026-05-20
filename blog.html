@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Журнал — Дикий Люкс</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #F2F1ED; min-height: 100vh; font-family: 'Inter', sans-serif; overflow-x: hidden; color: #0B0B0E; }
+        ::-webkit-scrollbar { display: none; width: 0; height: 0; }
+        html, body { scrollbar-width: none; -ms-overflow-style: none; }
+
+        .navbar { position: fixed; top: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; padding: 2.5vh 4.58vw; z-index: 100; background: #FFFFFF; box-shadow: 0 1px 0 rgba(11,11,14,0.06); }
+        .nav-left { display: flex; gap: 1.94vw; }
+        .nav-left a, .nav-right a { font-size: 0.62vw; font-weight: 500; letter-spacing: 0.08vw; text-transform: uppercase; color: #0B0B0E; text-decoration: none; transition: opacity 0.3s; }
+        .nav-left a:hover, .nav-right a:hover { opacity: 0.6; }
+        .nav-left a.is-current { color: #C9A04E; }
+        .nav-center { position: absolute; left: 50%; transform: translateX(-50%); font-size: 1.04vw; font-weight: 500; letter-spacing: 0.32vw; text-transform: uppercase; color: #C9A04E; text-decoration: none; }
+        .nav-right a { font-size: 0.62vw; }
+
+        /* HERO — matches catalog/about pattern */
+        .blog-hero {
+            padding: 200px 66px 60px;
+            max-width: 1240px;
+            margin: 0 auto;
+        }
+        .blog-eyebrow {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(11,11,14,0.4);
+            margin-bottom: 28px;
+            display: block;
+        }
+        .blog-hero h1 {
+            font-size: clamp(56px, 6.4vw, 96px);
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            line-height: 1.0;
+            margin-bottom: 28px;
+        }
+        .blog-hero h1 .muted { color: rgba(11,11,14,0.32); }
+        .blog-hero p {
+            font-size: 15px;
+            font-weight: 300;
+            color: rgba(11,11,14,0.6);
+            line-height: 1.75;
+            max-width: 560px;
+        }
+
+        /* FILTER STRIP — identical to catalog filters */
+        .blog-tags {
+            max-width: 1240px;
+            margin: 40px auto 56px;
+            padding: 0 66px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .blog-tag {
+            padding: 12px 26px;
+            border-radius: 999px;
+            border: 1px solid rgba(11,11,14,0.12);
+            background: transparent;
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(11,11,14,0.7);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .blog-tag:hover { border-color: rgba(11,11,14,0.3); color: #0B0B0E; }
+        .blog-tag.is-active { background: #0B0B0E; color: #FFFFFF; border-color: #0B0B0E; }
+
+        /* GRID — bento with feature + small cards */
+        .blog-grid {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 66px 160px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        .blog-card {
+            background: #FFFFFF;
+            border-radius: 28px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: 0 8px 28px rgba(11,11,14,0.04);
+        }
+        .blog-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 44px rgba(11,11,14,0.08);
+        }
+        .blog-card.is-feature {
+            grid-column: span 2;
+        }
+        .blog-card-img {
+            aspect-ratio: 4 / 3;
+            background-size: cover;
+            background-position: center;
+        }
+        .blog-card.is-feature .blog-card-img {
+            aspect-ratio: 16 / 9;
+        }
+        .blog-card-body {
+            padding: 24px 28px 28px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        .blog-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+        .blog-meta .cat { color: #C9A04E; }
+        .blog-meta .sep { color: rgba(11,11,14,0.2); }
+        .blog-meta .date { color: rgba(11,11,14,0.45); }
+        .blog-card h3 {
+            font-size: 18px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            line-height: 1.25;
+            margin-bottom: 10px;
+            color: #0B0B0E;
+        }
+        .blog-card.is-feature h3 {
+            font-size: 26px;
+            line-height: 1.15;
+            margin-bottom: 14px;
+        }
+        .blog-card p {
+            font-size: 13px;
+            font-weight: 300;
+            color: rgba(11,11,14,0.6);
+            line-height: 1.7;
+            margin-bottom: 18px;
+            flex: 1;
+        }
+        .blog-card.is-feature p {
+            font-size: 14px;
+            line-height: 1.75;
+        }
+        .blog-read {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #0B0B0E;
+            margin-top: auto;
+        }
+        .blog-read::after {
+            content: '↗';
+            font-size: 13px;
+            color: rgba(11,11,14,0.4);
+            transition: transform 0.3s, color 0.3s;
+        }
+        .blog-card:hover .blog-read::after {
+            transform: translate(3px, -3px);
+            color: #29457C;
+        }
+
+        /* FOOTER */
+        #footer { background: #0B0B0E; width: 100vw; padding: 80px 66px 48px; }
+        .footer-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; padding-bottom: 60px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .footer-col h4 { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 20px; }
+        .footer-col a { display: block; font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.7); text-decoration: none; line-height: 2; transition: color 0.3s; }
+        .footer-col a:hover { color: #FFFFFF; }
+        .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 32px; }
+        .footer-copy { font-size: 11px; font-weight: 300; color: rgba(255,255,255,0.35); }
+        .footer-socials { display: flex; gap: 20px; }
+        .footer-socials a { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.5); text-decoration: none; text-transform: uppercase; letter-spacing: 0.1em; transition: color 0.3s; }
+        .footer-socials a:hover { color: #FFF; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="catalog.html">Каталог</a>
+            <a href="about.html">О бренде</a>
+            <a href="blog.html" class="is-current">Блог</a>
+            <a href="contacts.html">Контакты</a>
+        </div>
+        <a href="index.html" class="nav-center">ДИКИЙ ЛЮКС</a>
+        <div class="nav-right">
+            <a href="cart.html">Корзина</a>
+        </div>
+    </nav>
+
+    <section class="blog-hero">
+        <span class="blog-eyebrow">Журнал</span>
+        <h1>Биология кожи. <span class="muted">Без маркетинга.</span></h1>
+        <p>Тексты о методологии Biologique Recherche, протоколах ухода, разборах формул и&nbsp;ошибках, которые мы&nbsp;разучились прощать косметологии.</p>
+    </section>
+
+    <div class="blog-tags">
+        <button class="blog-tag is-active">Все</button>
+        <button class="blog-tag">Методология</button>
+        <button class="blog-tag">Протоколы</button>
+        <button class="blog-tag">Активы</button>
+        <button class="blog-tag">Состояния кожи</button>
+        <button class="blog-tag">Лица бренда</button>
+    </div>
+
+    <section class="blog-grid">
+        <a href="#" class="blog-card is-feature">
+            <div class="blog-card-img" style="background-image:url('блок 6.jpeg');"></div>
+            <div class="blog-card-body">
+                <div class="blog-meta"><span class="cat">Методология</span><span class="sep">/</span><span class="date">12 мая 2026 · 7 мин</span></div>
+                <h3>Skin Instant<sup>®</sup> Lab: почему «тип кожи» — это иллюзия</h3>
+                <p>Как Biologique Recherche заменил диагностику по&nbsp;типу кожи на&nbsp;клиническую оценку состояния — и&nbsp;почему это изменило подход к&nbsp;уходу для&nbsp;всей индустрии.</p>
+                <span class="blog-read">Читать</span>
+            </div>
+        </a>
+        <a href="#" class="blog-card">
+            <div class="blog-card-img" style="background-image:url('5f4479c0aa37454be0b3fb80ce688e45.jpg');"></div>
+            <div class="blog-card-body">
+                <div class="blog-meta"><span class="cat">Активы</span><span class="sep">/</span><span class="date">5 мая · 4 мин</span></div>
+                <h3>Холодное приготовление: что это и&nbsp;почему важно</h3>
+                <p>Почему BR&nbsp;не&nbsp;нагревает формулы и&nbsp;как это сохраняет силу активных компонентов.</p>
+                <span class="blog-read">Читать</span>
+            </div>
+        </a>
+        <a href="#" class="blog-card">
+            <div class="blog-card-img" style="background-image:url('72465068ab96943e6691d196e9c2c65b.jpg');"></div>
+            <div class="blog-card-body">
+                <div class="blog-meta"><span class="cat">Протоколы</span><span class="sep">/</span><span class="date">29 апр · 6 мин</span></div>
+                <h3>Lotion P50: 50&nbsp;лет культа в&nbsp;одной бутылке</h3>
+                <p>История эксфолианта, который изменил представление о&nbsp;тониках — и&nbsp;до&nbsp;сих пор остаётся базой протокола.</p>
+                <span class="blog-read">Читать</span>
+            </div>
+        </a>
+        <a href="#" class="blog-card">
+            <div class="blog-card-img" style="background-image:url('Чувствительная кожа.jpg');"></div>
+            <div class="blog-card-body">
+                <div class="blog-meta"><span class="cat">Состояния</span><span class="sep">/</span><span class="date">22 апр · 5 мин</span></div>
+                <h3>Реактивная кожа: что нельзя и&nbsp;что нужно</h3>
+                <p>Гиперчувствительность кожи — это не&nbsp;тип, а&nbsp;состояние. И&nbsp;его можно стабилизировать за&nbsp;6&nbsp;недель.</p>
+                <span class="blog-read">Читать</span>
+            </div>
+        </a>
+        <a href="#" class="blog-card">
+            <div class="blog-card-img" style="background-image:url('f72c0475e7a4b6e430a8b2107217fc10.jpg');"></div>
+            <div class="blog-card-body">
+                <div class="blog-meta"><span class="cat">Протоколы</span><span class="sep">/</span><span class="date">15 апр · 8 мин</span></div>
+                <h3>Anti-age после&nbsp;35: что меняется в&nbsp;коже и&nbsp;в&nbsp;уходе</h3>
+                <p>Плотность, эластичность, тон. Какие активы и&nbsp;в&nbsp;каких концентрациях работают по-настоящему.</p>
+                <span class="blog-read">Читать</span>
+            </div>
+        </a>
+        <a href="#" class="blog-card is-feature">
+            <div class="blog-card-img" style="background-image:url('ff1d08a42ac577007922a9eecb567cc5.jpg');"></div>
+            <div class="blog-card-body">
+                <div class="blog-meta"><span class="cat">Лица бренда</span><span class="sep">/</span><span class="date">8 апр · 10 мин</span></div>
+                <h3>Семья Аллуш: как биолог и&nbsp;физиотерапевт изменили косметологию</h3>
+                <p>Большое интервью о&nbsp;Иване и&nbsp;Жозетт Аллуш, философии бренда и&nbsp;о&nbsp;том, как Пьер Аллуш продолжает дело родителей сегодня.</p>
+                <span class="blog-read">Читать</span>
+            </div>
+        </a>
+        <a href="#" class="blog-card">
+            <div class="blog-card-img" style="background-image:url('блок 3.png');"></div>
+            <div class="blog-card-body">
+                <div class="blog-meta"><span class="cat">Состояния</span><span class="sep">/</span><span class="date">1 апр · 4 мин</span></div>
+                <h3>Гиперпигментация: разбор PIGM&nbsp;400</h3>
+                <p>Как комплекс PIGM&nbsp;400 работает с&nbsp;меланогенезом и&nbsp;почему даёт результат без&nbsp;агрессивных пилингов.</p>
+                <span class="blog-read">Читать</span>
+            </div>
+        </a>
+        <a href="#" class="blog-card">
+            <div class="blog-card-img" style="background-image:url('блок 4.png');"></div>
+            <div class="blog-card-body">
+                <div class="blog-meta"><span class="cat">Методология</span><span class="sep">/</span><span class="date">25 марта · 6 мин</span></div>
+                <h3>Сезонная смена ухода — миф или&nbsp;необходимость</h3>
+                <p>Почему BR&nbsp;не&nbsp;продаёт «летние» и&nbsp;«зимние» линейки — и&nbsp;что меняется в&nbsp;протоколе на&nbsp;самом деле.</p>
+                <span class="blog-read">Читать</span>
+            </div>
+        </a>
+    </section>
+
+    <footer id="footer">
+        <div class="footer-cols">
+            <div class="footer-col"><h4>Каталог</h4><a href="catalog.html">Тоники и лосьоны</a><a href="catalog.html">Сыворотки</a><a href="catalog.html">Кремы для лица</a><a href="catalog.html">Маски</a></div>
+            <div class="footer-col"><h4>Компания</h4><a href="about.html">О бренде</a><a href="index.html#protocol">Методология</a><a href="blog.html">Блог</a><a href="contacts.html">Контакты</a></div>
+            <div class="footer-col"><h4>Помощь</h4><a href="#">Доставка</a><a href="#">Оплата</a><a href="#">Возврат</a><a href="index.html#faq">FAQ</a></div>
+            <div class="footer-col"><h4>Контакты</h4><a href="mailto:hello@biologique-recherche.ru">hello@biologique-recherche.ru</a><a href="tel:+74951234567">+7 (495) 123-45-67</a><a href="contacts.html">Москва, ул. Пример, 1</a></div>
+        </div>
+        <div class="footer-bottom"><span class="footer-copy">© 2026 Дикий Люкс. Магазин косметики Biologique Recherche.</span><div class="footer-socials"><a href="#">TG</a><a href="#">VK</a><a href="#">IG</a></div></div>
+    </footer>
+
+    <script>
+        const tags = document.querySelectorAll('.blog-tag');
+        tags.forEach(t => t.addEventListener('click', () => {
+            tags.forEach(b => b.classList.remove('is-active'));
+            t.classList.add('is-active');
+        }));
+    </script>
+</body>
+</html>

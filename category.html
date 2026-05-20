@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Категория — Дикий Люкс</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #F2F1ED; min-height: 100vh; font-family: 'Inter', sans-serif; overflow-x: hidden; color: #0B0B0E; }
+        ::-webkit-scrollbar { display: none; width: 0; height: 0; }
+        html, body { scrollbar-width: none; -ms-overflow-style: none; }
+
+        .navbar { position: fixed; top: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; padding: 2.5vh 4.58vw; z-index: 100; background: #FFFFFF; box-shadow: 0 1px 0 rgba(11,11,14,0.06); }
+        .nav-left { display: flex; gap: 1.94vw; }
+        .nav-left a, .nav-right a { font-size: 0.62vw; font-weight: 500; letter-spacing: 0.08vw; text-transform: uppercase; color: #0B0B0E; text-decoration: none; transition: opacity 0.3s; }
+        .nav-left a:hover, .nav-right a:hover { opacity: 0.6; }
+        .nav-left a.is-current { color: #C9A04E; }
+        .nav-center { position: absolute; left: 50%; transform: translateX(-50%); font-size: 1.04vw; font-weight: 500; letter-spacing: 0.32vw; text-transform: uppercase; color: #C9A04E; text-decoration: none; }
+        .nav-right a { font-size: 0.62vw; }
+
+        .crumbs { padding: 130px 66px 0; max-width: 1240px; margin: 0 auto; font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(11,11,14,0.4); }
+        .crumbs a { color: rgba(11,11,14,0.55); text-decoration: none; transition: color 0.3s; }
+        .crumbs a:hover { color: #0B0B0E; }
+        .crumbs .sep { margin: 0 10px; color: rgba(11,11,14,0.25); }
+
+        .cat-hero { padding: 28px 66px 60px; max-width: 1240px; margin: 0 auto; }
+        .cat-hero h1 {
+            font-size: clamp(48px, 5.6vw, 84px);
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            line-height: 1.0;
+            margin-bottom: 28px;
+            max-width: 920px;
+        }
+        .cat-hero h1 .muted { color: rgba(11,11,14,0.32); font-weight: 300; }
+        .cat-hero p {
+            font-size: 15px;
+            font-weight: 300;
+            color: rgba(11,11,14,0.6);
+            line-height: 1.75;
+            max-width: 560px;
+        }
+
+        .catalog-grid {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 66px 160px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+        .cat-card {
+            background: #FFFFFF;
+            border-radius: 28px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+        .cat-card:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(11,11,14,0.08); }
+        .cat-img { aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center; padding: 28px 24px 12px; background: #FFFFFF; overflow: hidden; }
+        .cat-img img { max-width: 100%; max-height: 100%; object-fit: contain; transition: transform 0.5s ease; }
+        .cat-card:hover .cat-img img { transform: scale(1.05); }
+        .cat-info { padding: 16px 22px 24px; display: flex; flex-direction: column; gap: 4px; }
+        .cat-tag { font-size: 10px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(11,11,14,0.4); margin-bottom: 4px; }
+        .cat-name { font-size: 17px; font-weight: 400; text-transform: uppercase; letter-spacing: 0.04em; color: #0B0B0E; }
+        .cat-bottom { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; }
+        .cat-price { font-size: 16px; font-weight: 500; color: #0B0B0E; }
+        .cat-price .vol { font-size: 10px; font-weight: 300; color: rgba(11,11,14,0.4); margin-left: 6px; letter-spacing: 0.06em; }
+        .cat-btn { background: #29457C; color: #FFFFFF; font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 18px; border-radius: 999px; text-decoration: none; transition: opacity 0.3s, transform 0.3s; }
+        .cat-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 80px 0;
+            color: rgba(11,11,14,0.5);
+            font-size: 14px;
+        }
+
+        #footer { background: #0B0B0E; width: 100vw; padding: 80px 66px 48px; }
+        .footer-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; padding-bottom: 60px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .footer-col h4 { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 20px; }
+        .footer-col a { display: block; font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.7); text-decoration: none; line-height: 2; transition: color 0.3s; }
+        .footer-col a:hover { color: #FFFFFF; }
+        .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 32px; }
+        .footer-copy { font-size: 11px; font-weight: 300; color: rgba(255,255,255,0.35); }
+        .footer-socials { display: flex; gap: 20px; }
+        .footer-socials a { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.5); text-decoration: none; text-transform: uppercase; letter-spacing: 0.1em; transition: color 0.3s; }
+        .footer-socials a:hover { color: #FFF; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="catalog.html" class="is-current">Каталог</a>
+            <a href="about.html">О бренде</a>
+            <a href="blog.html">Блог</a>
+            <a href="contacts.html">Контакты</a>
+        </div>
+        <a href="index.html" class="nav-center">ДИКИЙ ЛЮКС</a>
+        <div class="nav-right">
+            <a href="cart.html">Корзина</a>
+        </div>
+    </nav>
+
+    <div class="crumbs">
+        <a href="catalog.html">Каталог</a><span class="sep">/</span><span id="crumbCurrent">Категория</span>
+    </div>
+
+    <section class="cat-hero">
+        <h1 id="catTitle">Категория</h1>
+        <p id="catDesc"></p>
+    </section>
+
+    <section class="catalog-grid" id="catGrid"></section>
+
+    <footer id="footer">
+        <div class="footer-cols">
+            <div class="footer-col"><h4>Каталог</h4><a href="catalog.html">Тоники и лосьоны</a><a href="catalog.html">Сыворотки</a><a href="catalog.html">Кремы для лица</a><a href="catalog.html">Маски</a></div>
+            <div class="footer-col"><h4>Компания</h4><a href="about.html">О бренде</a><a href="index.html#protocol">Методология</a><a href="blog.html">Блог</a><a href="#">Кабинеты-партнёры</a></div>
+            <div class="footer-col"><h4>Помощь</h4><a href="#">Доставка</a><a href="#">Оплата</a><a href="#">Возврат</a><a href="index.html#faq">FAQ</a></div>
+            <div class="footer-col"><h4>Контакты</h4><a href="mailto:hello@biologique-recherche.ru">hello@biologique-recherche.ru</a><a href="tel:+74951234567">+7 (495) 123-45-67</a><a href="#">Москва, ул. Пример, 1</a></div>
+        </div>
+        <div class="footer-bottom"><span class="footer-copy">© 2026 Дикий Люкс. Магазин косметики Biologique Recherche.</span><div class="footer-socials"><a href="#">TG</a><a href="#">VK</a><a href="#">IG</a></div></div>
+    </footer>
+
+    <script>
+        const P = {
+            // Cleansers
+            'lait-sr':       {n:'Lait S.R.',                       p:'7 900',  v:'250 мл',  t:'Очищение', i:'https://profilpro.ru/wp-content/uploads/2024/05/lait-sr-510x375.jpg'},
+            'lait-ev':       {n:'Lait E.V.',                       p:'8 700',  v:'250 мл',  t:'Очищение', i:'https://profilpro.ru/wp-content/uploads/2024/05/lait-ev-510x375.jpg'},
+            'lait-dermo':    {n:'Lait Dermo-S',                    p:'8 100',  v:'250 мл',  t:'Очищение', i:'https://profilpro.ru/wp-content/uploads/2024/05/lait-dermo-s-510x375.jpg'},
+            'lait-vipo2':    {n:'Lait VIP O²',                     p:'5 700',  v:'150 мл',  t:'Очищение', i:'https://profilpro.ru/wp-content/uploads/2024/05/lait-vip-o2-510x375.jpg'},
+            'eau-mic':       {n:'Eau Micellaire Biosensible',      p:'11 700',  v:'250 мл',  t:'Очищение', i:'https://profilpro.ru/wp-content/uploads/2024/05/eau_micellaire_biosensible-510x375.webp'},
+            // Lotions
+            'mc110':         {n:'Lotion MC110',                    p:'11 300',  v:'30 мл',  t:'Лосьон',   i:'https://profilpro.ru/wp-content/uploads/2024/05/mc-110-1-510x375.jpg'},
+            'p50':           {n:'Lotion P50',                      p:'8 100',  v:'150 мл',  t:'Лосьон',   i:'https://profilpro.ru/wp-content/uploads/2024/05/lotion-p50-150-510x375.jpg'},
+            'p50v':          {n:'Lotion P50V',                     p:'10 200', v:'150 мл',  t:'Лосьон',   i:'https://profilpro.ru/wp-content/uploads/2024/05/lotion-p50v-510x375.jpg'},
+            'p50-pigm':      {n:'Lotion P50 PIGM 400',             p:'9 100', v:'150 мл',  t:'Лосьон',   i:'https://profilpro.ru/wp-content/uploads/2024/05/lotion-p50-pigm400-510x375.jpg'},
+            'p50w':          {n:'Lotion P50W',                     p:'8 100',  v:'150 мл',  t:'Лосьон',   i:'https://profilpro.ru/wp-content/uploads/2024/05/lotion-p50w-510x375.jpg'},
+            'eauxygenante':  {n:"L'Eauxygénante",                  p:'5 900',  v:'50 мл',  t:'Лосьон',   i:'https://profilpro.ru/wp-content/uploads/2024/05/l_eauxygenante-510x375.jpg'},
+            // Serums
+            'se-progeskin':  {n:'Serum Progeskin',                 p:'15 800', v:'30 мл',   t:'Сыворотка',i:'https://profilpro.ru/wp-content/uploads/2024/05/serum-progeskin-510x375.jpg'},
+            'se-iribiol':    {n:'Serum Complexe Iribiol',          p:'10 600', v:'30 мл',   t:'Сыворотка',i:'https://profilpro.ru/wp-content/uploads/2024/04/complexe_iribiol-510x375.jpg'},
+            'se-extraits':   {n:'Serum Extraits Tissulaires',      p:'11 200', v:'30 мл',   t:'Сыворотка',i:'https://profilpro.ru/wp-content/uploads/2024/04/serum_extraits_tissulaires-510x375.jpg'},
+            'se-oligo':      {n:'Serum Oligo-protéines Marines',   p:'11 200', v:'30 мл',   t:'Сыворотка',i:'https://profilpro.ru/wp-content/uploads/2024/04/serum_oligo_proteines_marines-510x375.jpg'},
+            'se-vgtensil':   {n:'Serum VG Tensil',                 p:'13 200', v:'30 мл',   t:'Сыворотка',i:'https://profilpro.ru/wp-content/uploads/2024/04/serum_vg_tensil-510x375.jpg'},
+            'se-elastine':   {n:'Serum Elastine Authentique',      p:'11 200', v:'30 мл',   t:'Сыворотка',i:'https://profilpro.ru/wp-content/uploads/2024/04/serum_elastine-510x375.jpg'},
+            'se-amniotique': {n:'Serum Amniotique VG',             p:'15 200', v:'30 мл',   t:'Сыворотка',i:'https://profilpro.ru/wp-content/uploads/2024/04/serum_amniotique-510x375.jpg'},
+            'se-aglyca':     {n:'Serum A-Glyca',                   p:'15 200', v:'30 мл',   t:'Сыворотка',i:'https://profilpro.ru/wp-content/uploads/2024/04/serum_a_glyca-510x375.jpg'},
+            'se-collagene':  {n:'Serum Collagène Originel',        p:'15 500', v:'30 мл',   t:'Сыворотка',i:'https://profilpro.ru/wp-content/uploads/2024/04/collagene_originel-510x375.jpg'},
+            'se-liposmose':  {n:'Serum Liposmose',                 p:'11 700', v:'30 мл',   t:'Сыворотка',i:'https://profilpro.ru/wp-content/uploads/2024/04/serum_liposmose-510x375.jpg'},
+            'se-isoplacenta':{n:'Serum ISO-Placenta',              p:'11 200', v:'30 мл',   t:'Сыворотка',i:'https://profilpro.ru/wp-content/uploads/2024/04/iso-placenta-510x375.jpg'},
+            'se-colostrum':  {n:'Serum Colostrum VG',              p:'15 800', v:'30 мл',   t:'Сыворотка',i:'https://profilpro.ru/wp-content/uploads/2024/04/colostrum_vg-510x375.jpg'},
+            'se-dermopore':  {n:'Sérum Dermopore',                 p:'12 200', v:'30 мл',   t:'Сыворотка',i:'https://profilpro.ru/wp-content/uploads/2024/04/serum_dermopore-510x375.jpg'},
+            // Creams
+            'cr-mec':        {n:'Crème M.E.C.',                    p:'15 500', v:'50 мл',   t:'Крем',     i:'https://profilpro.ru/wp-content/uploads/2026/03/creme-mec-510x375.jpg'},
+            'cr-vernixvg':   {n:'Crème Masque Vernix VG',          p:'15 800', v:'50 мл',   t:'Крем',     i:'https://profilpro.ru/wp-content/uploads/2024/05/creme-masque-vernix-vg-510x375.jpg'},
+            'cr-vgderm':     {n:'Crème VG Derm',                   p:'10 400', v:'50 мл',   t:'Крем',     i:'https://profilpro.ru/wp-content/uploads/2024/05/crvgd-photoroom-510x375.jpg'},
+            'cr-pigm400':    {n:'Crème PIGM 400',                  p:'20 800', v:'50 мл',   t:'Крем',     i:'https://profilpro.ru/wp-content/uploads/2024/05/creme-pigme-400-510x375.jpg'},
+            'cr-isoplacenta':{n:'Crème ISO-Placenta',              p:'9 900', v:'50 мл',   t:'Крем',     i:'https://profilpro.ru/wp-content/uploads/2024/04/cripla-photoroom-510x375.jpg'},
+            'cr-elastine':   {n:'Crème Elastine',                  p:'9 200', v:'50 мл',   t:'Крем',     i:'https://profilpro.ru/wp-content/uploads/2024/04/crelas-photoroom-510x375.jpg'},
+            'cr-hydravits':  {n:"Crème Hydravit'S",                p:'10 200',  v:'50 мл',   t:'Крем',     i:'https://profilpro.ru/wp-content/uploads/2024/04/crhyd-photoroom-510x375.jpg'},
+            'cr-acidesfruits':{n:'Crème aux Acides de Fruits',     p:'9 200',  v:'50 мл',   t:'Крем',     i:'https://profilpro.ru/wp-content/uploads/2024/04/crfru-photoroom-510x375.jpg'},
+            'cr-dermorl':    {n:'Crème Dermo-RL',                  p:'16 900', v:'50 мл',   t:'Крем',     i:'https://profilpro.ru/wp-content/uploads/2024/05/creme-dermo-rl-510x375.jpg'},
+            'cr-biofixine':  {n:'Crème Biofixine',                 p:'22 800', v:'50 мл',   t:'Крем',     i:'https://profilpro.ru/wp-content/uploads/2024/05/creme-biofixine-510x375.jpg'},
+            'cr-pto':        {n:'Crème PTO Métamorphique',         p:'15 800', v:'50 мл',   t:'Крем',     i:'https://profilpro.ru/wp-content/uploads/2024/05/creme-pto-metamorphique-510x375.jpg'},
+            'cr-splendide':  {n:'Crème Splendide',                 p:'12 900', v:'50 мл',   t:'Крем',     i:'https://profilpro.ru/wp-content/uploads/2024/05/creme-splendide-510x375.jpg'},
+            'cr-dermopur':   {n:'Crème Dermopurifiante',           p:'10 200',  v:'50 мл',   t:'Крем',     i:'https://profilpro.ru/wp-content/uploads/2024/04/crder-photoroom-510x375.jpg'},
+            'cr-vespoir':    {n:'Crème V. Espoir',                 p:'11 200', v:'50 мл',   t:'Крем',     i:'https://profilpro.ru/wp-content/uploads/2024/05/creme-verte-espoir-510x375.jpg'},
+            'cr-collagene':  {n:'Crème Collagène',                 p:'9 800', v:'50 мл',   t:'Крем',     i:'https://profilpro.ru/wp-content/uploads/2024/04/creme-collagene-510x375.jpg'},
+            'cr-grande':     {n:'La Grande Crème',                 p:'50 000', v:'50 мл',   t:'Крем',     i:'https://profilpro.ru/wp-content/uploads/2024/04/grande-creme-510x375.jpg'},
+            'cr-millesime':  {n:'Crème Grand Millésime',           p:'15 800', v:'50 мл',   t:'Крем',     i:'https://profilpro.ru/wp-content/uploads/2024/05/creme-grand-millesime-510x375.jpg'},
+            'cr-msrh':       {n:'Crème MSR-H',                     p:'29 500', v:'50 мл',   t:'Крем',     i:'https://profilpro.ru/wp-content/uploads/2024/05/msr-h-510x375.jpg'},
+            'cr-vipo2':      {n:'Crème VIP O²',                    p:'15 800', v:'50 мл',   t:'Крем',     i:'https://profilpro.ru/wp-content/uploads/2024/05/creme-vip-o2-510x375.jpg'},
+            'cr-contour-biosensible':{n:'Contour des Yeux Biosensible',p:'10 500',v:'15 мл',t:'Крем для глаз',i:'https://profilpro.ru/wp-content/uploads/2024/04/creme-contour-des-yeux-biosensible-510x375.jpg'},
+            'cr-contour-biofixine':{n:'Contour Yeux et Lèvres Biofixine',p:'12 900',v:'15 мл',t:'Крем для глаз',i:'https://profilpro.ru/wp-content/uploads/2024/04/creme-contour-des-yeux-biofixine-510x375.jpg'},
+            'cr-contour-vipo2':{n:'Contour des Yeux VIP O²',       p:'10 500',  v:'15 мл',   t:'Крем для глаз',i:'https://profilpro.ru/wp-content/uploads/2024/05/crcyvo215-pdp-btoc-niv1-id-134523-photoroom-510x375.jpg'},
+            // Masks
+            'ma-biomagic':   {n:'Biomagic Masque',                 p:'15 300',  v:'100 мл',   t:'Маска',    i:'https://profilpro.ru/wp-content/uploads/2024/05/biomagic-mask-510x375.jpg'},
+            'ma-biofixine':  {n:'Masque Biofixine',                p:'9 200',  v:'50 мл',   t:'Маска',    i:'https://profilpro.ru/wp-content/uploads/2024/05/masque-biofixine-510x375.jpg'},
+            'ma-vipo2':      {n:'Masque VIP O²',                   p:'15 300',  v:'100 мл',   t:'Маска',    i:'https://profilpro.ru/wp-content/uploads/2024/05/masque-vip-o2-510x375.jpg'},
+            'ma-visolastine':{n:'Masque Visolastine +',            p:'9 800', v:'100 мл',   t:'Маска',    i:'https://profilpro.ru/wp-content/uploads/2024/05/masque-visolastine-plus-510x375.jpg'},
+            'ma-biosensible':{n:'Masque Biosensible',              p:'7 800',  v:'50 мл',   t:'Маска',    i:'https://profilpro.ru/wp-content/uploads/2024/05/masque-biosensible-510x375.jpg'},
+            'ma-vivant':     {n:'Masque Vivant',                   p:'9 900',  v:'100 мл',  t:'Маска',    i:'https://profilpro.ru/wp-content/uploads/2024/05/masque-vivant-510x375.jpg'},
+            // Finishing serums
+            'fse-fluide':    {n:'Fluide VIP O²',                   p:'25 200', v:'30 мл',   t:'Завершающая', i:'https://profilpro.ru/wp-content/uploads/2024/04/serum-fluide-vip-02-510x375.jpg'},
+            'fse-grand':     {n:'Le Grand Sérum',                  p:'45 000', v:'30 мл',   t:'Завершающая', i:'https://profilpro.ru/wp-content/uploads/2024/04/le-grand-serum-510x375.jpg'},
+            'fse-royal':     {n:'Complexe Royal',                  p:'24 200', v:'30 мл',   t:'Завершающая', i:'https://profilpro.ru/wp-content/uploads/2024/04/complexe-royal-510x375.jpg'},
+            'fse-millesime': {n:'Sérum Grand Millésime',           p:'27 200', v:'30 мл',   t:'Завершающая', i:'https://profilpro.ru/wp-content/uploads/2024/04/serum-grand-millesime-510x375.jpg'},
+            'fse-yall':      {n:'Sérum Yall-O²',                   p:'27 700', v:'30 мл',   t:'Завершающая', i:'https://profilpro.ru/wp-content/uploads/2024/04/serum-yall-510x375.jpg'},
+            'fse-silk':      {n:'Silk Plus',                       p:'20 900', v:'30 мл',   t:'Завершающая', i:'https://profilpro.ru/wp-content/uploads/2024/04/silk-plus-510x375.jpg'},
+            // Special serums
+            'sse-biosen':    {n:'Sérum Biosensible',               p:'13 200', v:'30 мл',   t:'Специальная', i:'https://profilpro.ru/wp-content/uploads/2024/04/serum-biosensible-510x375.jpg'},
+            'sse-tewl':      {n:'Sérum T.E.W.L.',                  p:'6 800', v:'30 мл',   t:'Специальная', i:'https://profilpro.ru/wp-content/uploads/2024/04/serum-tewl-510x375.jpg'},
+            'sse-erythros':  {n:'Sérum Erythros',                  p:'13 500', v:'30 мл',   t:'Специальная', i:'https://profilpro.ru/wp-content/uploads/2024/04/serum-erythros-510x375.jpg'},
+            'sse-pigm400':   {n:'Sérum PIGM 400',                  p:'20 900', v:'30 мл',   t:'Специальная', i:'https://profilpro.ru/wp-content/uploads/2024/04/serum-pigm400-510x375.jpg'},
+            // Eye care (Expert + Concealers; Contour creams stay in cream category but also referenced in eye)
+            'eye-c1':        {n:'Eye Care Concealer №1',           p:'7 200',  v:'8 мл',    t:'Глаза · Консилер', i:'https://profilpro.ru/wp-content/uploads/2024/04/eye-concealer-1-510x375.jpg'},
+            'eye-c2':        {n:'Eye Care Concealer №2',           p:'7 200',  v:'8 мл',    t:'Глаза · Консилер', i:'https://profilpro.ru/wp-content/uploads/2024/04/eye-concealer-2-510x375.jpg'},
+            // Sun Care
+            'sun-prouv25':   {n:'Protection U.V. SPF 25',          p:'13 600',  v:'50 мл',   t:'Sun Care', i:'https://profilpro.ru/wp-content/uploads/2024/04/prouv-510x375.jpg'},
+            'sun-prouv50':   {n:'Protection U.V. SPF 50',          p:'9 800', v:'50 мл',   t:'Sun Care', i:'https://profilpro.ru/wp-content/uploads/2024/04/prouv50x-510x375.jpg'},
+            // Body care (Lipogen AC, Liposcult AC, Sérum Matriciel, Masque Bain de Plantes, Crème MSR-H Corps EXCLUDED)
+            'bd-cible':      {n:'Cible PIGM 400',                  p:'11 800', v:'15 мл',   t:'Тело · Пигментация', i:'https://profilpro.ru/wp-content/uploads/2025/06/pigmcible-510x375.jpg'},
+            'bd-lop5c':      {n:'Lotion P50 Corps',                p:'10 800', v:'250 мл',  t:'Тело',     i:'https://profilpro.ru/wp-content/uploads/2024/05/lop5c-photoroom-510x375.jpg'},
+            'bd-gomp5c':     {n:'Gommage P50 Corps',               p:'12 800',  v:'200 мл',  t:'Тело',     i:'https://profilpro.ru/wp-content/uploads/2024/05/gomp5c-photoroom-510x375.jpg'},
+            'bd-huileder':   {n:'Huile Dermotonique',              p:'10 200', v:'100 мл',  t:'Тело · Масло', i:'https://profilpro.ru/wp-content/uploads/2024/05/huder-photoroom-510x375.jpg'},
+            'gel-adn': {n:'Gel ADN Silkgen', p:'16 900', v:'50 мл', t:'Крем', i:'https://profilpro.ru/wp-content/uploads/2024/05/gel-adn-silkgen-510x375.jpg'},
+            'cr-emgel-bio': {n:'Émulsion Gel Biosensible', p:'15 500', v:'50 мл', t:'Крем', i:'https://profilpro.ru/wp-content/uploads/2024/05/emulsion-gel-biosensible-510x375.jpg'},
+            'cr-emgel-sr': {n:'Émulsion Gel Biosensible S.R.', p:'15 800', v:'50 мл', t:'Крем', i:'https://profilpro.ru/wp-content/uploads/2024/05/emulsion-gel-biosensible-sr-510x375.jpg'},
+            'cr-emor-face': {n:'Émulsion Originelle Régénérante', p:'15 800', v:'50 мл', t:'Крем', i:'https://profilpro.ru/wp-content/uploads/2024/05/emulsion-originelle-reg-510x375.jpg'},
+            'sse-matriciel-face': {n:'Sérum Matriciel Visage', p:'21 800', v:'30 мл', t:'Сыворотка', i:'https://profilpro.ru/wp-content/uploads/2024/05/semat-photoroom-510x375.jpg'},
+            'cr-grande-refill': {n:'La Grande Crème Refill', p:'34 000', v:'50 мл', t:'Крем · Refill', i:'https://profilpro.ru/wp-content/uploads/2024/04/grande-creme-510x375.jpg'},
+        };
+
+        const CATEGORIES = {
+            acne: {
+                title: 'Проблемная кожа &amp; <span class="muted">акне.</span>',
+                crumb: 'Проблемная кожа & акне',
+                desc: 'Уход для жирной и проблемной кожи: эксфолиация, контроль себума и матирование без агрессивных пилингов.',
+                products: ['p50','cr-dermopur','se-dermopore','ma-vivant','lait-dermo','cr-acidesfruits','ma-biomagic']
+            },
+            dehydrated: {
+                title: 'Обезвоженная <span class="muted">кожа.</span>',
+                crumb: 'Обезвоженная кожа',
+                desc: 'Восстановление барьерной функции, увлажнение и питание для кожи с дефицитом влаги.',
+                products: ['cr-hydravits','se-liposmose','cr-mec','lait-ev','eau-mic','cr-vernixvg']
+            },
+            mature: {
+                title: 'Зрелая кожа <span class="muted">35+.</span>',
+                crumb: 'Зрелая кожа 35+',
+                desc: 'Anti-age уход с плацентой, эластином и коллагеном — для упругости, плотности и сияния.',
+                products: ['cr-isoplacenta','se-isoplacenta','cr-elastine','se-elastine','cr-grande','cr-millesime','cr-splendide','cr-pto','se-collagene','se-aglyca','cr-collagene','p50w','se-vgtensil']
+            },
+            sensitive: {
+                title: 'Чувствительная <span class="muted">кожа.</span>',
+                crumb: 'Чувствительная кожа',
+                desc: 'Бережный уход для реактивной и склонной к покраснениям кожи: успокоение, защита, восстановление.',
+                products: ['cr-dermorl','cr-msrh','ma-biosensible','eau-mic','mc110','cr-contour-biosensible','cr-biofixine']
+            },
+            dull: {
+                title: 'Тусклая, <span class="muted">стрессовая кожа.</span>',
+                crumb: 'Тусклая, стрессовая кожа',
+                desc: 'Сияние, оксигенация и обновление — для уставшей кожи в темпе большого города.',
+                products: ['cr-vipo2','ma-vipo2','lait-vipo2','cr-vespoir','se-oligo','eauxygenante','lait-sr','se-amniotique']
+            },
+            pigmentation: {
+                title: 'Кожа с <span class="muted">пигментацией.</span>',
+                crumb: 'Пигментация',
+                desc: 'Коррекция гиперпигментации — выравнивание тона и контроль меланогенеза без раздражения.',
+                products: ['p50-pigm','cr-pigm400','p50v','se-iribiol','sse-pigm400','bd-cible']
+            },
+            // === Product types ===
+            cleansers: {
+                title: 'Очищающие <span class="muted">средства.</span>',
+                crumb: 'Очищение',
+                desc: 'Молочки, мицеллярная вода — мягкое снятие макияжа без нарушения липидного барьера.',
+                products: ['lait-sr','lait-ev','lait-dermo','lait-vipo2','eau-mic']
+            },
+            lotions: {
+                title: 'Лосьоны <span class="muted">Biologique Recherche.</span>',
+                crumb: 'Лосьоны',
+                desc: 'Эксфолианты и тоники — выравнивают рельеф, балансируют pH, готовят кожу к сывороткам.',
+                products: ['mc110','p50','p50v','p50-pigm','p50w','eauxygenante']
+            },
+            masks: {
+                title: 'Маски <span class="muted">Biologique Recherche.</span>',
+                crumb: 'Маски',
+                desc: 'Очищающие, дренирующие, anti-age и питательные маски для домашнего протокола.',
+                products: ['ma-biomagic','ma-biofixine','ma-vipo2','ma-visolastine','ma-biosensible','ma-vivant']
+            },
+            'serums-basic': {
+                title: 'Основные <span class="muted">сыворотки.</span>',
+                crumb: 'Основные сыворотки',
+                desc: 'Базовые сыворотки для ежедневного протокола: коллаген, эластин, плацента, биотехнологии.',
+                products: ['se-progeskin','se-iribiol','se-extraits','se-oligo','se-vgtensil','se-elastine','se-amniotique','se-aglyca','se-collagene','se-liposmose','se-isoplacenta','se-colostrum','se-dermopore']
+            },
+            'serums-special': {
+                title: 'Специальные <span class="muted">сыворотки.</span>',
+                crumb: 'Специальные сыворотки',
+                desc: 'Адресные сыворотки для конкретных состояний: чувствительность, барьер, эритемы, пигментация.',
+                products: ['sse-biosen','sse-tewl','sse-erythros','sse-pigm400','sse-matriciel-face']
+            },
+            'serums-finishing': {
+                title: 'Завершающие <span class="muted">сыворотки.</span>',
+                crumb: 'Завершающие сыворотки',
+                desc: 'Финальный шаг протокола — фиксируют результат и усиливают действие предыдущих продуктов.',
+                products: ['fse-fluide','fse-grand','fse-royal','fse-millesime','fse-yall','fse-silk']
+            },
+            'creams-face': {
+                title: 'Кремы <span class="muted">для лица.</span>',
+                crumb: 'Кремы для лица',
+                desc: 'Дневные и ночные кремы — подбираются под текущее состояние кожи, не под её тип.',
+                products: ['cr-mec','cr-vernixvg','cr-vgderm','cr-pigm400','cr-isoplacenta','cr-elastine','cr-hydravits','cr-acidesfruits','cr-dermorl','cr-biofixine','cr-pto','cr-splendide','cr-dermopur','cr-vespoir','cr-collagene','cr-grande','cr-millesime','cr-msrh','cr-vipo2']
+            },
+            'creams-sun': {
+                title: 'Кремы <span class="muted">Sun Care.</span>',
+                crumb: 'Sun Care',
+                desc: 'Минеральная и химическая защита от UV-излучения — для лица и тела, plus after-sun.',
+                products: ['sun-prouv25','sun-prouv50']
+            },
+            eye: {
+                title: 'Косметика <span class="muted">для глаз.</span>',
+                crumb: 'Косметика для глаз',
+                desc: 'Контурные кремы, специальные сыворотки и тонирующие концилеры для области вокруг глаз.',
+                products: ['eye-c1','eye-c2','cr-contour-biosensible','cr-contour-biofixine','cr-contour-vipo2']
+            },
+            body: {
+                title: 'Косметика <span class="muted">для тела.</span>',
+                crumb: 'Косметика для тела',
+                desc: 'Лосьоны, масла, кремы и сыворотки — anti-stretch, лифтинг, восстановление, антицеллюлит.',
+                products: ['bd-cible','bd-lop5c','bd-gomp5c','bd-huileder']
+            },
+        };
+
+        function getCatId() {
+            const params = new URLSearchParams(location.search);
+            return params.get('id') || location.hash.replace('#', '') || 'acne';
+        }
+        const id = getCatId();
+        const cat = CATEGORIES[id] || CATEGORIES.acne;
+
+        document.getElementById('catTitle').innerHTML = cat.title;
+        document.getElementById('catDesc').textContent = cat.desc;
+        document.getElementById('crumbCurrent').textContent = cat.crumb;
+        document.title = cat.crumb + ' — Дикий Люкс';
+
+        const grid = document.getElementById('catGrid');
+        if (!cat.products.length) {
+            grid.innerHTML = '<div class="empty-state">В этой категории пока нет товаров.</div>';
+        } else {
+            cat.products.forEach(pid => {
+                const p = P[pid];
+                if (!p) return;
+                const card = document.createElement('a');
+                card.href = 'product.html#' + pid;
+                card.className = 'cat-card';
+                card.innerHTML = `
+                    <div class="cat-img"><img src="${p.i}" alt="${p.n}"></div>
+                    <div class="cat-info">
+                        <div class="cat-tag">${p.t}</div>
+                        <div class="cat-name">${p.n}</div>
+                        <div class="cat-bottom">
+                            <span class="cat-price">${p.p}&nbsp;₽<span class="vol">${p.v}</span></span>
+                            <span class="cat-btn">В корзину</span>
+                        </div>
+                    </div>`;
+                grid.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
