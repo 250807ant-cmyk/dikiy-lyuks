@@ -983,27 +983,6 @@
             object-position: center;
             display: block;
         }
-        .zones-overlay-text {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            font-family: 'Inter', sans-serif;
-            font-size: clamp(120px, 18vw, 280px);
-            font-weight: 200;
-            letter-spacing: 0.02em;
-            color: rgba(255,255,255,0.85);
-            line-height: 1;
-            text-transform: uppercase;
-            pointer-events: none;
-            white-space: nowrap;
-            z-index: 1;
-        }
-        .zones-overlay-text--left {
-            left: -8vw;
-        }
-        .zones-overlay-text--right {
-            right: -8vw;
-        }
         .zones-dot {
             position: absolute;
             width: 44px;
@@ -1769,14 +1748,12 @@
     <!-- ============ SECTION: ZONES (Зоны применения) ============ -->
     <section id="zones" aria-label="Зоны применения ухода">
         <img src="Group 1912.png" alt="" class="zones-bg">
-        <div class="zones-overlay-text zones-overlay-text--left">BEAUTY</div>
-        <div class="zones-overlay-text zones-overlay-text--right">CARE</div>
 
-        <button class="zones-dot is-active" data-zone="01" style="top: 38%; left: 48%;">01</button>
-        <button class="zones-dot" data-zone="02" style="top: 28%; left: 58%;">02</button>
-        <button class="zones-dot" data-zone="03" style="top: 50%; left: 56%;">03</button>
-        <button class="zones-dot" data-zone="04" style="top: 56%; left: 42%;">04</button>
-        <button class="zones-dot" data-zone="05" style="top: 70%; left: 50%;">05</button>
+        <button class="zones-dot is-active" data-zone="01" style="top: 18%; left: 58%;">01</button>
+        <button class="zones-dot" data-zone="02" style="top: 33%; left: 63%;">02</button>
+        <button class="zones-dot" data-zone="03" style="top: 50%; left: 67%;">03</button>
+        <button class="zones-dot" data-zone="04" style="top: 58%; left: 61%;">04</button>
+        <button class="zones-dot" data-zone="05" style="top: 86%; left: 55%;">05</button>
 
         <div class="zones-card" id="zonesCard">
             <div class="zones-card-img"><img src="product-lotion-p50.jpg" alt=""></div>
