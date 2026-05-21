@@ -982,6 +982,50 @@
             object-fit: cover;
             object-position: center;
             display: block;
+            z-index: 0;
+        }
+        #zones .zones-cutout {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .zones-marquee {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%);
+            overflow: hidden;
+            z-index: 1;
+            pointer-events: none;
+            display: flex;
+        }
+        .zones-marquee-track {
+            display: flex;
+            flex-shrink: 0;
+            animation: zones-marquee-scroll 28s linear infinite;
+            white-space: nowrap;
+        }
+        .zones-marquee-track span {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(80px, 12vw, 200px);
+            font-weight: 300;
+            letter-spacing: 0.02em;
+            color: rgba(255,255,255,0.92);
+            line-height: 1;
+            text-transform: uppercase;
+            padding-right: 60px;
+            display: inline-block;
+        }
+        @keyframes zones-marquee-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
         .zones-dot {
             position: absolute;
@@ -1748,10 +1792,23 @@
     <!-- ============ SECTION: ZONES (Зоны применения) ============ -->
     <section id="zones" aria-label="Зоны применения ухода">
         <img src="Group 1912.png" alt="" class="zones-bg">
+        <div class="zones-marquee" aria-hidden="true">
+            <div class="zones-marquee-track">
+                <span>Область применения&nbsp;·&nbsp;</span>
+                <span>Область применения&nbsp;·&nbsp;</span>
+                <span>Область применения&nbsp;·&nbsp;</span>
+                <span>Область применения&nbsp;·&nbsp;</span>
+                <span>Область применения&nbsp;·&nbsp;</span>
+                <span>Область применения&nbsp;·&nbsp;</span>
+                <span>Область применения&nbsp;·&nbsp;</span>
+                <span>Область применения&nbsp;·&nbsp;</span>
+            </div>
+        </div>
+        <img src="Group 1912-Photoroom.png" alt="" class="zones-cutout">
 
         <button class="zones-dot is-active" data-zone="01" style="top: 18%; left: 58%;">01</button>
         <button class="zones-dot" data-zone="02" style="top: 33%; left: 63%;">02</button>
-        <button class="zones-dot" data-zone="03" style="top: 48%; left: 55%;">03</button>
+        <button class="zones-dot" data-zone="03" style="top: 48%; left: 50%;">03</button>
         <button class="zones-dot" data-zone="04" style="top: 58%; left: 61%;">04</button>
         <button class="zones-dot" data-zone="05" style="top: 86%; left: 55%;">05</button>
 
