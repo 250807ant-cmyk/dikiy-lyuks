@@ -963,68 +963,153 @@
         }
 
         /* =============================================
-           SECTION: BANNER (full-width photo)
+           SECTION: ZONES (зоны применения ухода)
            ============================================= */
-        #banner {
+        #zones {
             width: 100vw;
             height: 100vh;
-            border-radius: 40px;
-            margin-top: 80px;
-            margin-bottom: 80px;
-            overflow: hidden;
+            min-height: 720px;
             position: relative;
-            transform: scale(0.78);
-            opacity: 0;
-            transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.8s ease;
-            transform-origin: center center;
+            overflow: hidden;
+            margin: 80px 0;
+            background: #C9B59E;
         }
-        #banner.visible {
-            transform: scale(1);
-            opacity: 1;
-        }
-        #banner img {
-            width: 100%;
-            height: 130%;
-            object-fit: cover;
-            object-position: center center;
-            display: block;
-            will-change: transform;
-            transform: translate3d(0, 0, 0);
-        }
-        .banner-cta {
+        #zones .zones-bg {
             position: absolute;
-            left: 50%;
-            bottom: 64px;
-            transform: translateX(-50%);
-            display: inline-flex;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+        .zones-overlay-text {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(120px, 18vw, 280px);
+            font-weight: 200;
+            letter-spacing: 0.02em;
+            color: rgba(255,255,255,0.85);
+            line-height: 1;
+            text-transform: uppercase;
+            pointer-events: none;
+            white-space: nowrap;
+            z-index: 1;
+        }
+        .zones-overlay-text--left {
+            left: -8vw;
+        }
+        .zones-overlay-text--right {
+            right: -8vw;
+        }
+        .zones-dot {
+            position: absolute;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(11,11,14,0.55);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border: none;
+            color: #FFFFFF;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            z-index: 3;
+            transition: transform 0.3s ease, background 0.3s ease;
+            display: flex;
             align-items: center;
-            gap: 14px;
+            justify-content: center;
+        }
+        .zones-dot:hover {
+            transform: scale(1.1);
+            background: rgba(201,160,78,0.9);
+        }
+        .zones-dot.is-active {
             background: #FFFFFF;
             color: #0B0B0E;
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
+            transform: scale(1.15);
+            box-shadow: 0 6px 22px rgba(0,0,0,0.18);
+        }
+        .zones-card {
+            position: absolute;
+            left: 4.58vw;
+            bottom: 60px;
+            width: clamp(420px, 36vw, 540px);
+            background: #FFFFFF;
+            border-radius: 14px;
+            padding: 28px;
+            display: grid;
+            grid-template-columns: 130px 1fr;
+            gap: 24px;
+            box-shadow: 0 18px 48px rgba(11,11,14,0.18);
+            z-index: 4;
+        }
+        .zones-card-img {
+            background: #F2F1ED;
+            border-radius: 10px;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .zones-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .zones-card-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .zones-card-head {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .zones-card-num {
+            font-size: 13px;
             font-weight: 500;
-            letter-spacing: 0.14em;
+            color: rgba(11,11,14,0.45);
+            letter-spacing: 0.04em;
+        }
+        .zones-card-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 20px;
+            font-weight: 400;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
-            text-decoration: none;
-            padding: 20px 40px;
-            border-radius: 60px;
-            box-shadow: 0 12px 36px rgba(11,11,14,0.22);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
-            z-index: 2;
+            color: #0B0B0E;
         }
-        .banner-cta::after {
-            content: '→';
-            font-size: 18px;
-            line-height: 1;
-            transition: transform 0.3s ease;
+        .zones-card-desc {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 1.55;
+            color: rgba(11,11,14,0.65);
+            margin: 0 0 14px;
         }
-        .banner-cta:hover {
-            transform: translateX(-50%) translateY(-3px);
-            box-shadow: 0 18px 44px rgba(11,11,14,0.28);
+        .zones-card-treatment-label {
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(11,11,14,0.4);
+            margin-bottom: 6px;
         }
-        .banner-cta:hover::after {
-            transform: translateX(4px);
+        .zones-card-treatment-list {
+            font-size: 12px;
+            font-weight: 400;
+            color: rgba(11,11,14,0.7);
+            letter-spacing: 0.02em;
         }
 
         /* =============================================
@@ -1681,11 +1766,90 @@
         </div>
     </section>
 
-    <!-- ============ SECTION: BANNER (full-width photo) ============ -->
-    <section id="banner" aria-label="Biologique Recherche">
-        <img src="блок 6.jpeg" alt="Biologique Recherche" id="bannerPhoto">
-        <a href="#" class="banner-cta">Подобрать уход</a>
+    <!-- ============ SECTION: ZONES (Зоны применения) ============ -->
+    <section id="zones" aria-label="Зоны применения ухода">
+        <img src="Group 1912.png" alt="" class="zones-bg">
+        <div class="zones-overlay-text zones-overlay-text--left">BEAUTY</div>
+        <div class="zones-overlay-text zones-overlay-text--right">CARE</div>
+
+        <button class="zones-dot is-active" data-zone="01" style="top: 38%; left: 48%;">01</button>
+        <button class="zones-dot" data-zone="02" style="top: 28%; left: 58%;">02</button>
+        <button class="zones-dot" data-zone="03" style="top: 50%; left: 56%;">03</button>
+        <button class="zones-dot" data-zone="04" style="top: 56%; left: 42%;">04</button>
+        <button class="zones-dot" data-zone="05" style="top: 70%; left: 50%;">05</button>
+
+        <div class="zones-card" id="zonesCard">
+            <div class="zones-card-img"><img src="product-lotion-p50.jpg" alt=""></div>
+            <div class="zones-card-body">
+                <div class="zones-card-head">
+                    <span class="zones-card-num">01</span>
+                    <span class="zones-card-title">Зона лба</span>
+                </div>
+                <p class="zones-card-desc">Точечная коррекция мимических морщин и&nbsp;выравнивание текстуры. Уход подбирается под состояние кожи здесь и&nbsp;сейчас.</p>
+                <div class="zones-card-treatment-label">УХОД</div>
+                <div class="zones-card-treatment-list">Lotion P50 | Sérum Yall-O₂ | Crème MEC</div>
+            </div>
+        </div>
     </section>
+
+    <script>
+        (function(){
+            const zones = {
+                '01': {
+                    img: 'product-lotion-p50.jpg',
+                    title: 'Зона лба',
+                    desc: 'Точечная коррекция мимических морщин и&nbsp;выравнивание текстуры. Уход подбирается под состояние кожи здесь и&nbsp;сейчас.',
+                    treatment: 'Lotion P50 | Sérum Yall-O₂ | Crème MEC'
+                },
+                '02': {
+                    img: 'product-serum-yall-o2.jpg',
+                    title: 'Зона глаз',
+                    desc: 'Тонкая кожа век требует деликатных активов. Мы работаем с&nbsp;отёчностью, тёмными кругами и&nbsp;первыми морщинками.',
+                    treatment: 'Sérum Yall-O₂ | Collagène Natif | Masque Vivant'
+                },
+                '03': {
+                    img: 'product-creme-iso-placenta.jpg',
+                    title: 'Зона щёк',
+                    desc: 'Восстановление гидробаланса и&nbsp;упругости. Глубокое питание формулами холодного приготовления.',
+                    treatment: 'Crème ISO-Placenta | Lait U | Masque Vivant'
+                },
+                '04': {
+                    img: 'product-masque-vivant.jpg',
+                    title: 'Зона губ',
+                    desc: 'Контур губ и&nbsp;носогубный треугольник — зона ранних возрастных изменений. Уход с&nbsp;живыми ферментами.',
+                    treatment: 'Masque Vivant | Crème MEC | Sérum Elastine Marine'
+                },
+                '05': {
+                    img: 'product-creme-dermopurifiante.jpg',
+                    title: 'Зона шеи',
+                    desc: 'Зона декольте стареет быстрее лица. Подтягивающий уход для линии шеи и&nbsp;ключиц.',
+                    treatment: 'Crème Dermopurifiante | Sérum Elastine Marine | Lait U'
+                }
+            };
+            const card = document.getElementById('zonesCard');
+            if (!card) return;
+            document.querySelectorAll('.zones-dot').forEach(dot => {
+                dot.addEventListener('click', () => {
+                    const id = dot.dataset.zone;
+                    const z = zones[id];
+                    if (!z) return;
+                    document.querySelectorAll('.zones-dot').forEach(d => d.classList.remove('is-active'));
+                    dot.classList.add('is-active');
+                    card.innerHTML = `
+                        <div class="zones-card-img"><img src="${z.img}" alt=""></div>
+                        <div class="zones-card-body">
+                            <div class="zones-card-head">
+                                <span class="zones-card-num">${id}</span>
+                                <span class="zones-card-title">${z.title}</span>
+                            </div>
+                            <p class="zones-card-desc">${z.desc}</p>
+                            <div class="zones-card-treatment-label">УХОД</div>
+                            <div class="zones-card-treatment-list">${z.treatment}</div>
+                        </div>`;
+                });
+            });
+        })();
+    </script>
 
     <!-- ============ SECTION: TESTIMONIALS ============ -->
     <section id="testimonials">
@@ -1724,24 +1888,6 @@
                     </div>
                 </div>
             </article>
-        </div>
-    </section>
-
-    <!-- ============ SECTION: BRAND STATEMENT ============ -->
-    <section id="brand-statement">
-        <div class="blob blob--sand"></div>
-        <div class="blob blob--orange"></div>
-        <div class="blob blob--dark"></div>
-        <div class="brand-st-content">
-            <div class="brand-st-icon anim anim--scale">✦</div>
-            <h2 class="brand-st-title anim anim--scale">BIOLOGIQUE RECHERCHE</h2>
-            <div class="brand-st-label anim">Косметология из Парижа</div>
-            <p class="brand-st-desc anim">Уход, который читают как протокол врача. Подбирается под состояние кожи здесь и&nbsp;сейчас — не&nbsp;по&nbsp;шаблону «тип кожи». Используется в&nbsp;кабинетах эстетики по&nbsp;всему миру.</p>
-            <div class="brand-st-label">Подпишитесь и&nbsp;получите консультацию косметолога бесплатно</div>
-            <form class="brand-st-form" onsubmit="return false;">
-                <input type="email" placeholder="Ваш e-mail">
-                <button type="submit">Подписаться</button>
-            </form>
         </div>
     </section>
 
@@ -1969,34 +2115,7 @@
         window.addEventListener('resize', updateDlLinesParallax, { passive: true });
         updateDlLinesParallax();
 
-        // Parallax for banner photo (normal flow section)
-        const bannerPhoto = document.getElementById('bannerPhoto');
-        const bannerSection = document.getElementById('banner');
-        let bannerTicking = false;
-
-        function updateBannerParallax() {
-            if (!bannerPhoto || !bannerSection) return;
-            const rect = bannerSection.getBoundingClientRect();
-            const vh = window.innerHeight;
-            const progress = (vh - rect.top) / (vh + rect.height);
-            const clamped = Math.max(0, Math.min(1, progress));
-            const offset = -clamped * 23;
-            bannerPhoto.style.transform = 'translate3d(0, ' + offset + '%, 0)';
-            bannerTicking = false;
-        }
-
-        if (bannerPhoto && bannerSection) {
-            window.addEventListener('scroll', () => {
-                if (!bannerTicking) {
-                    requestAnimationFrame(updateBannerParallax);
-                    bannerTicking = true;
-                }
-            }, { passive: true });
-            window.addEventListener('resize', updateBannerParallax, { passive: true });
-            updateBannerParallax();
-        }
-
-        // Subtle 3D tilt on cards (pointer tracking)
+// Subtle 3D tilt on cards (pointer tracking)
         function attachTilt(selector, maxTilt, lift) {
             document.querySelectorAll(selector).forEach(card => {
                 card.style.transition = 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease';
@@ -2054,7 +2173,7 @@
             });
         }, { threshold: 0.15 });
 
-        document.querySelectorAll('.anim, .anim-line, .zoom-on-scroll, #banner').forEach(el => {
+        document.querySelectorAll('.anim, .anim-line, .zoom-on-scroll').forEach(el => {
             observer.observe(el);
         });
     </script>
