@@ -32,11 +32,13 @@
         .nav-center {
             position: absolute; left: 50%; transform: translateX(-50%);
             font-size: 1.04vw; font-weight: 500; letter-spacing: 0.32vw;
-            text-transform: uppercase; color: #C9A04E; text-decoration: none;
+            text-transform: uppercase; color: #FFFFFF; text-decoration: none;
+            transition: color 0.3s ease;
         }
+        .navbar.scrolled .nav-center { color: #C9A04E; }
         .nav-right a { font-size: 0.62vw; }
 
-        /* === CINEMATIC HERO (без изменений — нравится) === */
+        /* === HERO (без изменений) === */
         .v3-hero {
             width: 100vw; height: 92vh;
             position: relative; overflow: hidden;
@@ -95,11 +97,88 @@
             max-width: 480px; text-align: right;
         }
 
-        /* === Один общий контейнер === */
+        /* === Контейнер === */
         .container {
             max-width: 1240px;
             margin: 0 auto;
             padding: 0 66px;
+        }
+
+        /* === EYEBROW / CHAPTER — точь-в-точь .about-label с главной === */
+        .ab-chapter {
+            display: block;
+            width: max-content;
+            font-family: 'Inter', sans-serif;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(11,11,14,0.35);
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+        .ab-chapter small {
+            font-size: 10px;
+            font-weight: 500;
+            color: rgba(11,11,14,0.35);
+            letter-spacing: 0.2em;
+        }
+        .ab-chapter small::before {
+            content: ' — ';
+            margin: 0 2px;
+        }
+
+        /* === H2 — точь-в-точь .about-text h2 с главной === */
+        .ab-h2 {
+            font-family: 'Inter', sans-serif;
+            font-size: 40px;
+            font-weight: 400;
+            color: #0B0B0E;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            line-height: 1.15;
+            margin-bottom: 28px;
+        }
+
+        /* === ЗОЛОТАЯ ЛИНИЯ — .about-line === */
+        .ab-line {
+            width: 48px;
+            height: 1px;
+            background: #C9A04E;
+            margin-bottom: 36px;
+        }
+
+        /* === ОБЫЧНЫЙ ТЕКСТ — .about-text p === */
+        .ab-p {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 300;
+            color: rgba(11,11,14,0.7);
+            line-height: 1.7;
+            margin-bottom: 36px;
+            max-width: 420px;
+        }
+        .ab-p:last-child { margin-bottom: 0; }
+
+        /* === КНОПКА — .btn-main === */
+        .ab-btn {
+            display: inline-block;
+            background: #29457C;
+            color: #FFFFFF;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            text-decoration: none;
+            padding: 16px 44px;
+            border-radius: 999px;
+            transition: all 0.3s ease;
+        }
+        .ab-btn:hover {
+            opacity: 0.85;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
         }
 
         /* === I. INTRO === */
@@ -107,24 +186,7 @@
             padding: 160px 0 120px;
         }
         .ab-intro .container {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 80px;
-            align-items: start;
-        }
-        .ab-chapter {
-            font-size: 13px;
-            font-weight: 500;
-            letter-spacing: 0.25em;
-            color: #C9A04E;
-            line-height: 1.6;
-        }
-        .ab-chapter small {
-            display: block;
-            color: rgba(11,11,14,0.4);
-            margin-top: 6px;
-            letter-spacing: 0.2em;
-            font-weight: 400;
+            max-width: 900px;
         }
         .ab-intro-text p {
             font-size: clamp(20px, 1.7vw, 26px);
@@ -139,26 +201,95 @@
             color: #C9A04E;
         }
 
-        /* === II. ГЛАВНОЕ ФОТО === */
+        /* === II. SPREAD PHOTO — паттерн Автосити (sticky pin + parallax bg) === */
         .ab-spread {
-            padding: 0;
-        }
-        .ab-spread-img {
-            width: 100%;
-            aspect-ratio: 16/8;
-            background: #ddd;
             position: relative;
+            height: 140vh;
+            background: #F2F1ED;
+        }
+        .ab-spread-bg {
+            position: absolute;
+            inset: 0;
             overflow: hidden;
         }
-        .ab-spread-img img {
+        .ab-spread-bg img {
             width: 100%;
-            height: 110%;
+            height: 100%;
             object-fit: cover;
-            transform: translateY(-5%);
+            object-position: center;
             will-change: transform;
+            transform: scale(1.18);
+            display: block;
+        }
+        .ab-spread-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(11,11,14,0.45) 0%, rgba(11,11,14,0.25) 35%, rgba(11,11,14,0.65) 100%);
+            pointer-events: none;
+        }
+        .ab-spread-pin {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            padding: clamp(110px, 9vw, 140px) 4.58vw clamp(60px, 5vw, 90px);
+            color: #FFFFFF;
+            z-index: 2;
+        }
+        .ab-spread-pin-inner {
+            width: 100%;
+        }
+        .ab-strip-title {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(40px, 7.2vw, 128px);
+            font-weight: 700;
+            line-height: 0.9;
+            letter-spacing: -0.045em;
+            text-transform: uppercase;
+            color: #FFFFFF;
+            margin-bottom: 32px;
+            white-space: nowrap;
+            max-width: 100%;
+        }
+        .ab-strip-title sup {
+            font-size: 0.32em;
+            font-weight: 500;
+            vertical-align: super;
+            margin-left: 8px;
+            letter-spacing: 0;
+        }
+        .ab-strip-meta {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 36px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(255,255,255,0.45);
+        }
+        .ab-strip-col {
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.78);
+        }
+        .ab-strip-col .k {
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        .ab-strip-col strong {
+            font-weight: 700;
+            color: #FFFFFF;
+            display: block;
         }
         .ab-spread-cap {
-            padding: 24px 0 0;
+            position: absolute;
+            left: 66px;
+            right: 66px;
+            bottom: 40px;
+            z-index: 2;
             display: flex;
             justify-content: space-between;
             align-items: baseline;
@@ -166,114 +297,197 @@
             font-weight: 500;
             letter-spacing: 0.18em;
             text-transform: uppercase;
-            color: rgba(11,11,14,0.5);
+            color: rgba(11,11,14,0.65);
         }
         .ab-spread-cap strong { color: #0B0B0E; font-weight: 500; }
 
-        /* === III. STORY 1 === */
+        /* === III + V. STORY (Social Club: фото + ОГРОМНЫЙ золотой заголовок поверх + info-блок) === */
         .ab-story {
-            padding: 140px 0;
+            padding: 60px 0;
         }
-        .ab-story .container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 100px;
-            align-items: start;
+        .ab-story-card {
+            background: #1B3060;
+            border-radius: 32px;
+            overflow: hidden;
+            color: #FFFFFF;
         }
-        .ab-story.reverse .container {
-            grid-template-columns: 1fr 1fr;
-        }
-        .ab-story.reverse .ab-story-photo { order: 2; }
-        .ab-story.reverse .ab-story-text { order: 1; }
-        .ab-story-photo {
-            aspect-ratio: 5/6;
+        .ab-story-hero {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16/10;
             overflow: hidden;
         }
-        .ab-story-photo img {
+        .ab-story-hero img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 1s ease;
+            display: block;
         }
-        .ab-story-photo:hover img { transform: scale(1.03); }
-        .ab-story-text {
-            padding-top: 32px;
+        .ab-story-hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(11,11,14,0.15) 0%, rgba(11,11,14,0) 30%, rgba(11,11,14,0) 50%, rgba(11,11,14,0.7) 100%);
+            pointer-events: none;
         }
-        .ab-story-text .ab-chapter { margin-bottom: 36px; }
-        .ab-story-text h2 {
-            font-size: clamp(32px, 3.2vw, 48px);
-            font-weight: 300;
-            line-height: 1.1;
-            letter-spacing: -0.005em;
-            margin-bottom: 28px;
-            color: #0B0B0E;
+        .ab-story-hero-top {
+            position: absolute;
+            top: 36px;
+            left: 48px;
+            right: 48px;
+            z-index: 2;
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            gap: 32px;
         }
-        .ab-story-text p {
-            font-size: 15px;
-            font-weight: 300;
-            line-height: 1.85;
-            color: rgba(11,11,14,0.7);
-            margin-bottom: 18px;
-            max-width: 460px;
+        .ab-story-intro {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.9);
+            line-height: 1.45;
+            max-width: 280px;
+            margin: 0;
         }
-        .ab-story-text p:last-of-type { margin-bottom: 0; }
-
-        /* === IV. QUOTE — простая, неинтузивная === */
-        .ab-quote {
-            padding: 140px 0;
-        }
-        .ab-quote .container {
-            max-width: 880px;
-            text-align: center;
-        }
-        .ab-quote .ab-chapter {
-            margin-bottom: 56px;
+        .ab-story-pill {
             display: inline-flex;
             align-items: center;
-            gap: 12px;
-        }
-        .ab-quote .ab-chapter::before,
-        .ab-quote .ab-chapter::after {
-            content: '';
-            width: 32px;
-            height: 1px;
-            background: rgba(11,11,14,0.25);
-        }
-        .ab-quote-text {
-            font-size: clamp(24px, 2.8vw, 38px);
-            font-weight: 300;
-            line-height: 1.4;
-            letter-spacing: -0.005em;
+            gap: 10px;
+            background: rgba(255,255,255,0.95);
             color: #0B0B0E;
-            margin-bottom: 40px;
-        }
-        .ab-quote-by {
+            font-family: 'Inter', sans-serif;
             font-size: 12px;
             font-weight: 500;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: rgba(11,11,14,0.5);
+            padding: 11px 18px;
+            border-radius: 999px;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: background 0.3s;
+        }
+        .ab-story-pill:hover { background: #C9A04E; color: #FFFFFF; }
+        .ab-story-pill::after { content: '→'; }
+        .ab-story-hero-bottom {
+            position: absolute;
+            left: 48px;
+            right: 48px;
+            bottom: 40px;
+            z-index: 2;
+        }
+        .ab-story-h {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(56px, 9.2vw, 158px);
+            font-weight: 700;
+            line-height: 0.9;
+            letter-spacing: -0.045em;
+            color: #C9A04E;
+            text-transform: none;
+            margin: 0;
+        }
+        .ab-story-h em {
+            font-style: italic;
+            font-weight: 700;
+        }
+        .ab-story-h sup {
+            font-size: 0.22em;
+            font-weight: 500;
+            margin-left: 8px;
+            vertical-align: super;
+            font-style: normal;
+            color: rgba(201,160,78,0.7);
+        }
+        .ab-story-info {
+            padding: 56px 52px 60px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: end;
+        }
+        .ab-story-info-body p {
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.88);
+            line-height: 1.5;
+            margin-bottom: 16px;
+            max-width: 560px;
+        }
+        .ab-story-info-body p:last-of-type { margin-bottom: 40px; }
+        .ab-story-info-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            max-width: 560px;
+        }
+        .ab-story-info-stat .num {
+            font-family: 'Inter', sans-serif;
+            font-size: 30px;
+            font-weight: 700;
+            line-height: 1;
+            color: #C9A04E;
+            letter-spacing: -0.03em;
+            margin-bottom: 6px;
+            display: block;
+        }
+        .ab-story-info-stat .lbl {
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.55);
+            line-height: 1.4;
+            display: block;
         }
 
-        /* === V. БУТИК — простой нумерованный список === */
+        /* === IV. QUOTE (огромный bold с italic, по референсу Arvede "Our goal") === */
+        .ab-quote {
+            padding: 140px 0 160px;
+        }
+        .ab-quote .container {
+            max-width: 1180px;
+            text-align: center;
+        }
+        .ab-quote-text {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(44px, 6.4vw, 100px);
+            font-weight: 700;
+            line-height: 1.06;
+            letter-spacing: -0.04em;
+            color: #29457C;
+            margin-bottom: 56px;
+            text-transform: none;
+        }
+        .ab-quote-text em {
+            font-style: italic;
+            font-weight: 700;
+            color: #C9A04E;
+        }
+        .ab-quote-text .muted {
+            color: rgba(41,69,124,0.4);
+        }
+        .ab-quote-desc {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            color: rgba(11,11,14,0.55);
+            line-height: 1.55;
+            max-width: 420px;
+            margin: 0 auto 32px;
+        }
+        .ab-quote-by {
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.22em;
+            color: rgba(11,11,14,0.5);
+            text-transform: uppercase;
+        }
+
+        /* === V. БУТИК — нумерованный список === */
         .ab-store {
             padding: 140px 0;
         }
         .ab-store .container .row {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 100px;
-            align-items: start;
-            margin-bottom: 80px;
-        }
-        .ab-store-header h2 {
-            font-size: clamp(32px, 3.2vw, 48px);
-            font-weight: 300;
-            line-height: 1.1;
-            letter-spacing: -0.005em;
-            color: #0B0B0E;
-            max-width: 500px;
-            margin-top: 32px;
+            margin-bottom: 64px;
         }
         .ab-list {
             border-top: 1px solid rgba(11,11,14,0.15);
@@ -307,7 +521,7 @@
             max-width: 560px;
         }
 
-        /* === VI. CTA — спокойная === */
+        /* === VI. CTA === */
         .ab-end {
             padding: 100px 0 160px;
         }
@@ -317,14 +531,6 @@
             gap: 80px;
             align-items: end;
         }
-        .ab-end h2 {
-            font-size: clamp(32px, 3.2vw, 48px);
-            font-weight: 300;
-            line-height: 1.1;
-            letter-spacing: -0.005em;
-            color: #0B0B0E;
-            margin-bottom: 28px;
-        }
         .ab-end-right {
             padding-bottom: 6px;
         }
@@ -333,42 +539,248 @@
             font-weight: 300;
             line-height: 1.85;
             color: rgba(11,11,14,0.65);
-            margin-bottom: 28px;
+            margin-bottom: 36px;
             max-width: 460px;
         }
-        .ab-btn {
+
+        /* === FOOTER (Kresna-style) === */
+        #footer {
+            position: relative;
+            background: #F2F1ED;
+            padding: 80px 66px 0;
+            overflow: hidden;
+            width: 100vw;
+        }
+        .footer-stage {
+            position: relative;
+            z-index: 2;
+            max-width: 1280px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+            gap: 18px;
+        }
+        .footer-brand-card {
+            background: linear-gradient(135deg, #29457C 0%, #1B3060 100%);
+            border-radius: 24px;
+            padding: 32px 32px 28px;
+            color: #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 340px;
+            position: relative;
+            overflow: hidden;
+        }
+        .footer-brand-card::after {
+            content: '';
+            position: absolute;
+            top: -40%;
+            right: -10%;
+            width: 60%;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(201,160,78,0.15), transparent 70%);
+            pointer-events: none;
+        }
+        .footer-brand-mark {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            position: relative;
+            z-index: 1;
+        }
+        .footer-mark-icon {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: #C9A04E;
+            border-radius: 8px;
+            color: #FFFFFF;
+            font-size: 16px;
+        }
+        .footer-tagline-block {
+            position: relative;
+            z-index: 1;
+        }
+        .footer-tagline {
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.4;
+            color: #FFFFFF;
+            letter-spacing: -0.005em;
+            margin-bottom: 20px;
+        }
+        .footer-tagline .muted {
+            color: rgba(255,255,255,0.55);
+        }
+        .footer-touch {
+            display: flex;
+            align-items: center;
             gap: 14px;
+        }
+        .footer-touch-label {
+            font-style: italic;
+            font-weight: 400;
+            font-size: 15px;
+            color: rgba(255,255,255,0.85);
+            flex-shrink: 0;
+        }
+        .footer-socials {
+            display: flex;
+            gap: 8px;
+            border-bottom: none;
+            border-top: none;
+            padding: 0;
+        }
+        .footer-socials a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            background: rgba(11,11,14,0.55);
+            border-radius: 10px;
+            color: #FFFFFF;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: background 0.3s ease;
+            line-height: 1;
+        }
+        .footer-socials a:hover { background: #0B0B0E; color: #FFFFFF; }
+        .footer-content-card {
+            background: #FFFFFF;
+            border-radius: 24px;
+            padding: 32px 36px 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 340px;
+        }
+        .footer-nav-cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .footer-col-head {
+            font-style: italic;
+            font-weight: 400;
+            font-size: 14px;
+            color: #C9A04E;
+            margin-bottom: 22px;
+            letter-spacing: -0.005em;
+        }
+        .footer-col-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .footer-col-list a {
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            font-weight: 500;
+            color: #0B0B0E;
+            text-decoration: none;
+            line-height: 1.3;
+            display: inline-block;
+            transition: opacity 0.3s ease;
+        }
+        .footer-col-list a:hover { opacity: 0.55; color: #0B0B0E; }
+        .footer-content-bottom {
+            display: grid;
+            grid-template-columns: 1fr 1.4fr;
+            align-items: end;
+            gap: 32px;
+            margin-top: 32px;
+            border-top: none;
+            padding-top: 0;
+        }
+        .footer-copy {
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            color: rgba(11,11,14,0.5);
+            font-weight: 400;
+        }
+        .footer-cta {
+            text-align: right;
+        }
+        .footer-cta-lead {
+            font-size: 15px;
+            color: rgba(11,11,14,0.5);
+            font-weight: 400;
+            margin-bottom: 2px;
+        }
+        .footer-cta-head {
+            font-size: 17px;
+            font-weight: 600;
+            color: #0B0B0E;
+            margin-bottom: 14px;
+            letter-spacing: -0.005em;
+        }
+        .footer-form {
+            display: inline-flex;
+            align-items: center;
+            background: #F2F1ED;
+            border-radius: 999px;
+            padding: 5px;
+            width: 100%;
+            max-width: 420px;
+        }
+        .footer-form input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 11px 18px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: #0B0B0E;
+            outline: none;
+            min-width: 0;
+        }
+        .footer-form input::placeholder { color: rgba(11,11,14,0.4); }
+        .footer-form button {
             background: #0B0B0E;
             color: #FFFFFF;
+            border: none;
+            border-radius: 999px;
+            padding: 11px 24px;
+            font-family: 'Inter', sans-serif;
             font-size: 13px;
             font-weight: 500;
-            letter-spacing: 0.14em;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.3s ease;
+        }
+        .footer-form button:hover { background: #29457C; }
+        .footer-watermark {
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(60px, 11vw, 180px);
+            font-weight: 700;
+            color: rgba(11,11,14,0.08);
+            line-height: 0.9;
+            letter-spacing: -0.045em;
+            max-width: 1280px;
+            margin: -10px auto 0;
+            pointer-events: none;
+            user-select: none;
             text-transform: uppercase;
-            text-decoration: none;
-            padding: 18px 36px;
-            border-radius: 999px;
-            transition: transform 0.3s, background 0.3s;
+            white-space: nowrap;
+            overflow: hidden;
         }
-        .ab-btn::after { content: '→'; transition: transform 0.3s; }
-        .ab-btn:hover {
-            background: #C9A04E;
-            transform: translateY(-2px);
-        }
-        .ab-btn:hover::after { transform: translateX(4px); }
-
-        /* FOOTER */
-        #footer { background: #0B0B0E; width: 100vw; padding: 80px 66px 48px; }
-        .footer-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; padding-bottom: 60px; border-bottom: 1px solid rgba(255,255,255,0.1); max-width: 1240px; margin: 0 auto; }
-        .footer-col h4 { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 20px; }
-        .footer-col a { display: block; font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.7); text-decoration: none; line-height: 2; transition: color 0.3s; }
-        .footer-col a:hover { color: #FFFFFF; }
-        .footer-bottom { max-width: 1240px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding-top: 32px; }
-        .footer-copy { font-size: 11px; font-weight: 300; color: rgba(255,255,255,0.35); }
-        .footer-socials { display: flex; gap: 20px; }
-        .footer-socials a { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.5); text-decoration: none; text-transform: uppercase; letter-spacing: 0.1em; }
-        .footer-socials a:hover { color: #FFF; }
 
         .anim { opacity: 0; transform: translateY(30px); transition: opacity 1s ease, transform 1s ease; }
         .anim.visible { opacity: 1; transform: translateY(0); }
@@ -408,7 +820,7 @@
     <!-- I. INTRO -->
     <section class="ab-intro">
         <div class="container">
-            <div class="ab-chapter">I<small>Bступление</small></div>
+            <div class="ab-chapter">01<small>Вступление</small></div>
             <div class="ab-intro-text">
                 <p class="anim">Французский биолог Иван Аллуш и&nbsp;физиотерапевт Жозетт Аллуш создают бренд в&nbsp;Курбевуа в&nbsp;<em>1977&nbsp;году</em>. Их&nbsp;идея радикальна для&nbsp;своего времени: кожа&nbsp;— не&nbsp;тип, а&nbsp;состояние, и&nbsp;уход нужно собирать как протокол врача.</p>
                 <p class="anim">Сегодня брендом руководит их&nbsp;сын Пьер. Производство сохраняется во&nbsp;Франции, формулы готовятся холодным способом — единственный способ сохранить силу активных компонентов.</p>
@@ -416,122 +828,99 @@
         </div>
     </section>
 
-    <!-- II. ГЛАВНОЕ ФОТО -->
-    <section class="ab-spread">
-        <div class="ab-spread-img">
-            <img src="блок 3.png" alt="Лаборатория" id="spreadImg">
+    <!-- II. SPREAD PHOTO — Autocity pattern (sticky pin + parallax bg) -->
+    <section class="ab-spread" id="spreadSection">
+        <div class="ab-spread-bg">
+            <img src="О бренде 3блок.webp" alt="Biologique Recherche · О бренде" id="spreadImg">
         </div>
-        <div class="container">
-            <div class="ab-spread-cap">
-                <span><strong>Лаборатория</strong> · Курбевуа, Иль-де-Франс</span>
-                <span>Архив бренда · 1979</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- III. ИСТОРИЯ -->
-    <section class="ab-story">
-        <div class="container">
-            <div class="ab-story-photo">
-                <img src="5f4479c0aa37454be0b3fb80ce688e45.jpg" alt="История">
-            </div>
-            <div class="ab-story-text">
-                <div class="ab-chapter">II<small>История</small></div>
-                <h2 class="anim">Парижская идея, опередившая косметологию на&nbsp;полвека.</h2>
-                <p class="anim">В&nbsp;1979 году бренд выпускает Lotion P50 — тоник-эксфолиатор, который работает с&nbsp;кожей через&nbsp;её&nbsp;собственный pH. Формула не&nbsp;менялась с&nbsp;тех&nbsp;пор и&nbsp;остаётся флагманом бренда.</p>
-                <p class="anim">К&nbsp;2000-м появляется Skin Instant<sup>®</sup>&nbsp;Lab — формализованный протокол клинической диагностики кожи. Косметолог измеряет четыре показателя и&nbsp;собирает на&nbsp;их&nbsp;основе индивидуальный курс ухода.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- IV. QUOTE -->
-    <section class="ab-quote">
-        <div class="container">
-            <div class="ab-chapter">III<small>Манифест</small></div>
-            <div class="ab-quote-text anim">«Кожа&nbsp;— это не&nbsp;тип, а&nbsp;состояние. И&nbsp;это состояние меняется ежедневно».</div>
-            <div class="ab-quote-by">Иван и&nbsp;Жозетт Аллуш, 1977</div>
-        </div>
-    </section>
-
-    <!-- V. ФОРМУЛА -->
-    <section class="ab-story reverse">
-        <div class="container">
-            <div class="ab-story-photo">
-                <img src="блок 4.png" alt="Формула">
-            </div>
-            <div class="ab-story-text">
-                <div class="ab-chapter">IV<small>Формула</small></div>
-                <h2 class="anim">Холодное приготовление, а&nbsp;не&nbsp;термообработка.</h2>
-                <p class="anim">До&nbsp;40 активных компонентов в&nbsp;одной формуле. Биотехнологические, растительные и&nbsp;морские экстракты&nbsp;— в&nbsp;концентрациях, недостижимых для&nbsp;масс-маркета.</p>
-                <p class="anim">Без&nbsp;парабенов, без&nbsp;силиконов, без&nbsp;агрессивных пилингов. Активы не&nbsp;денатурируют и&nbsp;сохраняют силу до&nbsp;вскрытия упаковки.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- VI. БУТИК -->
-    <section class="ab-store">
-        <div class="container">
-            <div class="row">
-                <div class="ab-chapter">V<small>В&nbsp;нашем бутике</small></div>
-                <div class="ab-store-header">
-                    <h2 class="anim">Не&nbsp;просто покупка крема — полный протокол ухода под состояние кожи.</h2>
-                </div>
-            </div>
-            <div class="ab-list">
-                <div class="ab-list-item anim">
-                    <div class="n">01</div>
-                    <div>
-                        <h3>Диагностика до&nbsp;покупки</h3>
-                        <p>30-минутная видеоконсультация с&nbsp;косметологом. Skin Instant Lab по&nbsp;фото, объективные показатели, рекомендации — до&nbsp;того, как сделаете заказ.</p>
+        <div class="ab-spread-pin">
+            <div class="ab-spread-pin-inner">
+                <div class="ab-strip-title">BIOLOGIQUE RECHERCHE<sup>®</sup></div>
+                <div class="ab-strip-meta">
+                    <div class="ab-strip-col">
+                        <div class="k">Бренд</div>
+                        <strong>Maison Allouche</strong>
+                        Париж · 1977<br>
+                        II поколение
+                    </div>
+                    <div class="ab-strip-col">
+                        <div class="k">Производство</div>
+                        <strong>Courbevoie, FR</strong>
+                        Холодная формула<br>
+                        До 40+ активов
+                    </div>
+                    <div class="ab-strip-col">
+                        <div class="k">Метод</div>
+                        <strong>Skin Instant<sup>®</sup>&nbsp;Lab</strong>
+                        4 показателя кожи<br>
+                        Под состояние, не&nbsp;тип
+                    </div>
+                    <div class="ab-strip-col">
+                        <div class="k">В России</div>
+                        <strong>Дикий Люкс</strong>
+                        Москва · 2026<br>
+                        Официальный партнёр
                     </div>
                 </div>
-                <div class="ab-list-item anim">
-                    <div class="n">02</div>
-                    <div>
-                        <h3>Оригинал, не&nbsp;серый импорт</h3>
-                        <p>Прямые поставки от&nbsp;Biologique&nbsp;Recherche. Серийные номера, актуальные партии, сертификаты подлинности&nbsp;— всё проверяемо.</p>
-                    </div>
-                </div>
-                <div class="ab-list-item anim">
-                    <div class="n">03</div>
-                    <div>
-                        <h3>Протокол под состояние</h3>
-                        <p>Косметолог собирает последовательность ухода под объективные показатели, а&nbsp;не&nbsp;продаёт «топ-сейлер». Это&nbsp;курс, а&nbsp;не&nbsp;разовая покупка.</p>
-                    </div>
-                </div>
-                <div class="ab-list-item anim">
-                    <div class="n">04</div>
-                    <div>
-                        <h3>Пересборка через 4–6&nbsp;недель</h3>
-                        <p>Повторная диагностика, обновление протокола под новое состояние кожи. Без&nbsp;допродаж «впрок».</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- VII. CTA -->
-    <section class="ab-end">
-        <div class="container">
-            <div>
-                <div class="ab-chapter">VI<small>Запись</small></div>
-                <h2 class="anim" style="margin-top: 36px;">Подобрать уход под&nbsp;состояние кожи.</h2>
-            </div>
-            <div class="ab-end-right">
-                <p class="anim">Бесплатная видеоконсультация с&nbsp;косметологом 30&nbsp;минут — с&nbsp;диагностикой по&nbsp;фото и&nbsp;подбором протокола. Учитывается в&nbsp;первый заказ от&nbsp;15&nbsp;000&nbsp;₽.</p>
-                <a href="#" class="ab-btn">Записаться</a>
             </div>
         </div>
     </section>
 
     <footer id="footer">
-        <div class="footer-cols">
-            <div class="footer-col"><h4>Каталог</h4><a href="catalog.html">Тоники и лосьоны</a><a href="catalog.html">Сыворотки</a><a href="catalog.html">Кремы для лица</a><a href="catalog.html">Маски</a></div>
-            <div class="footer-col"><h4>Компания</h4><a href="about.html">О бренде</a><a href="index.html#protocol">Методология</a><a href="blog.html">Блог</a><a href="#">Кабинеты-партнёры</a></div>
-            <div class="footer-col"><h4>Помощь</h4><a href="#">Доставка</a><a href="#">Оплата</a><a href="#">Возврат</a><a href="index.html#faq">FAQ</a></div>
-            <div class="footer-col"><h4>Контакты</h4><a href="mailto:hello@biologique-recherche.ru">hello@biologique-recherche.ru</a><a href="tel:+74951234567">+7 (495) 123-45-67</a><a href="#">Москва, ул. Пример, 1</a></div>
+        <div class="footer-stage">
+            <div class="footer-brand-card">
+                <div class="footer-brand-mark">
+                    <span class="footer-mark-icon">✦</span>
+                    <span>Дикий Люкс</span>
+                </div>
+                <div class="footer-tagline-block">
+                    <p class="footer-tagline">Косметология Biologique&nbsp;Recherche.<br><span class="muted">Прямые поставки в&nbsp;Россию с&nbsp;2026&nbsp;года.</span></p>
+                    <div class="footer-touch">
+                        <span class="footer-touch-label">Найти нас</span>
+                        <div class="footer-socials">
+                            <a href="#">TG</a>
+                            <a href="#">VK</a>
+                            <a href="#">IG</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-content-card">
+                <div class="footer-nav-cols">
+                    <div>
+                        <div class="footer-col-head">Навигация</div>
+                        <ul class="footer-col-list">
+                            <li><a href="catalog.html">Каталог</a></li>
+                            <li><a href="about.html">О бренде</a></li>
+                            <li><a href="blog.html">Блог</a></li>
+                            <li><a href="contacts.html">Контакты</a></li>
+                            <li><a href="index.html#faq">FAQ</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="footer-col-head">Компания</div>
+                        <ul class="footer-col-list">
+                            <li><a href="index.html#protocol">Методология</a></li>
+                            <li><a href="#">Кабинеты-партнёры</a></li>
+                            <li><a href="#">Доставка и&nbsp;оплата</a></li>
+                            <li><a href="#">Политика конфиденциальности</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-content-bottom">
+                    <div class="footer-copy">© 2026 Дикий Люкс. Все права защищены.</div>
+                    <div class="footer-cta">
+                        <div class="footer-cta-lead">Уход меняется ежедневно.</div>
+                        <div class="footer-cta-head">Будьте в&nbsp;курсе с&nbsp;Дикий Люкс.</div>
+                        <form class="footer-form" onsubmit="return false;">
+                            <input type="email" placeholder="Введите email">
+                            <button type="submit">Подписаться</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="footer-bottom"><span class="footer-copy">© 2026 Дикий Люкс. Магазин косметики Biologique Recherche.</span><div class="footer-socials"><a href="#">TG</a><a href="#">VK</a><a href="#">IG</a></div></div>
+        <div class="footer-watermark">ДИКИЙ&nbsp;ЛЮКС</div>
     </footer>
 
     <script>
@@ -543,21 +932,49 @@
             if (heroBg && y < window.innerHeight) heroBg.style.transform = 'translateY(' + (y * 0.3) + 'px)';
         });
 
-        // Spread image parallax
+        const spreadSection = document.getElementById('spreadSection');
         const spreadImg = document.getElementById('spreadImg');
-        const spreadWrap = spreadImg ? spreadImg.parentElement : null;
         function updateSpread() {
-            if (!spreadImg || !spreadWrap) return;
-            const rect = spreadWrap.getBoundingClientRect();
+            if (!spreadSection || !spreadImg) return;
+            const rect = spreadSection.getBoundingClientRect();
             const vh = window.innerHeight;
             if (rect.bottom < 0 || rect.top > vh) return;
-            const progress = (vh - rect.top) / (vh + rect.height);
-            const offset = -5 + (Math.max(0, Math.min(1, progress)) - 0.5) * 5;
-            spreadImg.style.transform = 'translateY(' + offset + '%)';
+            // прогресс по полному прохождению секции через viewport (как у Автосити: top bottom → bottom top)
+            const traversal = vh + rect.height;
+            const scrolled = vh - rect.top;
+            const progress = Math.max(0, Math.min(1, scrolled / traversal));
+            // yPercent от -12 до +12, scale остаётся 1.18 (буфер от обрезки краёв)
+            const y = -12 + progress * 24;
+            spreadImg.style.transform = 'translateY(' + y + '%) scale(1.18)';
         }
         window.addEventListener('scroll', updateSpread, { passive: true });
         window.addEventListener('resize', updateSpread);
         updateSpread();
+
+        if (spreadSection) {
+            const spreadInView = new IntersectionObserver((entries) => {
+                entries.forEach(e => spreadSection.classList.toggle('in-view', e.isIntersecting));
+            }, { threshold: 0.15 });
+            spreadInView.observe(spreadSection);
+        }
+
+        // Story photos parallax
+        const storyImgs = document.querySelectorAll('.ab-story-photo img');
+        function updateStoryParallax() {
+            const vh = window.innerHeight;
+            storyImgs.forEach(img => {
+                const wrap = img.parentElement;
+                const rect = wrap.getBoundingClientRect();
+                if (rect.bottom < 0 || rect.top > vh) return;
+                const progress = (vh - rect.top) / (vh + rect.height);
+                const clamped = Math.max(0, Math.min(1, progress));
+                const offset = (0.5 - clamped) * 14;
+                img.style.transform = 'translate3d(0, ' + offset + '%, 0)';
+            });
+        }
+        window.addEventListener('scroll', updateStoryParallax, { passive: true });
+        window.addEventListener('resize', updateStoryParallax);
+        updateStoryParallax();
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
