@@ -6,406 +6,523 @@
     <title>О бренде — Дикий Люкс</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #F2F1ED; min-height: 100vh; font-family: 'Inter', sans-serif; overflow-x: hidden; color: #0B0B0E; }
+        body { background: #F2F1ED; min-height: 100vh; font-family: 'Inter', sans-serif; color: #0B0B0E; overflow-x: hidden; }
         ::-webkit-scrollbar { display: none; width: 0; height: 0; }
         html, body { scrollbar-width: none; -ms-overflow-style: none; }
 
-        .navbar { position: fixed; top: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; padding: 2.5vh 4.58vw; z-index: 100; background: #FFFFFF; box-shadow: 0 1px 0 rgba(11,11,14,0.06); }
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 2.5vh 4.58vw; z-index: 100; background: transparent;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+        .navbar.scrolled { background: #FFFFFF; box-shadow: 0 1px 0 rgba(11,11,14,0.06); }
         .nav-left { display: flex; gap: 1.94vw; }
-        .nav-left a, .nav-right a { font-size: 0.62vw; font-weight: 500; letter-spacing: 0.08vw; text-transform: uppercase; color: #0B0B0E; text-decoration: none; transition: opacity 0.3s; }
-        .nav-left a:hover, .nav-right a:hover { opacity: 0.6; }
+        .nav-left a, .nav-right a {
+            font-size: 0.62vw; font-weight: 500; letter-spacing: 0.08vw;
+            text-transform: uppercase; color: #FFFFFF; text-decoration: none;
+            transition: opacity 0.3s, color 0.3s ease;
+        }
+        .navbar.scrolled .nav-left a, .navbar.scrolled .nav-right a { color: #0B0B0E; }
+        .nav-left a:hover, .nav-right a:hover { opacity: 0.7; }
         .nav-left a.is-current { color: #C9A04E; }
-        .nav-center { position: absolute; left: 50%; transform: translateX(-50%); font-size: 1.04vw; font-weight: 500; letter-spacing: 0.32vw; text-transform: uppercase; color: #C9A04E; text-decoration: none; }
+        .nav-center {
+            position: absolute; left: 50%; transform: translateX(-50%);
+            font-size: 1.04vw; font-weight: 500; letter-spacing: 0.32vw;
+            text-transform: uppercase; color: #C9A04E; text-decoration: none;
+        }
         .nav-right a { font-size: 0.62vw; }
 
-        /* ============ HERO ============ */
-        .ab-hero {
-            padding: 200px 66px 60px;
+        /* === CINEMATIC HERO (без изменений — нравится) === */
+        .v3-hero {
+            width: 100vw; height: 92vh;
+            position: relative; overflow: hidden;
+        }
+        .v3-hero-bg {
+            position: absolute; inset: -10%;
+            background-image: url('блок 6.jpeg');
+            background-size: cover; background-position: center;
+            will-change: transform;
+        }
+        .v3-hero-bg::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(180deg, rgba(11,11,14,0.2) 0%, rgba(11,11,14,0.65) 100%);
+        }
+        .v3-hero-grid {
+            position: absolute; inset: 0;
+            display: grid; grid-template-rows: 1fr auto auto;
+            padding: 14vh 4.58vw 6vh;
+            z-index: 2;
+        }
+        .v3-hero-tags {
+            display: flex; gap: 24px; align-self: start;
+            margin-top: 4vh;
+        }
+        .v3-hero-tags .tag {
+            font-size: 11px; font-weight: 500; letter-spacing: 0.2em;
+            text-transform: uppercase; color: rgba(255,255,255,0.7);
+            padding: 8px 16px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 999px;
+        }
+        .v3-hero-tags .tag.gold {
+            color: #C9A04E; border-color: rgba(201,160,78,0.6);
+        }
+        .v3-hero-title {
+            font-size: clamp(56px, 7vw, 130px);
+            font-weight: 200; line-height: 0.92;
+            letter-spacing: -0.025em; color: #FFFFFF;
+            text-transform: uppercase; max-width: 16ch;
+            margin-bottom: 6vh;
+        }
+        .v3-hero-title .muted { color: rgba(255,255,255,0.5); }
+        .v3-hero-footer {
+            display: flex; justify-content: space-between; align-items: end;
+            color: rgba(255,255,255,0.75);
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.25);
+        }
+        .v3-hero-footer .credit {
+            font-size: 11px; font-weight: 500; letter-spacing: 0.2em;
+            text-transform: uppercase; line-height: 1.7;
+        }
+        .v3-hero-footer .credit strong { color: #FFFFFF; }
+        .v3-hero-footer .lead {
+            font-size: 15px; font-weight: 300; line-height: 1.7;
+            max-width: 480px; text-align: right;
+        }
+
+        /* === Один общий контейнер === */
+        .container {
             max-width: 1240px;
             margin: 0 auto;
-        }
-        .ab-eyebrow {
-            font-size: 11px;
-            font-weight: 500;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: rgba(11,11,14,0.4);
-            margin-bottom: 28px;
-            display: block;
-        }
-        .ab-hero h1 {
-            font-size: clamp(56px, 6.4vw, 100px);
-            font-weight: 300;
-            text-transform: uppercase;
-            letter-spacing: 0.01em;
-            line-height: 0.98;
-            margin-bottom: 36px;
-            max-width: 1100px;
-        }
-        .ab-hero h1 .muted { color: rgba(11,11,14,0.32); }
-        .ab-hero p {
-            font-size: 17px;
-            font-weight: 300;
-            color: rgba(11,11,14,0.65);
-            line-height: 1.75;
-            max-width: 680px;
+            padding: 0 66px;
         }
 
-        /* ============ STATS STRIP ============ */
-        .ab-stats {
-            max-width: 1240px;
-            margin: 60px auto 80px;
-            padding: 0 66px;
+        /* === I. INTRO === */
+        .ab-intro {
+            padding: 160px 0 120px;
+        }
+        .ab-intro .container {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-        }
-        .ab-stat {
-            background: #FFFFFF;
-            border-radius: 28px;
-            padding: 44px 36px;
-            text-align: left;
-            box-shadow: 0 12px 36px rgba(11,11,14,0.04);
-        }
-        .ab-stat .val {
-            font-size: clamp(40px, 3.8vw, 60px);
-            font-weight: 300;
-            color: #0B0B0E;
-            line-height: 1.0;
-            margin-bottom: 20px;
-            letter-spacing: -0.015em;
-            white-space: nowrap;
-        }
-        .ab-stat .val em {
-            font-style: normal;
-            color: #C9A04E;
-            font-weight: 400;
-        }
-        .ab-stat .lbl {
-            font-size: 12px;
-            font-weight: 500;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            color: rgba(11,11,14,0.5);
-            line-height: 1.5;
-        }
-
-        /* ============ NARRATIVE ============ */
-        .ab-narr {
-            max-width: 1240px;
-            margin: 0 auto 80px;
-            padding: 0 66px;
-            display: grid;
-            grid-template-columns: 1fr 1.4fr;
+            grid-template-columns: 1fr 2fr;
             gap: 80px;
             align-items: start;
         }
-        .ab-narr h2 {
-            font-size: clamp(40px, 4.4vw, 64px);
-            font-weight: 300;
-            text-transform: uppercase;
-            letter-spacing: 0.01em;
-            line-height: 1.05;
-            margin: 0;
-        }
-        .ab-narr h2 .muted { color: rgba(11,11,14,0.32); }
-        .ab-narr-body p {
-            font-size: 16px;
-            font-weight: 300;
-            color: rgba(11,11,14,0.7);
-            line-height: 1.85;
-            margin-bottom: 18px;
-        }
-        .ab-narr-body p:last-child { margin-bottom: 0; }
-
-        /* ============ FOUNDERS / PHILOSOPHY CARDS ============ */
-        .ab-pillars {
-            max-width: 1240px;
-            margin: 0 auto 80px;
-            padding: 0 66px;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-        }
-        .ab-pillar {
-            background: #FFFFFF;
-            border-radius: 28px;
-            padding: 44px 36px;
-            box-shadow: 0 12px 36px rgba(11,11,14,0.04);
-        }
-        .ab-pillar-num {
-            font-size: 48px;
-            font-weight: 200;
-            color: #C9A04E;
-            line-height: 1.0;
-            margin-bottom: 24px;
-            letter-spacing: -0.02em;
-        }
-        .ab-pillar h3 {
-            font-size: 20px;
-            font-weight: 400;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            color: #0B0B0E;
-            line-height: 1.2;
-            margin-bottom: 16px;
-        }
-        .ab-pillar p {
-            font-size: 14px;
-            font-weight: 300;
-            color: rgba(11,11,14,0.65);
-            line-height: 1.75;
-        }
-
-        /* ============ BANNER PHOTO ============ */
-        .ab-banner {
-            width: 100vw;
-            height: 60vh;
-            background-image: url('блок 6.jpeg');
-            background-size: cover;
-            background-position: center;
-            margin-bottom: 0;
-        }
-        .ab-banner--history {
-            background-image: url('5f4479c0aa37454be0b3fb80ce688e45.jpg');
-            height: 100vh;
-            margin: 0 0 80px;
-            border-radius: 40px;
-        }
-
-        /* ============ STORE SECTION ============ */
-        .ab-store {
-            background: #1B3060;
-            color: #FFFFFF;
-            padding: 120px 66px;
-            margin-bottom: 0;
-            position: relative;
-            border-radius: 40px 40px 0 0;
-        }
-        .ab-store-inner {
-            max-width: 1240px;
-            margin: 0 auto;
-        }
-        .ab-store .ab-eyebrow {
-            color: rgba(255,255,255,0.55);
-        }
-        .ab-store h2 {
-            font-size: clamp(40px, 4.8vw, 72px);
-            font-weight: 300;
-            color: #FFFFFF;
-            text-transform: uppercase;
-            letter-spacing: 0.01em;
-            line-height: 1.05;
-            margin-bottom: 36px;
-            max-width: 1000px;
-        }
-        .ab-store h2 .muted { color: rgba(255,255,255,0.35); }
-        .ab-store-lead {
-            font-size: 16px;
-            font-weight: 300;
-            color: rgba(255,255,255,0.7);
-            line-height: 1.8;
-            max-width: 640px;
-            margin-bottom: 64px;
-        }
-        .ab-store-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-            margin-bottom: 64px;
-        }
-        .ab-promise {
-            background: #FFFFFF;
-            border-radius: 24px;
-            padding: 36px 32px;
-        }
-        .ab-promise h3 {
-            font-size: 16px;
+        .ab-chapter {
+            font-size: 13px;
             font-weight: 500;
-            color: #0B0B0E;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin-bottom: 16px;
+            letter-spacing: 0.25em;
+            color: #C9A04E;
+            line-height: 1.6;
         }
-        .ab-promise p {
+        .ab-chapter small {
+            display: block;
+            color: rgba(11,11,14,0.4);
+            margin-top: 6px;
+            letter-spacing: 0.2em;
+            font-weight: 400;
+        }
+        .ab-intro-text p {
+            font-size: clamp(20px, 1.7vw, 26px);
+            font-weight: 300;
+            line-height: 1.55;
+            color: #0B0B0E;
+            margin-bottom: 24px;
+        }
+        .ab-intro-text p:last-child { margin-bottom: 0; }
+        .ab-intro-text p em {
+            font-style: normal;
+            color: #C9A04E;
+        }
+
+        /* === II. ГЛАВНОЕ ФОТО === */
+        .ab-spread {
+            padding: 0;
+        }
+        .ab-spread-img {
+            width: 100%;
+            aspect-ratio: 16/8;
+            background: #ddd;
+            position: relative;
+            overflow: hidden;
+        }
+        .ab-spread-img img {
+            width: 100%;
+            height: 110%;
+            object-fit: cover;
+            transform: translateY(-5%);
+            will-change: transform;
+        }
+        .ab-spread-cap {
+            padding: 24px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(11,11,14,0.5);
+        }
+        .ab-spread-cap strong { color: #0B0B0E; font-weight: 500; }
+
+        /* === III. STORY 1 === */
+        .ab-story {
+            padding: 140px 0;
+        }
+        .ab-story .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 100px;
+            align-items: start;
+        }
+        .ab-story.reverse .container {
+            grid-template-columns: 1fr 1fr;
+        }
+        .ab-story.reverse .ab-story-photo { order: 2; }
+        .ab-story.reverse .ab-story-text { order: 1; }
+        .ab-story-photo {
+            aspect-ratio: 5/6;
+            overflow: hidden;
+        }
+        .ab-story-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1s ease;
+        }
+        .ab-story-photo:hover img { transform: scale(1.03); }
+        .ab-story-text {
+            padding-top: 32px;
+        }
+        .ab-story-text .ab-chapter { margin-bottom: 36px; }
+        .ab-story-text h2 {
+            font-size: clamp(32px, 3.2vw, 48px);
+            font-weight: 300;
+            line-height: 1.1;
+            letter-spacing: -0.005em;
+            margin-bottom: 28px;
+            color: #0B0B0E;
+        }
+        .ab-story-text p {
+            font-size: 15px;
+            font-weight: 300;
+            line-height: 1.85;
+            color: rgba(11,11,14,0.7);
+            margin-bottom: 18px;
+            max-width: 460px;
+        }
+        .ab-story-text p:last-of-type { margin-bottom: 0; }
+
+        /* === IV. QUOTE — простая, неинтузивная === */
+        .ab-quote {
+            padding: 140px 0;
+        }
+        .ab-quote .container {
+            max-width: 880px;
+            text-align: center;
+        }
+        .ab-quote .ab-chapter {
+            margin-bottom: 56px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .ab-quote .ab-chapter::before,
+        .ab-quote .ab-chapter::after {
+            content: '';
+            width: 32px;
+            height: 1px;
+            background: rgba(11,11,14,0.25);
+        }
+        .ab-quote-text {
+            font-size: clamp(24px, 2.8vw, 38px);
+            font-weight: 300;
+            line-height: 1.4;
+            letter-spacing: -0.005em;
+            color: #0B0B0E;
+            margin-bottom: 40px;
+        }
+        .ab-quote-by {
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(11,11,14,0.5);
+        }
+
+        /* === V. БУТИК — простой нумерованный список === */
+        .ab-store {
+            padding: 140px 0;
+        }
+        .ab-store .container .row {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 100px;
+            align-items: start;
+            margin-bottom: 80px;
+        }
+        .ab-store-header h2 {
+            font-size: clamp(32px, 3.2vw, 48px);
+            font-weight: 300;
+            line-height: 1.1;
+            letter-spacing: -0.005em;
+            color: #0B0B0E;
+            max-width: 500px;
+            margin-top: 32px;
+        }
+        .ab-list {
+            border-top: 1px solid rgba(11,11,14,0.15);
+        }
+        .ab-list-item {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            gap: 32px;
+            padding: 36px 0;
+            border-bottom: 1px solid rgba(11,11,14,0.15);
+        }
+        .ab-list-item .n {
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            color: #C9A04E;
+            padding-top: 6px;
+        }
+        .ab-list-item h3 {
+            font-size: 19px;
+            font-weight: 500;
+            margin-bottom: 12px;
+            line-height: 1.4;
+            color: #0B0B0E;
+        }
+        .ab-list-item p {
             font-size: 14px;
             font-weight: 300;
-            color: rgba(11,11,14,0.65);
             line-height: 1.75;
+            color: rgba(11,11,14,0.65);
+            max-width: 560px;
         }
-        .ab-cta {
+
+        /* === VI. CTA — спокойная === */
+        .ab-end {
+            padding: 100px 0 160px;
+        }
+        .ab-end .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: end;
+        }
+        .ab-end h2 {
+            font-size: clamp(32px, 3.2vw, 48px);
+            font-weight: 300;
+            line-height: 1.1;
+            letter-spacing: -0.005em;
+            color: #0B0B0E;
+            margin-bottom: 28px;
+        }
+        .ab-end-right {
+            padding-bottom: 6px;
+        }
+        .ab-end-right p {
+            font-size: 14px;
+            font-weight: 300;
+            line-height: 1.85;
+            color: rgba(11,11,14,0.65);
+            margin-bottom: 28px;
+            max-width: 460px;
+        }
+        .ab-btn {
             display: inline-flex;
             align-items: center;
             gap: 14px;
-            background: #FFFFFF;
-            color: #0B0B0E;
-            padding: 20px 40px;
-            border-radius: 999px;
+            background: #0B0B0E;
+            color: #FFFFFF;
             font-size: 13px;
             font-weight: 500;
             letter-spacing: 0.14em;
             text-transform: uppercase;
             text-decoration: none;
-            transition: transform 0.3s, box-shadow 0.3s;
+            padding: 18px 36px;
+            border-radius: 999px;
+            transition: transform 0.3s, background 0.3s;
         }
-        .ab-cta:hover {
+        .ab-btn::after { content: '→'; transition: transform 0.3s; }
+        .ab-btn:hover {
+            background: #C9A04E;
             transform: translateY(-2px);
-            box-shadow: 0 14px 36px rgba(0,0,0,0.18);
         }
-        .ab-cta::after {
-            content: '↗';
-            font-size: 16px;
-        }
+        .ab-btn:hover::after { transform: translateX(4px); }
 
-        /* ============ CONTACTS ============ */
-        .ab-contacts-wrap {
-            background: #1B3060;
-            padding: 0 66px 120px;
-        }
-        .ab-contacts {
-            max-width: 1240px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-        }
-        .ab-contact {
-            padding: 36px 28px;
-            border-radius: 24px;
-            background: #FFFFFF;
-        }
-        .ab-contact .lbl {
-            font-size: 10px;
-            font-weight: 500;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: rgba(11,11,14,0.45);
-            margin-bottom: 12px;
-        }
-        .ab-contact .val {
-            font-size: 18px;
-            font-weight: 400;
-            color: #0B0B0E;
-            text-decoration: none;
-            line-height: 1.4;
-            display: block;
-            transition: color 0.3s;
-        }
-        .ab-contact a.val:hover { color: #29457C; }
-
-        /* ============ FOOTER ============ */
+        /* FOOTER */
         #footer { background: #0B0B0E; width: 100vw; padding: 80px 66px 48px; }
-        .footer-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; padding-bottom: 60px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .footer-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; padding-bottom: 60px; border-bottom: 1px solid rgba(255,255,255,0.1); max-width: 1240px; margin: 0 auto; }
         .footer-col h4 { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 20px; }
         .footer-col a { display: block; font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.7); text-decoration: none; line-height: 2; transition: color 0.3s; }
         .footer-col a:hover { color: #FFFFFF; }
-        .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 32px; }
+        .footer-bottom { max-width: 1240px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding-top: 32px; }
         .footer-copy { font-size: 11px; font-weight: 300; color: rgba(255,255,255,0.35); }
         .footer-socials { display: flex; gap: 20px; }
-        .footer-socials a { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.5); text-decoration: none; text-transform: uppercase; letter-spacing: 0.1em; transition: color 0.3s; }
+        .footer-socials a { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.5); text-decoration: none; text-transform: uppercase; letter-spacing: 0.1em; }
         .footer-socials a:hover { color: #FFF; }
+
+        .anim { opacity: 0; transform: translateY(30px); transition: opacity 1s ease, transform 1s ease; }
+        .anim.visible { opacity: 1; transform: translateY(0); }
     </style>
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-left">
-            <a href="catalog.html">Каталог</a>
-            <a href="about.html" class="is-current">О бренде</a>
-            <a href="blog.html">Блог</a>
-            <a href="contacts.html">Контакты</a>
+            <a href="catalog.html">КАТАЛОГ</a>
+            <a href="about.html" class="is-current">О БРЕНДЕ</a>
+            <a href="blog.html">БЛОГ</a>
+            <a href="contacts.html">КОНТАКТЫ</a>
         </div>
         <a href="index.html" class="nav-center">ДИКИЙ ЛЮКС</a>
-        <div class="nav-right">
-            <a href="cart.html">Корзина</a>
-        </div>
+        <div class="nav-right"><a href="cart.html">КОРЗИНА</a></div>
     </nav>
 
-    <!-- ============ HERO ============ -->
-    <section class="ab-hero">
-        <span class="ab-eyebrow">О&nbsp;бренде &amp; магазине</span>
-        <h1>Biologique Recherche. <span class="muted">Косметология с&nbsp;1977 года.</span></h1>
-        <p>Французский бренд клинической косметологии, основанный семьёй Аллуш. Уход подбирается под состояние кожи здесь и&nbsp;сейчас — а&nbsp;не&nbsp;под её&nbsp;шаблонный «тип». Используется в&nbsp;5&nbsp;000+ профессиональных кабинетах в&nbsp;100+ странах мира.</p>
-    </section>
-
-    <!-- ============ STATS ============ -->
-    <div class="ab-stats">
-        <div class="ab-stat">
-            <div class="val">1977</div>
-            <div class="lbl">Год основания<br>в&nbsp;Париже</div>
-        </div>
-        <div class="ab-stat">
-            <div class="val">40<em>+</em></div>
-            <div class="lbl">Активных<br>компонентов в&nbsp;формуле</div>
-        </div>
-        <div class="ab-stat">
-            <div class="val">5&nbsp;000<em>+</em></div>
-            <div class="lbl">Профессиональных<br>кабинетов</div>
-        </div>
-        <div class="ab-stat">
-            <div class="val">100<em>+</em></div>
-            <div class="lbl">Стран<br>присутствия</div>
-        </div>
-    </div>
-
-    <!-- ============ HISTORY BANNER ============ -->
-    <div class="ab-banner ab-banner--history"></div>
-
-    <!-- ============ NARRATIVE ============ -->
-    <section class="ab-narr">
-        <h2>История <span class="muted">бренда.</span></h2>
-        <div class="ab-narr-body">
-            <p>В&nbsp;1977 году французский биолог Иван Аллуш и&nbsp;физиотерапевт Жозетт Аллуш создают линию формул, основанных на&nbsp;клиническом подходе к&nbsp;коже. Идея радикальна для&nbsp;своего времени: кожа — это&nbsp;не&nbsp;тип, а&nbsp;состояние, и&nbsp;это состояние меняется ежедневно.</p>
-            <p>Сегодня брендом руководит их&nbsp;сын Пьер Аллуш. Производство сохраняется во&nbsp;Франции, формулы готовятся холодным способом, без&nbsp;термообработки — это&nbsp;единственный способ сохранить силу активных компонентов.</p>
-            <p>Флагманский продукт — Lotion&nbsp;P50 — выпущен в&nbsp;1970-х и&nbsp;до&nbsp;сих пор остаётся культовым: тоник-эксфолиатор, который работает с&nbsp;кожей через&nbsp;её&nbsp;собственный pH, а&nbsp;не&nbsp;агрессивные пилинги.</p>
+    <!-- HERO -->
+    <section class="v3-hero">
+        <div class="v3-hero-bg" id="heroBg"></div>
+        <div class="v3-hero-grid">
+            <div class="v3-hero-tags">
+                <span class="tag">Париж · 1977</span>
+                <span class="tag gold">Москва · 2026</span>
+            </div>
+            <h1 class="v3-hero-title">Biologique<br>Recherche<br><span class="muted">в&nbsp;России.</span></h1>
+            <div class="v3-hero-footer">
+                <div class="credit">
+                    Семейный бренд<br>
+                    <strong>Иван &amp; Жозетт Аллуш</strong>
+                </div>
+                <div class="lead">Французская клиническая косметология с&nbsp;1977&nbsp;года. Уход подбирается под состояние кожи, а&nbsp;не&nbsp;под её&nbsp;шаблонный «тип».</div>
+            </div>
         </div>
     </section>
 
-    <!-- ============ PILLARS ============ -->
-    <div class="ab-pillars">
-        <div class="ab-pillar">
-            <div class="ab-pillar-num">01</div>
-            <h3>Skin Instant<sup>®</sup> Lab</h3>
-            <p>Клиническая диагностика состояния кожи на&nbsp;день консультации. Анализ увлажнения, эластичности, микрорельефа, себума — фиксирует объективную картину, а&nbsp;не&nbsp;«ощущения».</p>
+    <!-- I. INTRO -->
+    <section class="ab-intro">
+        <div class="container">
+            <div class="ab-chapter">I<small>Bступление</small></div>
+            <div class="ab-intro-text">
+                <p class="anim">Французский биолог Иван Аллуш и&nbsp;физиотерапевт Жозетт Аллуш создают бренд в&nbsp;Курбевуа в&nbsp;<em>1977&nbsp;году</em>. Их&nbsp;идея радикальна для&nbsp;своего времени: кожа&nbsp;— не&nbsp;тип, а&nbsp;состояние, и&nbsp;уход нужно собирать как протокол врача.</p>
+                <p class="anim">Сегодня брендом руководит их&nbsp;сын Пьер. Производство сохраняется во&nbsp;Франции, формулы готовятся холодным способом — единственный способ сохранить силу активных компонентов.</p>
+            </div>
         </div>
-        <div class="ab-pillar">
-            <div class="ab-pillar-num">02</div>
-            <h3>Холодное приготовление</h3>
-            <p>Формулы не&nbsp;нагревают. Биотехнологические и&nbsp;растительные экстракты сохраняют свою активность. До&nbsp;40&nbsp;активов на&nbsp;формулу в&nbsp;концентрациях, недостижимых для&nbsp;масс-маркета.</p>
-        </div>
-        <div class="ab-pillar">
-            <div class="ab-pillar-num">03</div>
-            <h3>Без&nbsp;шаблонов</h3>
-            <p>Уход подбирается под текущее состояние кожи косметологом. Без&nbsp;парабенов, силиконов и&nbsp;агрессивных пилингов. Результат предсказуем — его&nbsp;можно планировать на&nbsp;курс.</p>
-        </div>
-    </div>
+    </section>
 
-    <!-- ============ STORE SECTION ============ -->
+    <!-- II. ГЛАВНОЕ ФОТО -->
+    <section class="ab-spread">
+        <div class="ab-spread-img">
+            <img src="блок 3.png" alt="Лаборатория" id="spreadImg">
+        </div>
+        <div class="container">
+            <div class="ab-spread-cap">
+                <span><strong>Лаборатория</strong> · Курбевуа, Иль-де-Франс</span>
+                <span>Архив бренда · 1979</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- III. ИСТОРИЯ -->
+    <section class="ab-story">
+        <div class="container">
+            <div class="ab-story-photo">
+                <img src="5f4479c0aa37454be0b3fb80ce688e45.jpg" alt="История">
+            </div>
+            <div class="ab-story-text">
+                <div class="ab-chapter">II<small>История</small></div>
+                <h2 class="anim">Парижская идея, опередившая косметологию на&nbsp;полвека.</h2>
+                <p class="anim">В&nbsp;1979 году бренд выпускает Lotion P50 — тоник-эксфолиатор, который работает с&nbsp;кожей через&nbsp;её&nbsp;собственный pH. Формула не&nbsp;менялась с&nbsp;тех&nbsp;пор и&nbsp;остаётся флагманом бренда.</p>
+                <p class="anim">К&nbsp;2000-м появляется Skin Instant<sup>®</sup>&nbsp;Lab — формализованный протокол клинической диагностики кожи. Косметолог измеряет четыре показателя и&nbsp;собирает на&nbsp;их&nbsp;основе индивидуальный курс ухода.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- IV. QUOTE -->
+    <section class="ab-quote">
+        <div class="container">
+            <div class="ab-chapter">III<small>Манифест</small></div>
+            <div class="ab-quote-text anim">«Кожа&nbsp;— это не&nbsp;тип, а&nbsp;состояние. И&nbsp;это состояние меняется ежедневно».</div>
+            <div class="ab-quote-by">Иван и&nbsp;Жозетт Аллуш, 1977</div>
+        </div>
+    </section>
+
+    <!-- V. ФОРМУЛА -->
+    <section class="ab-story reverse">
+        <div class="container">
+            <div class="ab-story-photo">
+                <img src="блок 4.png" alt="Формула">
+            </div>
+            <div class="ab-story-text">
+                <div class="ab-chapter">IV<small>Формула</small></div>
+                <h2 class="anim">Холодное приготовление, а&nbsp;не&nbsp;термообработка.</h2>
+                <p class="anim">До&nbsp;40 активных компонентов в&nbsp;одной формуле. Биотехнологические, растительные и&nbsp;морские экстракты&nbsp;— в&nbsp;концентрациях, недостижимых для&nbsp;масс-маркета.</p>
+                <p class="anim">Без&nbsp;парабенов, без&nbsp;силиконов, без&nbsp;агрессивных пилингов. Активы не&nbsp;денатурируют и&nbsp;сохраняют силу до&nbsp;вскрытия упаковки.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- VI. БУТИК -->
     <section class="ab-store">
-        <div class="ab-store-inner">
-            <span class="ab-eyebrow">О&nbsp;магазине</span>
-            <h2>Дикий Люкс. <span class="muted">Официальная поставка в&nbsp;Россию.</span></h2>
-            <p class="ab-store-lead">Мы&nbsp;— бутик косметологии Biologique Recherche в&nbsp;Москве. Работаем с&nbsp;брендом напрямую: оригинальные продукты, актуальные партии, консультация косметолога перед покупкой. Без&nbsp;маркетинговых уловок и&nbsp;«универсального типа кожи».</p>
-            <div class="ab-store-grid">
-                <div class="ab-promise">
-                    <h3>Оригинальные продукты</h3>
-                    <p>Прямые поставки от&nbsp;Biologique Recherche. Срок годности, серийные номера, сертификаты — всё проверяемо.</p>
-                </div>
-                <div class="ab-promise">
-                    <h3>Консультация косметолога</h3>
-                    <p>Бесплатный подбор протокола перед покупкой — онлайн по&nbsp;видеосвязи или&nbsp;в&nbsp;нашем кабинете в&nbsp;Москве.</p>
-                </div>
-                <div class="ab-promise">
-                    <h3>Подбор по&nbsp;состоянию</h3>
-                    <p>Не&nbsp;продаём по&nbsp;«типу кожи». Сначала диагностика, потом протокол. Через 4–6&nbsp;недель — пересборка.</p>
+        <div class="container">
+            <div class="row">
+                <div class="ab-chapter">V<small>В&nbsp;нашем бутике</small></div>
+                <div class="ab-store-header">
+                    <h2 class="anim">Не&nbsp;просто покупка крема — полный протокол ухода под состояние кожи.</h2>
                 </div>
             </div>
-            <a href="#" class="ab-cta">Записаться на&nbsp;консультацию</a>
+            <div class="ab-list">
+                <div class="ab-list-item anim">
+                    <div class="n">01</div>
+                    <div>
+                        <h3>Диагностика до&nbsp;покупки</h3>
+                        <p>30-минутная видеоконсультация с&nbsp;косметологом. Skin Instant Lab по&nbsp;фото, объективные показатели, рекомендации — до&nbsp;того, как сделаете заказ.</p>
+                    </div>
+                </div>
+                <div class="ab-list-item anim">
+                    <div class="n">02</div>
+                    <div>
+                        <h3>Оригинал, не&nbsp;серый импорт</h3>
+                        <p>Прямые поставки от&nbsp;Biologique&nbsp;Recherche. Серийные номера, актуальные партии, сертификаты подлинности&nbsp;— всё проверяемо.</p>
+                    </div>
+                </div>
+                <div class="ab-list-item anim">
+                    <div class="n">03</div>
+                    <div>
+                        <h3>Протокол под состояние</h3>
+                        <p>Косметолог собирает последовательность ухода под объективные показатели, а&nbsp;не&nbsp;продаёт «топ-сейлер». Это&nbsp;курс, а&nbsp;не&nbsp;разовая покупка.</p>
+                    </div>
+                </div>
+                <div class="ab-list-item anim">
+                    <div class="n">04</div>
+                    <div>
+                        <h3>Пересборка через 4–6&nbsp;недель</h3>
+                        <p>Повторная диагностика, обновление протокола под новое состояние кожи. Без&nbsp;допродаж «впрок».</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
+    <!-- VII. CTA -->
+    <section class="ab-end">
+        <div class="container">
+            <div>
+                <div class="ab-chapter">VI<small>Запись</small></div>
+                <h2 class="anim" style="margin-top: 36px;">Подобрать уход под&nbsp;состояние кожи.</h2>
+            </div>
+            <div class="ab-end-right">
+                <p class="anim">Бесплатная видеоконсультация с&nbsp;косметологом 30&nbsp;минут — с&nbsp;диагностикой по&nbsp;фото и&nbsp;подбором протокола. Учитывается в&nbsp;первый заказ от&nbsp;15&nbsp;000&nbsp;₽.</p>
+                <a href="#" class="ab-btn">Записаться</a>
+            </div>
+        </div>
+    </section>
 
     <footer id="footer">
         <div class="footer-cols">
@@ -416,5 +533,36 @@
         </div>
         <div class="footer-bottom"><span class="footer-copy">© 2026 Дикий Люкс. Магазин косметики Biologique Recherche.</span><div class="footer-socials"><a href="#">TG</a><a href="#">VK</a><a href="#">IG</a></div></div>
     </footer>
+
+    <script>
+        const nav = document.querySelector('.navbar');
+        const heroBg = document.getElementById('heroBg');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('scrolled', window.scrollY > 50);
+            const y = window.scrollY;
+            if (heroBg && y < window.innerHeight) heroBg.style.transform = 'translateY(' + (y * 0.3) + 'px)';
+        });
+
+        // Spread image parallax
+        const spreadImg = document.getElementById('spreadImg');
+        const spreadWrap = spreadImg ? spreadImg.parentElement : null;
+        function updateSpread() {
+            if (!spreadImg || !spreadWrap) return;
+            const rect = spreadWrap.getBoundingClientRect();
+            const vh = window.innerHeight;
+            if (rect.bottom < 0 || rect.top > vh) return;
+            const progress = (vh - rect.top) / (vh + rect.height);
+            const offset = -5 + (Math.max(0, Math.min(1, progress)) - 0.5) * 5;
+            spreadImg.style.transform = 'translateY(' + offset + '%)';
+        }
+        window.addEventListener('scroll', updateSpread, { passive: true });
+        window.addEventListener('resize', updateSpread);
+        updateSpread();
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.12 });
+        document.querySelectorAll('.anim').forEach(el => observer.observe(el));
+    </script>
 </body>
 </html>
