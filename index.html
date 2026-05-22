@@ -1143,7 +1143,6 @@
             padding: 0;
             position: relative;
             overflow: hidden;
-            height: 100vh;
         }
         #testimonials::before {
             content: '';
@@ -1154,10 +1153,15 @@
             z-index: 0;
             pointer-events: none;
         }
-        .ts-pin {
+        .ts-track {
             position: relative;
             z-index: 1;
-            height: 100%;
+            height: 200vh;
+        }
+        .ts-pin {
+            position: sticky;
+            top: 0;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -1183,8 +1187,6 @@
             position: absolute;
             inset: 0;
             will-change: transform, opacity;
-            transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.6s ease;
-            cursor: pointer;
         }
         .ts-card[data-i="0"] { z-index: 3; }
         .ts-card[data-i="1"] { z-index: 2; }
@@ -1950,6 +1952,7 @@
 
     <!-- ============ SECTION: TESTIMONIALS (single-stack flip-through) ============ -->
     <section id="testimonials">
+        <div class="ts-track" id="tsTrack">
             <div class="ts-pin">
                 <div class="ts-eyebrow">Косметологи о&nbsp;бренде</div>
                 <div class="ts-stack">
@@ -1999,64 +2002,60 @@
                     </div>
                 </div>
             </div>
+        </div>
     </section>
 
     <script>
         (function(){
-            const section = document.getElementById('testimonials');
-            const cards = section ? section.querySelectorAll('.ts-card') : [];
+            const track = document.getElementById('tsTrack');
+            const cards = track ? track.querySelectorAll('.ts-card') : [];
             if (!cards.length) return;
             const N = cards.length;
-            const slotTop  = { tx:  0, ty:  0, rot: -4 };
-            const slotBack = { tx: 34, ty: 38, rot:  6 };
-            let active = 0;          // current top card index
-            let timer = null;
-            function applyStack() {
+            const slotTop  = { tx:  0, ty:  0, rot: -4, op: 1 };
+            const slotBack = { tx: 34, ty: 38, rot:  6, op: 1 };
+            function lerp(a, b, t) { return a + (b - a) * t; }
+            function applyState(card, s) {
+                card.style.transform = `translate(${s.tx}px, ${s.ty}px) rotate(${s.rot}deg)`;
+                card.style.opacity = s.op;
+            }
+            let ticking = false;
+            function update(){
+                const rect = track.getBoundingClientRect();
                 const vh = window.innerHeight;
-                const thrownTy = -(vh + 300);
+                const total = rect.height - vh;
+                const scrolled = Math.max(0, Math.min(total, -rect.top));
+                const progress = scrolled / total; // 0..1
+                const active = progress * (N - 1);
+                const thrown = { tx: 0, ty: -(vh + 300), rot: -18, op: 1 };
                 cards.forEach((card, i) => {
-                    // ring offset: how far this card is "behind" active (0 = top, 1 = peek, 2 = deeper)
-                    let offset = i - active;
-                    if (offset < 0) offset += N; // wrap so thrown cards reappear at the back of stack
-                    if (offset >= N - 1 && i !== active) {
-                        // visually we treat the last in ring as the "deepest"; no thrown state needed
-                        // (cards are always in the stack — they cycle around)
+                    const offset = i - active;
+                    let s;
+                    if (offset >= 0) {
+                        const t = Math.min(1, offset / 2);
+                        s = {
+                            tx:  lerp(slotTop.tx,  slotBack.tx,  t),
+                            ty:  lerp(slotTop.ty,  slotBack.ty,  t),
+                            rot: lerp(slotTop.rot, slotBack.rot, t),
+                            op:  1
+                        };
+                    } else {
+                        const t = Math.min(1, -offset);
+                        s = {
+                            tx:  lerp(slotTop.tx,  thrown.tx,  t),
+                            ty:  lerp(slotTop.ty,  thrown.ty,  t),
+                            rot: lerp(slotTop.rot, thrown.rot, t),
+                            op:  lerp(slotTop.op,  thrown.op,  t)
+                        };
                     }
-                    const t = Math.min(1, offset / (N - 1));
-                    card.style.transform = `translate(${slotTop.tx + (slotBack.tx - slotTop.tx) * t}px, ${slotTop.ty + (slotBack.ty - slotTop.ty) * t}px) rotate(${slotTop.rot + (slotBack.rot - slotTop.rot) * t}deg)`;
-                    card.style.zIndex = String(N - offset);
+                    applyState(card, s);
                 });
+                ticking = false;
             }
-            function flipNext() {
-                // throw the current top card upward, then it returns as the deepest
-                const top = cards[active];
-                const vh = window.innerHeight;
-                top.style.transition = 'transform 0.7s cubic-bezier(0.22, 1, 0.36, 1)';
-                top.style.transform = `translate(0px, ${-(vh + 300)}px) rotate(-18deg)`;
-                top.style.zIndex = '0';
-                setTimeout(() => {
-                    // snap the thrown card to the back of stack (without transition)
-                    top.style.transition = 'none';
-                    active = (active + 1) % N;
-                    applyStack();
-                    // re-enable transition on next frame
-                    requestAnimationFrame(() => {
-                        top.style.transition = '';
-                    });
-                }, 700);
-            }
-            function startTimer() {
-                if (timer) clearInterval(timer);
-                timer = setInterval(flipNext, 4500);
-            }
-            // click any card → manual flip
-            cards.forEach(c => c.addEventListener('click', () => {
-                flipNext();
-                startTimer();
-            }));
-            window.addEventListener('resize', applyStack, { passive: true });
-            applyStack();
-            startTimer();
+            window.addEventListener('scroll', () => {
+                if (!ticking) { requestAnimationFrame(update); ticking = true; }
+            }, { passive: true });
+            window.addEventListener('resize', update, { passive: true });
+            update();
         })();
     </script>
 
