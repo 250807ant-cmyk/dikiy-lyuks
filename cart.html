@@ -337,27 +337,31 @@
         body.is-empty .cart-count { display: none; }
 
         /* === FOOTER (Kresna-style) === */
+        .footer-shell {
+            background: #1B3060;
+        }
         #footer {
             position: relative;
-            background: #F2F1ED;
-            padding: 80px 4.58vw 0;
+            background: #1B3060;
+            padding: 280px 4.58vw 60px;
             overflow: hidden;
             width: 100vw;
+            transform-origin: top center;
+            will-change: transform;
         }
         .footer-stage {
             position: relative;
             z-index: 2;
-            max-width: 1280px;
-            margin: 0 auto;
             display: grid;
             grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
             gap: 18px;
+            background: transparent;
         }
         .footer-brand-card {
-            background: linear-gradient(135deg, #29457C 0%, #1B3060 100%);
+            background: #F2F1ED;
             border-radius: 24px;
             padding: 32px 32px 28px;
-            color: #FFFFFF;
+            color: #0B0B0E;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -373,7 +377,7 @@
             width: 60%;
             aspect-ratio: 1;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(201,160,78,0.15), transparent 70%);
+            background: radial-gradient(circle, rgba(201,160,78,0.22), transparent 70%);
             pointer-events: none;
         }
         .footer-brand-mark {
@@ -385,6 +389,7 @@
             letter-spacing: -0.01em;
             position: relative;
             z-index: 1;
+            color: #0B0B0E;
         }
         .footer-mark-icon {
             display: inline-flex;
@@ -405,12 +410,12 @@
             font-size: 16px;
             font-weight: 400;
             line-height: 1.4;
-            color: #FFFFFF;
+            color: #0B0B0E;
             letter-spacing: -0.005em;
             margin-bottom: 20px;
         }
         .footer-tagline .muted {
-            color: rgba(255,255,255,0.55);
+            color: rgba(11,11,14,0.5);
         }
         .footer-touch {
             display: flex;
@@ -421,7 +426,7 @@
             font-style: italic;
             font-weight: 400;
             font-size: 15px;
-            color: rgba(255,255,255,0.85);
+            color: rgba(11,11,14,0.65);
             flex-shrink: 0;
         }
         .footer-socials {
@@ -437,18 +442,18 @@
             justify-content: center;
             width: 38px;
             height: 38px;
-            background: rgba(11,11,14,0.55);
+            background: rgba(11,11,14,0.08);
             border-radius: 10px;
-            color: #FFFFFF;
+            color: #0B0B0E;
             font-size: 11px;
             font-weight: 500;
             letter-spacing: 0.05em;
             text-decoration: none;
             text-transform: uppercase;
-            transition: background 0.3s ease;
+            transition: background 0.3s ease, color 0.3s ease;
             line-height: 1;
         }
-        .footer-socials a:hover { background: #0B0B0E; color: #FFFFFF; }
+        .footer-socials a:hover { background: #29457C; color: #FFFFFF; }
         .footer-content-card {
             background: #FFFFFF;
             border-radius: 24px;
@@ -558,6 +563,25 @@
             transition: background 0.3s ease;
         }
         .footer-form button:hover { background: #29457C; }
+        /* === FOOTER REVEAL — текст внутри футера, эмерджит из-под cards === */
+        .footer-reveal-text {
+            position: absolute;
+            top: 20px;
+            left: 4.58vw;
+            right: 4.58vw;
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(28px, 5vw, 92px);
+            font-weight: 400;
+            line-height: 1.05;
+            letter-spacing: -0.025em;
+            color: rgba(255,255,255,0.35);
+            margin: 0;
+            will-change: transform;
+            z-index: 1;
+            pointer-events: none;
+        }
+
         .footer-watermark {
             text-align: center;
             font-family: 'Inter', sans-serif;
@@ -686,8 +710,9 @@
             <a href="catalog.html">Перейти в&nbsp;каталог</a>
         </div>
     </div>
-
+    <div class="footer-shell">
     <footer id="footer">
+        <h2 class="footer-reveal-text" id="footerRevealText" aria-hidden="true">Дикий Люкс.<br>Косметология&nbsp;Парижа.</h2>
         <div class="footer-stage">
             <div class="footer-brand-card">
                 <div class="footer-brand-mark">
@@ -695,7 +720,7 @@
                     <span>Дикий Люкс</span>
                 </div>
                 <div class="footer-tagline-block">
-                    <p class="footer-tagline">Косметология Biologique&nbsp;Recherche.<br><span class="muted">Прямые поставки в&nbsp;Россию с&nbsp;2026&nbsp;года.</span></p>
+                    <p class="footer-tagline word-reveal" data-reveal>Косметология Biologique&nbsp;Recherche. <span class="muted">Прямые поставки в&nbsp;Россию с&nbsp;2026&nbsp;года.</span></p>
                     <div class="footer-touch">
                         <span class="footer-touch-label">Найти нас</span>
                         <div class="footer-socials">
@@ -741,8 +766,8 @@
                 </div>
             </div>
         </div>
-        <div class="footer-watermark">ДИКИЙ&nbsp;ЛЮКС</div>
     </footer>
+    </div>
 
     <script>
         function fmt(n) {
