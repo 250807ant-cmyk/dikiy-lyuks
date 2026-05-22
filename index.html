@@ -2003,7 +2003,7 @@
             // negative effective = thrown away
             const slotTop    = { tx:   0, ty:   0, rot:  -4, op: 1 };
             const slotBack   = { tx:  34, ty:  38, rot:   6, op: 1 };
-            const thrown     = { tx:-120, ty:-380, rot: -22, op: 0 };
+            const thrown     = { tx:   0, ty:-420, rot: -18, op: 0 };
             function lerp(a, b, t) { return a + (b - a) * t; }
             function applyState(card, s) {
                 card.style.transform = `translate(${s.tx}px, ${s.ty}px) rotate(${s.rot}deg)`;
