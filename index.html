@@ -65,6 +65,11 @@
             -webkit-backdrop-filter: none;
             box-shadow: 0 1px 0 rgba(11,11,14,0.06);
         }
+        body.in-testimonials .navbar,
+        body.in-testimonials .navbar.scrolled {
+            background: transparent;
+            box-shadow: none;
+        }
 
         .nav-left {
             display: flex;
@@ -2056,6 +2061,17 @@
             }, { passive: true });
             window.addEventListener('resize', update, { passive: true });
             update();
+
+            // Toggle .in-testimonials on body to make navbar transparent over this section
+            const sect = document.getElementById('testimonials');
+            if (sect && 'IntersectionObserver' in window) {
+                const io = new IntersectionObserver((entries) => {
+                    entries.forEach(e => {
+                        document.body.classList.toggle('in-testimonials', e.isIntersecting);
+                    });
+                }, { threshold: 0, rootMargin: '-80px 0px 0px 0px' });
+                io.observe(sect);
+            }
         })();
     </script>
 
