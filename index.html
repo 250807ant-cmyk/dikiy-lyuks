@@ -1136,65 +1136,71 @@
         }
 
         /* =============================================
-           SECTION: TESTIMONIALS (rise-at-seven style sticky stack)
+           SECTION: TESTIMONIALS (rise-at-seven single-stack)
            ============================================= */
         #testimonials {
             background: #F2F1ED;
             padding: 0;
             position: relative;
         }
-        .ts-eyebrow {
-            position: sticky;
-            top: 100px;
-            z-index: 10;
-            text-align: center;
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            font-weight: 400;
-            color: #0B0B0E;
-            padding: 60px 0 0;
-            letter-spacing: 0.01em;
-        }
-        .ts-stack {
+        .ts-track {
             position: relative;
+            height: 340vh; /* drives scroll: 100vh entry + 3 cards × 80vh throws */
         }
-        .ts-card-wrap {
+        .ts-pin {
             position: sticky;
             top: 0;
             height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 80px 4.58vw 0;
+            padding-top: 60px;
         }
-        .ts-card {
+        .ts-eyebrow {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            color: #0B0B0E;
+            letter-spacing: 0.01em;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .ts-stack {
             position: relative;
             width: clamp(440px, 46vw, 620px);
             aspect-ratio: 0.92 / 1;
-            will-change: transform, opacity;
-            transition: transform 0.05s linear, opacity 0.05s linear;
+            flex-shrink: 0;
         }
-        .ts-stack-l1, .ts-stack-l2 {
+        .ts-back {
             position: absolute;
             inset: 0;
             border-radius: 32px;
         }
-        .ts-stack-l2 {
+        .ts-back--white {
             background: #FFFFFF;
             transform: rotate(6deg) translate(34px, 38px);
             z-index: 1;
             box-shadow: 0 16px 40px rgba(11,11,14,0.08);
         }
-        .ts-stack-l1 {
-            background: #B8E5C9;
+        .ts-back--gold {
+            background: #E8D5A8;
             transform: rotate(3deg) translate(18px, 22px);
             z-index: 2;
             box-shadow: 0 14px 32px rgba(11,11,14,0.10);
         }
+        .ts-card {
+            position: absolute;
+            inset: 0;
+            will-change: transform, opacity;
+            transition: transform 0.05s linear, opacity 0.05s linear;
+        }
+        .ts-card[data-i="0"] { z-index: 5; }
+        .ts-card[data-i="1"] { z-index: 4; }
+        .ts-card[data-i="2"] { z-index: 3; }
         .ts-front {
             position: relative;
             z-index: 3;
-            background: #0B0B0E;
+            background: #29457C;
             color: #FFFFFF;
             border-radius: 32px;
             padding: 44px 52px 44px;
@@ -1926,61 +1932,58 @@
         })();
     </script>
 
-    <!-- ============ SECTION: TESTIMONIALS (rise-at-seven sticky stack) ============ -->
+    <!-- ============ SECTION: TESTIMONIALS (single-stack flip-through) ============ -->
     <section id="testimonials">
-        <div class="ts-eyebrow">Косметологи о&nbsp;бренде</div>
-        <div class="ts-stack">
-            <div class="ts-card-wrap">
-                <div class="ts-card">
-                    <div class="ts-stack-l2"></div>
-                    <div class="ts-stack-l1"></div>
-                    <div class="ts-front">
-                        <div class="ts-head">
-                            <div class="ts-photo"><img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Анна Костромина"></div>
-                            <div class="ts-author">
-                                <span class="ts-name">Анна Костромина</span>
-                                <span class="ts-role">Дерматолог-косметолог, Москва · 12&nbsp;лет практики</span>
+        <div class="ts-track" id="tsTrack">
+            <div class="ts-pin">
+                <div class="ts-eyebrow">Косметологи о&nbsp;бренде</div>
+                <div class="ts-stack">
+                    <div class="ts-back ts-back--white"></div>
+                    <div class="ts-back ts-back--gold"></div>
+
+                    <div class="ts-card" data-i="0">
+                        <div class="ts-front">
+                            <div class="ts-head">
+                                <div class="ts-photo"><img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Анна Костромина"></div>
+                                <div class="ts-author">
+                                    <span class="ts-name">Анна Костромина</span>
+                                    <span class="ts-role">Дерматолог-косметолог, Москва · 12&nbsp;лет практики</span>
+                                </div>
+                                <div class="ts-stars">★★★★★</div>
                             </div>
-                            <div class="ts-stars">★★★★★</div>
+                            <p class="ts-quote">Lotion&nbsp;P50 в&nbsp;моей практике уже&nbsp;12&nbsp;лет. Единственный тоник, который реально работает с&nbsp;гиперкератозом — кожа адаптируется, а&nbsp;не&nbsp;воспаляется.</p>
+                            <div class="ts-tag">Lotion P50 · Уход за&nbsp;текстурой</div>
                         </div>
-                        <p class="ts-quote">Lotion&nbsp;P50 в&nbsp;моей практике уже&nbsp;12&nbsp;лет. Единственный тоник, который реально работает с&nbsp;гиперкератозом и&nbsp;не&nbsp;требует агрессивных пилингов — кожа адаптируется, а&nbsp;не&nbsp;воспаляется.</p>
-                        <div class="ts-tag">Lotion P50 · Уход за&nbsp;текстурой</div>
                     </div>
-                </div>
-            </div>
-            <div class="ts-card-wrap">
-                <div class="ts-card">
-                    <div class="ts-stack-l2"></div>
-                    <div class="ts-stack-l1"></div>
-                    <div class="ts-front">
-                        <div class="ts-head">
-                            <div class="ts-photo"><img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Мария Воронцова"></div>
-                            <div class="ts-author">
-                                <span class="ts-name">Мария Воронцова</span>
-                                <span class="ts-role">Клиент бренда, 38&nbsp;лет · 2&nbsp;года ухода</span>
+
+                    <div class="ts-card" data-i="1">
+                        <div class="ts-front">
+                            <div class="ts-head">
+                                <div class="ts-photo"><img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Мария Воронцова"></div>
+                                <div class="ts-author">
+                                    <span class="ts-name">Мария Воронцова</span>
+                                    <span class="ts-role">Клиент бренда, 38&nbsp;лет · 2&nbsp;года ухода</span>
+                                </div>
+                                <div class="ts-stars">★★★★★</div>
                             </div>
-                            <div class="ts-stars">★★★★★</div>
+                            <p class="ts-quote">Через шесть недель ухода ушли мелкие воспаления, текстура выровнялась — без салонных процедур. Подход «по&nbsp;состоянию», а&nbsp;не&nbsp;по&nbsp;типу — то, чего мне не&nbsp;хватало 10&nbsp;лет.</p>
+                            <div class="ts-tag">Восстановление барьера · Домашний уход</div>
                         </div>
-                        <p class="ts-quote">Через шесть недель ухода ушли мелкие воспаления, текстура выровнялась — без салонных процедур. Подход «по&nbsp;состоянию», а&nbsp;не&nbsp;по&nbsp;типу — это то, чего мне не&nbsp;хватало 10&nbsp;лет.</p>
-                        <div class="ts-tag">Восстановление барьера · Домашний уход</div>
                     </div>
-                </div>
-            </div>
-            <div class="ts-card-wrap">
-                <div class="ts-card">
-                    <div class="ts-stack-l2"></div>
-                    <div class="ts-stack-l1"></div>
-                    <div class="ts-front">
-                        <div class="ts-head">
-                            <div class="ts-photo"><img src="https://randomuser.me/api/portraits/women/79.jpg" alt="Елена Резник"></div>
-                            <div class="ts-author">
-                                <span class="ts-name">Елена Резник</span>
-                                <span class="ts-role">Главный врач клиники, СПб · 18&nbsp;лет в&nbsp;дерматологии</span>
+
+                    <div class="ts-card" data-i="2">
+                        <div class="ts-front">
+                            <div class="ts-head">
+                                <div class="ts-photo"><img src="https://randomuser.me/api/portraits/women/79.jpg" alt="Елена Резник"></div>
+                                <div class="ts-author">
+                                    <span class="ts-name">Елена Резник</span>
+                                    <span class="ts-role">Главный врач клиники, СПб · 18&nbsp;лет дерматологии</span>
+                                </div>
+                                <div class="ts-stars">★★★★★</div>
                             </div>
-                            <div class="ts-stars">★★★★★</div>
+                            <p class="ts-quote">Концентрации активных компонентов в&nbsp;Biologique&nbsp;Recherche выше, чем в&nbsp;большинстве «врачебной» косметики. Формулы предсказуемы — я&nbsp;могу планировать результат на&nbsp;курс.</p>
+                            <div class="ts-tag">Sérum Yall-O₂ · Кабинетный протокол</div>
                         </div>
-                        <p class="ts-quote">Концентрации активных компонентов в&nbsp;Biologique&nbsp;Recherche выше, чем в&nbsp;большинстве «врачебной» косметики. Формулы предсказуемы — я&nbsp;могу планировать результат на&nbsp;курс.</p>
-                        <div class="ts-tag">Sérum Yall-O₂ · Кабинетный протокол</div>
                     </div>
                 </div>
             </div>
@@ -1989,29 +1992,43 @@
 
     <script>
         (function(){
-            const cards = document.querySelectorAll('#testimonials .ts-card-wrap');
+            const track = document.getElementById('tsTrack');
+            const cards = track ? track.querySelectorAll('.ts-card') : [];
             if (!cards.length) return;
+            const N = cards.length;
             let ticking = false;
             function update(){
+                const rect = track.getBoundingClientRect();
                 const vh = window.innerHeight;
-                cards.forEach((wrap) => {
-                    const rect = wrap.getBoundingClientRect();
-                    const card = wrap.querySelector('.ts-card');
-                    if (!card) return;
-                    const past = -rect.top;
-                    if (past <= 0) {
+                const total = rect.height - vh; // scroll range inside the pin
+                const scrolled = Math.max(0, Math.min(total, -rect.top));
+                const progress = scrolled / total; // 0..1 overall
+                // each card occupies 1/N of the scroll. card i: progress range [i/N, (i+1)/N]
+                cards.forEach((card, i) => {
+                    const segStart = i / N;
+                    const segEnd = (i + 1) / N;
+                    const local = (progress - segStart) / (segEnd - segStart); // -∞..∞
+                    if (local <= 0) {
+                        // not started — card sits in place (default)
                         card.style.transform = '';
                         card.style.opacity = '1';
-                        return;
+                    } else if (local >= 1) {
+                        // already gone
+                        const tx = -120;
+                        const ty = -380;
+                        const rot = -22;
+                        card.style.transform = `translate(${tx}px, ${ty}px) rotate(${rot}deg)`;
+                        card.style.opacity = '0';
+                    } else {
+                        // animating away
+                        const p = local;
+                        const tx = -p * 120;
+                        const ty = -p * 380;
+                        const rot = -p * 22;
+                        const op = Math.max(0, 1 - p * 1.15);
+                        card.style.transform = `translate(${tx}px, ${ty}px) rotate(${rot}deg)`;
+                        card.style.opacity = op;
                     }
-                    // throw-away animation: heavy rotate + translate up-left + slight scale
-                    const progress = Math.min(1, past / (vh * 0.7));
-                    const tx = -progress * 80;
-                    const ty = -progress * 260;
-                    const rotate = -progress * 18;
-                    const op = Math.max(0, 1 - progress * 1.1);
-                    card.style.transform = `translate(${tx}px, ${ty}px) rotate(${rotate}deg)`;
-                    card.style.opacity = op;
                 });
                 ticking = false;
             }
