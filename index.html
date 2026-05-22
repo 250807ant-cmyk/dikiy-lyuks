@@ -1340,7 +1340,7 @@
            ============================================= */
         #faq {
             background: #1B3060;
-            padding: 120px 4.58vw 140px;
+            padding: 80px 4.58vw 90px;
             position: relative;
             overflow: hidden;
         }
@@ -1471,7 +1471,7 @@
         #footer {
             position: relative;
             background: #1B3060;
-            padding: 340px 4.58vw 0;
+            padding: 240px 4.58vw 0;
             overflow: hidden;
             width: 100vw;
             transform-origin: top center;
@@ -2461,9 +2461,9 @@
                 // Сам футер: scale 0.92 → 1.0 (растёт от верхнего края)
                 const footerScale = 0.92 + progress * 0.08;
                 footer.style.transform = `scale(${footerScale})`;
-                // Текст 2 строки, top:50px. Cards at padding-top:340px.
-                // translateY 290 → 0 — текст эмерджит из-под cards
-                const ty = (1 - progress) * 290;
+                // Текст 2 строки, top:50px. Cards at padding-top:240px.
+                // translateY 190 → 0 — текст эмерджит из-под cards
+                const ty = (1 - progress) * 190;
                 text.style.transform = `translateY(${ty}px)`;
                 ticking = false;
             }
