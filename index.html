@@ -1684,40 +1684,49 @@
             transition: background 0.3s ease;
         }
         .footer-form button:hover { background: #29457C; }
-        /* === FOOTER REVEAL — большой tagline, эмерджит снизу line-by-line === */
+        /* === FOOTER REVEAL — текст эмерджит из-за края футер-карточки === */
         .footer-reveal {
             background: #F2F1ED;
-            padding: 100px 4.58vw 60px;
+            padding: 140px 4.58vw 0;
             overflow: hidden;
             text-align: center;
+            position: relative;
+            z-index: 1;
         }
         .footer-reveal-text {
             font-family: 'Inter', sans-serif;
-            font-size: clamp(48px, 9vw, 160px);
+            font-size: clamp(72px, 13vw, 240px);
             font-weight: 400;
-            line-height: 1.0;
-            letter-spacing: -0.025em;
-            color: rgba(11,11,14,0.22);
+            line-height: 0.95;
+            letter-spacing: -0.035em;
+            color: rgba(11,11,14,0.32);
             margin: 0 auto;
-            max-width: 1400px;
+            max-width: 1600px;
             text-transform: none;
         }
         .fr-line {
             display: block;
             overflow: hidden;
-            padding: 0.02em 0;
+            padding: 0.04em 0;
         }
         .fr-line > span {
             display: block;
             transform: translateY(110%);
-            transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+            transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
             will-change: transform;
         }
         .footer-reveal.is-visible .fr-line > span {
             transform: translateY(0);
         }
         .footer-reveal.is-visible .fr-line:nth-child(2) > span {
-            transition-delay: 0.18s;
+            transition-delay: 0.2s;
+        }
+        /* Футер-карточка чуть наезжает на reveal — текст эмерджит из-за её края */
+        #footer {
+            margin-top: -1.4em;
+            position: relative;
+            z-index: 2;
+            border-radius: 24px 24px 0 0;
         }
 
         .footer-watermark {
@@ -2225,7 +2234,6 @@
                 </div>
             </div>
         </div>
-        <div class="footer-watermark">ДИКИЙ&nbsp;ЛЮКС</div>
     </footer>
     <style>
         /* =============================================
