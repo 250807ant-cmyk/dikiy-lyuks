@@ -1684,49 +1684,35 @@
             transition: background 0.3s ease;
         }
         .footer-form button:hover { background: #29457C; }
-        /* === FOOTER REVEAL — текст эмерджит из-за края футер-карточки === */
+        /* === FOOTER REVEAL — scroll-driven, текст выезжает из-под футера === */
         .footer-reveal {
             background: #F2F1ED;
-            padding: 140px 4.58vw 0;
-            overflow: hidden;
+            padding: 100px 4.58vw 0;
             text-align: center;
             position: relative;
             z-index: 1;
+            overflow: visible;
         }
         .footer-reveal-text {
             font-family: 'Inter', sans-serif;
-            font-size: clamp(72px, 13vw, 240px);
+            font-size: clamp(20px, 3.5vw, 60px);
             font-weight: 400;
-            line-height: 0.95;
-            letter-spacing: -0.035em;
-            color: rgba(11,11,14,0.32);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            color: rgba(11,11,14,0.45);
             margin: 0 auto;
-            max-width: 1600px;
+            max-width: 1200px;
             text-transform: none;
-        }
-        .fr-line {
-            display: block;
-            overflow: hidden;
-            padding: 0.04em 0;
-        }
-        .fr-line > span {
-            display: block;
-            transform: translateY(110%);
-            transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+            transform: translateY(120%);
             will-change: transform;
         }
-        .footer-reveal.is-visible .fr-line > span {
-            transform: translateY(0);
-        }
-        .footer-reveal.is-visible .fr-line:nth-child(2) > span {
-            transition-delay: 0.2s;
-        }
-        /* Футер-карточка чуть наезжает на reveal — текст эмерджит из-за её края */
+        .fr-line { display: block; }
+        /* Футер сверху — он перекрывает текст изначально, текст «выезжает» из-под него */
         #footer {
-            margin-top: -1.4em;
             position: relative;
-            z-index: 2;
-            border-radius: 24px 24px 0 0;
+            z-index: 3;
+            border-radius: 28px 28px 0 0;
+            margin-top: 0;
         }
 
         .footer-watermark {
@@ -2172,11 +2158,10 @@
     </section>
 
     <!-- ============ SECTION 7: FOOTER ============ -->
-    <!-- ============ FOOTER REVEAL — line-by-line reveal на скроле ============ -->
+    <!-- ============ FOOTER REVEAL — scroll-driven, выезжает из-под футера ============ -->
     <section class="footer-reveal" id="footerReveal" aria-hidden="true">
-        <h2 class="footer-reveal-text">
-            <span class="fr-line"><span>Дикий Люкс.</span></span>
-            <span class="fr-line"><span>Косметология Парижа.</span></span>
+        <h2 class="footer-reveal-text" id="footerRevealText">
+            Дикий Люкс. Косметология Парижа.
         </h2>
     </section>
 
@@ -2470,19 +2455,30 @@
             targets.forEach(el => io.observe(el));
         })();
 
-        // Footer reveal — большой tagline эмерджит line-by-line
+        // Footer reveal — scroll-driven, текст выезжает из-под футера
         (function(){
             const fr = document.getElementById('footerReveal');
-            if (!fr) return;
-            const io = new IntersectionObserver((entries) => {
-                entries.forEach(e => {
-                    if (e.isIntersecting) {
-                        fr.classList.add('is-visible');
-                        io.unobserve(fr);
-                    }
-                });
-            }, { threshold: 0.15 });
-            io.observe(fr);
+            const text = document.getElementById('footerRevealText');
+            const footer = document.getElementById('footer');
+            if (!fr || !text || !footer) return;
+            let ticking = false;
+            function update() {
+                const footerRect = footer.getBoundingClientRect();
+                const vh = window.innerHeight;
+                // Progress 0 when footer is fully below viewport,
+                // progress 1 when footer's top hits viewport top.
+                const distance = footerRect.top;
+                const progress = 1 - Math.max(0, Math.min(1, distance / vh));
+                // translateY: 120% (hidden below) → 0% (in place) as user scrolls
+                const ty = (1 - progress) * 120;
+                text.style.transform = `translateY(${ty}%)`;
+                ticking = false;
+            }
+            window.addEventListener('scroll', () => {
+                if (!ticking) { requestAnimationFrame(update); ticking = true; }
+            }, { passive: true });
+            window.addEventListener('resize', update, { passive: true });
+            update();
         })();
 
         document.querySelectorAll('.anim, .anim-line, .zoom-on-scroll').forEach(el => {
