@@ -1684,6 +1684,42 @@
             transition: background 0.3s ease;
         }
         .footer-form button:hover { background: #29457C; }
+        /* === FOOTER REVEAL — большой tagline, эмерджит снизу line-by-line === */
+        .footer-reveal {
+            background: #F2F1ED;
+            padding: 100px 4.58vw 60px;
+            overflow: hidden;
+            text-align: center;
+        }
+        .footer-reveal-text {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(48px, 9vw, 160px);
+            font-weight: 400;
+            line-height: 1.0;
+            letter-spacing: -0.025em;
+            color: rgba(11,11,14,0.22);
+            margin: 0 auto;
+            max-width: 1400px;
+            text-transform: none;
+        }
+        .fr-line {
+            display: block;
+            overflow: hidden;
+            padding: 0.02em 0;
+        }
+        .fr-line > span {
+            display: block;
+            transform: translateY(110%);
+            transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: transform;
+        }
+        .footer-reveal.is-visible .fr-line > span {
+            transform: translateY(0);
+        }
+        .footer-reveal.is-visible .fr-line:nth-child(2) > span {
+            transition-delay: 0.18s;
+        }
+
         .footer-watermark {
             text-align: center;
             font-family: 'Inter', sans-serif;
@@ -2127,6 +2163,14 @@
     </section>
 
     <!-- ============ SECTION 7: FOOTER ============ -->
+    <!-- ============ FOOTER REVEAL — line-by-line reveal на скроле ============ -->
+    <section class="footer-reveal" id="footerReveal" aria-hidden="true">
+        <h2 class="footer-reveal-text">
+            <span class="fr-line"><span>Дикий Люкс.</span></span>
+            <span class="fr-line"><span>Косметология Парижа.</span></span>
+        </h2>
+    </section>
+
     <footer id="footer">
         <div class="footer-stage">
             <div class="footer-brand-card">
@@ -2416,6 +2460,21 @@
                 });
             }, { threshold: 0.25 });
             targets.forEach(el => io.observe(el));
+        })();
+
+        // Footer reveal — большой tagline эмерджит line-by-line
+        (function(){
+            const fr = document.getElementById('footerReveal');
+            if (!fr) return;
+            const io = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        fr.classList.add('is-visible');
+                        io.unobserve(fr);
+                    }
+                });
+            }, { threshold: 0.15 });
+            io.observe(fr);
         })();
 
         document.querySelectorAll('.anim, .anim-line, .zoom-on-scroll').forEach(el => {
