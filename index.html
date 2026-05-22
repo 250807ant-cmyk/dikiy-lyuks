@@ -1468,7 +1468,7 @@
         #footer {
             position: relative;
             background: #F2F1ED;
-            padding: 240px 4.58vw 0;
+            padding: 340px 4.58vw 0;
             overflow: hidden;
             width: 100vw;
             transform-origin: top center;
@@ -1690,16 +1690,16 @@
         /* === FOOTER REVEAL — текст внутри футера, эмерджит из-под cards === */
         .footer-reveal-text {
             position: absolute;
-            top: 90px;
+            top: 50px;
             left: 4.58vw;
             right: 4.58vw;
             text-align: center;
             font-family: 'Inter', sans-serif;
-            font-size: clamp(20px, 3.5vw, 60px);
+            font-size: clamp(36px, 6.5vw, 120px);
             font-weight: 400;
-            line-height: 1.1;
-            letter-spacing: -0.02em;
-            color: rgba(11,11,14,0.45);
+            line-height: 1.05;
+            letter-spacing: -0.025em;
+            color: rgba(11,11,14,0.4);
             margin: 0;
             will-change: transform;
             z-index: 1;
@@ -2150,7 +2150,7 @@
 
     <!-- ============ SECTION 7: FOOTER ============ -->
     <footer id="footer">
-        <h2 class="footer-reveal-text" id="footerRevealText" aria-hidden="true">Дикий Люкс. Косметология Парижа.</h2>
+        <h2 class="footer-reveal-text" id="footerRevealText" aria-hidden="true">Дикий Люкс.<br>Косметология&nbsp;Парижа.</h2>
         <div class="footer-stage">
             <div class="footer-brand-card">
                 <div class="footer-brand-mark">
@@ -2455,8 +2455,9 @@
                 // Сам футер: scale 0.92 → 1.0 (растёт от верхнего края)
                 const footerScale = 0.92 + progress * 0.08;
                 footer.style.transform = `scale(${footerScale})`;
-                // Текст внутри: translateY 160 → 0 (эмерджит из-под cards)
-                const ty = (1 - progress) * 160;
+                // Текст 2 строки, top:50px. Cards at padding-top:340px.
+                // translateY 290 → 0 — текст эмерджит из-под cards
+                const ty = (1 - progress) * 290;
                 text.style.transform = `translateY(${ty}px)`;
                 ticking = false;
             }
