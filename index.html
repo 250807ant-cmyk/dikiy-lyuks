@@ -2003,7 +2003,7 @@
             // negative effective = thrown away
             const slotTop    = { tx:   0, ty:   0, rot:  -4, op: 1 };
             const slotBack   = { tx:  34, ty:  38, rot:   6, op: 1 };
-            const thrown     = { tx:   0, ty:-420, rot: -18, op: 1 };
+            // thrown.ty computed at update-time (viewport-relative, fully off-screen)
             function lerp(a, b, t) { return a + (b - a) * t; }
             function applyState(card, s) {
                 card.style.transform = `translate(${s.tx}px, ${s.ty}px) rotate(${s.rot}deg)`;
@@ -2018,6 +2018,8 @@
                 const progress = scrolled / total; // 0..1 overall
                 // active card index (float). progress maps 0..1 to active 0..(N-1)
                 const active = progress * (N - 1);
+                // throw the card well past the top of the viewport
+                const thrown = { tx: 0, ty: -(vh + 300), rot: -18, op: 1 };
                 cards.forEach((card, i) => {
                     const offset = i - active; // 0 = active, +1 = behind, -1 = thrown
                     let s;
