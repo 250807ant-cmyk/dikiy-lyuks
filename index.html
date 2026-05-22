@@ -1468,7 +1468,7 @@
         #footer {
             position: relative;
             background: #F2F1ED;
-            padding: 80px 4.58vw 0;
+            padding: 240px 4.58vw 0;
             overflow: hidden;
             width: 100vw;
         }
@@ -1478,6 +1478,7 @@
             display: grid;
             grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
             gap: 18px;
+            background: #F2F1ED;
         }
         .footer-brand-card {
             background: linear-gradient(135deg, #29457C 0%, #1B3060 100%);
@@ -1684,33 +1685,23 @@
             transition: background 0.3s ease;
         }
         .footer-form button:hover { background: #29457C; }
-        /* === FOOTER REVEAL — scroll-driven, текст выезжает из-под футера === */
-        .footer-reveal {
-            background: #F2F1ED;
-            padding: 220px 4.58vw 0;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-            overflow: visible;
-        }
+        /* === FOOTER REVEAL — текст внутри футера, эмерджит из-под cards === */
         .footer-reveal-text {
+            position: absolute;
+            top: 90px;
+            left: 4.58vw;
+            right: 4.58vw;
+            text-align: center;
             font-family: 'Inter', sans-serif;
             font-size: clamp(20px, 3.5vw, 60px);
             font-weight: 400;
             line-height: 1.1;
             letter-spacing: -0.02em;
             color: rgba(11,11,14,0.45);
-            margin: 0 auto;
-            max-width: 1200px;
-            text-transform: none;
+            margin: 0;
             will-change: transform;
-        }
-        /* Футер поверх reveal — он перекрывает текст; текст выезжает из-под него */
-        #footer {
-            position: relative;
-            z-index: 3;
-            border-radius: 28px 28px 0 0;
-            margin-top: -180px;
+            z-index: 1;
+            pointer-events: none;
         }
 
         .footer-watermark {
@@ -2156,14 +2147,8 @@
     </section>
 
     <!-- ============ SECTION 7: FOOTER ============ -->
-    <!-- ============ FOOTER REVEAL — scroll-driven, выезжает из-под футера ============ -->
-    <section class="footer-reveal" id="footerReveal" aria-hidden="true">
-        <h2 class="footer-reveal-text" id="footerRevealText">
-            Дикий Люкс. Косметология Парижа.
-        </h2>
-    </section>
-
     <footer id="footer">
+        <h2 class="footer-reveal-text" id="footerRevealText" aria-hidden="true">Дикий Люкс. Косметология Парижа.</h2>
         <div class="footer-stage">
             <div class="footer-brand-card">
                 <div class="footer-brand-mark">
@@ -2453,23 +2438,22 @@
             targets.forEach(el => io.observe(el));
         })();
 
-        // Footer reveal — scroll-driven, текст выезжает из-под футера
+        // Footer reveal — scroll-driven, текст внутри footer эмерджит из-под cards
         (function(){
-            const fr = document.getElementById('footerReveal');
             const text = document.getElementById('footerRevealText');
             const footer = document.getElementById('footer');
-            if (!fr || !text || !footer) return;
+            if (!text || !footer) return;
             let ticking = false;
             function update() {
                 const footerRect = footer.getBoundingClientRect();
                 const vh = window.innerHeight;
-                // Progress 0 when footer just enters viewport bottom,
-                // progress 1 when footer's top reaches viewport top.
+                // Progress 0 = footer ниже viewport, 1 = верх footer достиг верха viewport
                 const distance = footerRect.top;
                 const progress = 1 - Math.max(0, Math.min(1, distance / vh));
-                // Text initially behind footer (translateY 0 = natural = covered);
-                // scroll → translateY -220px (text rises 220px above footer's top edge).
-                const ty = -progress * 220;
+                // Text natural at top:90px. Cards (stage) start at padding-top:240px.
+                // translateY 160px = текст уходит в зону cards (240-306) — скрыт по z-index.
+                // translateY 0 = текст в padding-top области, видимый над cards.
+                const ty = (1 - progress) * 160;
                 text.style.transform = `translateY(${ty}px)`;
                 ticking = false;
             }
