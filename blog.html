@@ -51,143 +51,408 @@
             max-width: 560px;
         }
 
-        /* FILTER STRIP — full-width, left-aligned to match hero */
+        /* FILTER STRIP — soft white pills, no border, ambient shadow */
         .blog-tags {
-            margin: 40px 0 56px;
+            margin: 40px 0 16px;
             padding: 0 66px;
             display: flex;
             justify-content: flex-start;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
         }
         .blog-tag {
-            padding: 12px 26px;
+            padding: 13px 22px;
             border-radius: 999px;
-            border: 1px solid rgba(11,11,14,0.12);
-            background: transparent;
+            border: none;
+            background: #FFFFFF;
             font-family: 'Inter', sans-serif;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 500;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: rgba(11,11,14,0.7);
+            letter-spacing: 0;
+            text-transform: none;
+            color: #0B0B0E;
             cursor: pointer;
-            transition: all 0.3s;
+            box-shadow: 0 1px 3px rgba(11,11,14,0.04), 0 6px 18px rgba(11,11,14,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease;
         }
-        .blog-tag:hover { border-color: rgba(11,11,14,0.3); color: #0B0B0E; }
-        .blog-tag.is-active { background: #0B0B0E; color: #FFFFFF; border-color: #0B0B0E; }
+        .blog-tag:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(11,11,14,0.06), 0 10px 26px rgba(11,11,14,0.08);
+        }
+        .blog-tag.is-active {
+            background: #0B0B0E;
+            color: #FFFFFF;
+            box-shadow: 0 2px 6px rgba(11,11,14,0.12), 0 10px 26px rgba(11,11,14,0.18);
+        }
 
-        /* GRID — full-width to match index #popular grid */
+        /* GRID — full-width, image-fill cards with overlaid content */
         .blog-grid {
             padding: 0 66px 160px;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
+            gap: 16px;
         }
         .blog-card {
-            background: #FFFFFF;
-            border-radius: 28px;
-            overflow: hidden;
+            background-color: #2A2A2A;
+            background-size: cover;
+            background-position: center;
+            border-radius: 36px;
+            aspect-ratio: 3 / 4;
             display: flex;
             flex-direction: column;
-            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
+            justify-content: space-between;
+            padding: 28px;
             text-decoration: none;
-            color: inherit;
-            box-shadow: 0 8px 28px rgba(11,11,14,0.04);
+            color: #FFFFFF;
+            position: relative;
+            isolation: isolate;
+            overflow: hidden;
+            transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
         }
-        .blog-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 18px 44px rgba(11,11,14,0.08);
+        /* Top gradient for title legibility */
+        .blog-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 38%);
+            z-index: 0;
+            pointer-events: none;
+        }
+        /* Frosted blur strip at the bottom of the photo (reference) */
+        .blog-card-blur {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 24%;
+            backdrop-filter: blur(22px) saturate(1.4);
+            -webkit-backdrop-filter: blur(22px) saturate(1.4);
+            background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.12) 100%);
+            mask-image: linear-gradient(180deg, transparent 0%, black 35%, black 100%);
+            -webkit-mask-image: linear-gradient(180deg, transparent 0%, black 35%, black 100%);
+            z-index: 0;
+            pointer-events: none;
+        }
+        /* Tight image-aware ambient glow — only directly under the card */
+        .blog-card::after {
+            content: '';
+            position: absolute;
+            inset: 92% 12% -10% 12%;
+            background-image: var(--card-img);
+            background-size: cover;
+            background-position: center;
+            filter: blur(36px) saturate(1.3);
+            opacity: 0.55;
+            border-radius: 50%;
+            z-index: -1;
+            pointer-events: none;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .blog-card > h3,
+        .blog-card > .blog-card-foot { position: relative; z-index: 1; }
+        .blog-card:hover { transform: translateY(-6px); }
+        .blog-card:hover::after {
+            opacity: 0.7;
+            transform: translateY(6px);
         }
         .blog-card.is-feature {
             grid-column: span 2;
+            aspect-ratio: 3 / 2;     /* fallback when alone in the row; grid-stretch still aligns with 3:4 neighbour */
+            height: 100%;
         }
-        .blog-card-img {
-            aspect-ratio: 4 / 3;
-            background-size: cover;
-            background-position: center;
+
+        .blog-card h3 {
+            font-size: 22px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            line-height: 1.2;
+            color: #FFFFFF;
+            overflow-wrap: break-word;
+            hyphens: auto;
         }
-        .blog-card.is-feature .blog-card-img {
-            aspect-ratio: 16 / 9;
+        .blog-card.is-feature h3 {
+            max-width: 70%;     /* same font-size; just narrower so it doesn't sprawl on the wide card */
         }
-        .blog-card-body {
-            padding: 24px 28px 28px;
+
+        .blog-card-foot {
             display: flex;
-            flex-direction: column;
-            flex: 1;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
         }
         .blog-meta {
             display: flex;
+            flex-direction: row;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 14px;
-            font-size: 10px;
-            font-weight: 500;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-        }
-        .blog-meta .cat { color: #C9A04E; }
-        .blog-meta .sep { color: rgba(11,11,14,0.2); }
-        .blog-meta .date { color: rgba(11,11,14,0.45); }
-        .blog-card h3 {
-            font-size: 18px;
-            font-weight: 400;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            line-height: 1.25;
-            margin-bottom: 10px;
-            color: #0B0B0E;
-        }
-        .blog-card.is-feature h3 {
-            font-size: 26px;
-            line-height: 1.15;
-            margin-bottom: 14px;
-        }
-        .blog-card p {
-            font-size: 13px;
-            font-weight: 300;
-            color: rgba(11,11,14,0.6);
-            line-height: 1.7;
-            margin-bottom: 18px;
+            flex-wrap: wrap;
+            gap: 8px;
+            min-width: 0;
             flex: 1;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            line-height: 1.4;
         }
-        .blog-card.is-feature p {
-            font-size: 14px;
-            line-height: 1.75;
-        }
+        .blog-meta .cat { color: #FFFFFF; }
+        .blog-meta .sep { color: rgba(255,255,255,0.4); }
+        .blog-meta .date { color: rgba(255,255,255,0.7); font-weight: 400; }
+
         .blog-read {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            font-size: 10px;
-            font-weight: 500;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
+            gap: 10px;
+            flex-shrink: 0;
+            background: #FFFFFF;
             color: #0B0B0E;
-            margin-top: auto;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            text-transform: none;
+            padding: 14px 24px;
+            border-radius: 999px;
+            box-shadow: 0 6px 22px rgba(0,0,0,0.18);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .blog-read::after {
-            content: '↗';
-            font-size: 13px;
-            color: rgba(11,11,14,0.4);
-            transition: transform 0.3s, color 0.3s;
+        .blog-read::before {
+            content: '+';
+            font-size: 20px;
+            font-weight: 300;
+            line-height: 1;
+            color: #0B0B0E;
         }
-        .blog-card:hover .blog-read::after {
-            transform: translate(3px, -3px);
-            color: #29457C;
+        .blog-card:hover .blog-read {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 28px rgba(0,0,0,0.22);
         }
 
         /* FOOTER */
-        #footer { background: #0B0B0E; width: 100vw; padding: 80px 66px 48px; }
-        .footer-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; padding-bottom: 60px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .footer-col h4 { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 20px; }
-        .footer-col a { display: block; font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.7); text-decoration: none; line-height: 2; transition: color 0.3s; }
-        .footer-col a:hover { color: #FFFFFF; }
-        .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 32px; }
-        .footer-copy { font-size: 11px; font-weight: 300; color: rgba(255,255,255,0.35); }
-        .footer-socials { display: flex; gap: 20px; }
-        .footer-socials a { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.5); text-decoration: none; text-transform: uppercase; letter-spacing: 0.1em; transition: color 0.3s; }
-        .footer-socials a:hover { color: #FFF; }
+        /* === FOOTER (Kresna-style, mirror of index.html) === */
+        #footer {
+            position: relative;
+            background: #1B3060;
+            padding: 280px 4.58vw 60px;
+            overflow: hidden;
+            width: 100vw;
+        }
+        .footer-reveal-text {
+            position: absolute;
+            top: 20px;
+            left: 4.58vw;
+            right: 4.58vw;
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(28px, 5vw, 92px);
+            font-weight: 400;
+            line-height: 1.05;
+            letter-spacing: -0.025em;
+            color: rgba(255,255,255,0.35);
+            margin: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .footer-stage {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+            gap: 18px;
+        }
+        .footer-brand-card {
+            background: #F2F1ED;
+            border-radius: 24px;
+            padding: 32px 32px 28px;
+            color: #0B0B0E;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 340px;
+            position: relative;
+            overflow: hidden;
+        }
+        .footer-brand-card::after {
+            content: '';
+            position: absolute;
+            top: -40%;
+            right: -10%;
+            width: 60%;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(201,160,78,0.22), transparent 70%);
+            pointer-events: none;
+        }
+        .footer-brand-mark {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            position: relative;
+            z-index: 1;
+            color: #0B0B0E;
+        }
+        .footer-mark-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: #C9A04E;
+            border-radius: 8px;
+            color: #FFFFFF;
+            font-size: 16px;
+        }
+        .footer-tagline-block { position: relative; z-index: 1; }
+        .footer-tagline {
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.4;
+            color: #0B0B0E;
+            letter-spacing: -0.005em;
+            margin-bottom: 20px;
+        }
+        .footer-tagline .muted { color: rgba(11,11,14,0.5); }
+        .footer-touch {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .footer-touch-label {
+            font-style: italic;
+            font-weight: 400;
+            font-size: 15px;
+            color: rgba(11,11,14,0.65);
+            flex-shrink: 0;
+        }
+        .footer-socials {
+            display: flex;
+            gap: 8px;
+            padding: 0;
+            border: none;
+        }
+        .footer-socials a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            background: rgba(11,11,14,0.08);
+            border-radius: 10px;
+            color: #0B0B0E;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: background 0.3s ease, color 0.3s ease;
+            line-height: 1;
+        }
+        .footer-socials a:hover { background: #29457C; color: #FFFFFF; }
+        .footer-content-card {
+            background: #FFFFFF;
+            border-radius: 24px;
+            padding: 32px 36px 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 340px;
+        }
+        .footer-nav-cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+        .footer-col-head {
+            font-style: italic;
+            font-weight: 400;
+            font-size: 14px;
+            color: #C9A04E;
+            margin-bottom: 22px;
+            letter-spacing: -0.005em;
+        }
+        .footer-col-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .footer-col-list a {
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            font-weight: 500;
+            color: #0B0B0E;
+            text-decoration: none;
+            line-height: 1.3;
+            display: inline-block;
+            transition: opacity 0.3s ease;
+        }
+        .footer-col-list a:hover { opacity: 0.55; }
+        .footer-content-bottom {
+            display: grid;
+            grid-template-columns: 1fr 1.4fr;
+            align-items: end;
+            gap: 32px;
+            margin-top: 32px;
+        }
+        .footer-copy {
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            color: rgba(11,11,14,0.5);
+            font-weight: 400;
+        }
+        .footer-cta { text-align: right; }
+        .footer-cta-lead {
+            font-size: 15px;
+            color: rgba(11,11,14,0.5);
+            font-weight: 400;
+            margin-bottom: 2px;
+        }
+        .footer-cta-head {
+            font-size: 17px;
+            font-weight: 600;
+            color: #0B0B0E;
+            margin-bottom: 14px;
+            letter-spacing: -0.005em;
+        }
+        .footer-form {
+            display: inline-flex;
+            align-items: center;
+            background: #F2F1ED;
+            border-radius: 999px;
+            padding: 5px;
+            width: 100%;
+            max-width: 420px;
+        }
+        .footer-form input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 11px 18px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: #0B0B0E;
+            outline: none;
+            min-width: 0;
+        }
+        .footer-form input::placeholder { color: rgba(11,11,14,0.4); }
+        .footer-form button {
+            background: #0B0B0E;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 999px;
+            padding: 11px 24px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.3s ease;
+        }
+        .footer-form button:hover { background: #29457C; }
     </style>
 </head>
 <body>
@@ -211,105 +476,161 @@
     </section>
 
     <div class="blog-tags">
-        <button class="blog-tag is-active">Все</button>
-        <button class="blog-tag">Методология</button>
-        <button class="blog-tag">Протоколы</button>
-        <button class="blog-tag">Активы</button>
-        <button class="blog-tag">Состояния кожи</button>
-        <button class="blog-tag">Лица бренда</button>
+        <button class="blog-tag is-active" data-filter="all">Все</button>
+        <button class="blog-tag" data-filter="Методология">Методология</button>
+        <button class="blog-tag" data-filter="Протоколы">Протоколы</button>
+        <button class="blog-tag" data-filter="Активы">Активы</button>
+        <button class="blog-tag" data-filter="Состояния">Состояния кожи</button>
+        <button class="blog-tag" data-filter="Лица бренда">Лица бренда</button>
     </div>
 
     <section class="blog-grid">
-        <a href="#" class="blog-card is-feature">
-            <div class="blog-card-img" style="background-image:url('блок 6.jpeg');"></div>
-            <div class="blog-card-body">
-                <div class="blog-meta"><span class="cat">Методология</span><span class="sep">/</span><span class="date">12 мая 2026 · 7 мин</span></div>
-                <h3>Skin Instant<sup>®</sup> Lab: почему «тип кожи» — это иллюзия</h3>
-                <p>Как Biologique Recherche заменил диагностику по&nbsp;типу кожи на&nbsp;клиническую оценку состояния — и&nbsp;почему это изменило подход к&nbsp;уходу для&nbsp;всей индустрии.</p>
+        <a href="article.html" class="blog-card is-feature" style="background-image:url('блок 6.jpeg');">
+            <div class="blog-card-blur"></div>
+            <h3>Skin Instant<sup>®</sup> Lab: почему «тип кожи» — это иллюзия</h3>
+            <div class="blog-card-foot">
+                <div class="blog-meta"><span class="cat">Методология</span><span class="sep">/</span><span class="date">12 мая 2026 · 7 минут чтения</span></div>
                 <span class="blog-read">Читать</span>
             </div>
         </a>
-        <a href="#" class="blog-card">
-            <div class="blog-card-img" style="background-image:url('5f4479c0aa37454be0b3fb80ce688e45.jpg');"></div>
-            <div class="blog-card-body">
-                <div class="blog-meta"><span class="cat">Активы</span><span class="sep">/</span><span class="date">5 мая · 4 мин</span></div>
-                <h3>Холодное приготовление: что это и&nbsp;почему важно</h3>
-                <p>Почему BR&nbsp;не&nbsp;нагревает формулы и&nbsp;как это сохраняет силу активных компонентов.</p>
+        <a href="article-2.html" class="blog-card" style="background-image:url('5f4479c0aa37454be0b3fb80ce688e45.jpg');">
+            <div class="blog-card-blur"></div>
+            <h3>Холодное приготовление: что это и&nbsp;почему важно</h3>
+            <div class="blog-card-foot">
+                <div class="blog-meta"><span class="cat">Активы</span><span class="sep">/</span><span class="date">5 мая 2026 · 4 минуты чтения</span></div>
                 <span class="blog-read">Читать</span>
             </div>
         </a>
-        <a href="#" class="blog-card">
-            <div class="blog-card-img" style="background-image:url('72465068ab96943e6691d196e9c2c65b.jpg');"></div>
-            <div class="blog-card-body">
-                <div class="blog-meta"><span class="cat">Протоколы</span><span class="sep">/</span><span class="date">29 апр · 6 мин</span></div>
-                <h3>Lotion P50: 50&nbsp;лет культа в&nbsp;одной бутылке</h3>
-                <p>История эксфолианта, который изменил представление о&nbsp;тониках — и&nbsp;до&nbsp;сих пор остаётся базой протокола.</p>
+        <a href="article-3.html" class="blog-card" style="background-image:url('72465068ab96943e6691d196e9c2c65b.jpg');">
+            <div class="blog-card-blur"></div>
+            <h3>Lotion P50: 50&nbsp;лет культа в&nbsp;одной бутылке</h3>
+            <div class="blog-card-foot">
+                <div class="blog-meta"><span class="cat">Протоколы</span><span class="sep">/</span><span class="date">29 апреля 2026 · 6 минут чтения</span></div>
                 <span class="blog-read">Читать</span>
             </div>
         </a>
-        <a href="#" class="blog-card">
-            <div class="blog-card-img" style="background-image:url('Чувствительная кожа.jpg');"></div>
-            <div class="blog-card-body">
-                <div class="blog-meta"><span class="cat">Состояния</span><span class="sep">/</span><span class="date">22 апр · 5 мин</span></div>
-                <h3>Реактивная кожа: что нельзя и&nbsp;что нужно</h3>
-                <p>Гиперчувствительность кожи — это не&nbsp;тип, а&nbsp;состояние. И&nbsp;его можно стабилизировать за&nbsp;6&nbsp;недель.</p>
+        <a href="article-4.html" class="blog-card" style="background-image:url('Чувствительная кожа.jpg');">
+            <div class="blog-card-blur"></div>
+            <h3>Реактивная кожа: что нельзя и&nbsp;что нужно</h3>
+            <div class="blog-card-foot">
+                <div class="blog-meta"><span class="cat">Состояния</span><span class="sep">/</span><span class="date">22 апреля 2026 · 5 минут чтения</span></div>
                 <span class="blog-read">Читать</span>
             </div>
         </a>
-        <a href="#" class="blog-card">
-            <div class="blog-card-img" style="background-image:url('f72c0475e7a4b6e430a8b2107217fc10.jpg');"></div>
-            <div class="blog-card-body">
-                <div class="blog-meta"><span class="cat">Протоколы</span><span class="sep">/</span><span class="date">15 апр · 8 мин</span></div>
-                <h3>Anti-age после&nbsp;35: что меняется в&nbsp;коже и&nbsp;в&nbsp;уходе</h3>
-                <p>Плотность, эластичность, тон. Какие активы и&nbsp;в&nbsp;каких концентрациях работают по-настоящему.</p>
+        <a href="article-5.html" class="blog-card" style="background-image:url('f72c0475e7a4b6e430a8b2107217fc10.jpg');">
+            <div class="blog-card-blur"></div>
+            <h3>Anti-age после&nbsp;35: что меняется в&nbsp;коже и&nbsp;в&nbsp;уходе</h3>
+            <div class="blog-card-foot">
+                <div class="blog-meta"><span class="cat">Протоколы</span><span class="sep">/</span><span class="date">15 апреля 2026 · 8 минут чтения</span></div>
                 <span class="blog-read">Читать</span>
             </div>
         </a>
-        <a href="#" class="blog-card is-feature">
-            <div class="blog-card-img" style="background-image:url('ff1d08a42ac577007922a9eecb567cc5.jpg');"></div>
-            <div class="blog-card-body">
-                <div class="blog-meta"><span class="cat">Лица бренда</span><span class="sep">/</span><span class="date">8 апр · 10 мин</span></div>
-                <h3>Семья Аллуш: как биолог и&nbsp;физиотерапевт изменили косметологию</h3>
-                <p>Большое интервью о&nbsp;Иване и&nbsp;Жозетт Аллуш, философии бренда и&nbsp;о&nbsp;том, как Пьер Аллуш продолжает дело родителей сегодня.</p>
+        <a href="article-6.html" class="blog-card is-feature" style="background-image:url('ff1d08a42ac577007922a9eecb567cc5.jpg');">
+            <div class="blog-card-blur"></div>
+            <h3>Семья Аллуш: как биолог и&nbsp;физиотерапевт изменили косметологию</h3>
+            <div class="blog-card-foot">
+                <div class="blog-meta"><span class="cat">Лица бренда</span><span class="sep">/</span><span class="date">8 апреля 2026 · 10 минут чтения</span></div>
                 <span class="blog-read">Читать</span>
             </div>
         </a>
-        <a href="#" class="blog-card">
-            <div class="blog-card-img" style="background-image:url('блок 3.png');"></div>
-            <div class="blog-card-body">
-                <div class="blog-meta"><span class="cat">Состояния</span><span class="sep">/</span><span class="date">1 апр · 4 мин</span></div>
-                <h3>Гиперпигментация: разбор PIGM&nbsp;400</h3>
-                <p>Как комплекс PIGM&nbsp;400 работает с&nbsp;меланогенезом и&nbsp;почему даёт результат без&nbsp;агрессивных пилингов.</p>
+        <a href="article-7.html" class="blog-card" style="background-image:url('блок 3.png');">
+            <div class="blog-card-blur"></div>
+            <h3>Гиперпигментация: разбор PIGM&nbsp;400</h3>
+            <div class="blog-card-foot">
+                <div class="blog-meta"><span class="cat">Состояния</span><span class="sep">/</span><span class="date">1 апреля 2026 · 4 минуты чтения</span></div>
                 <span class="blog-read">Читать</span>
             </div>
         </a>
-        <a href="#" class="blog-card">
-            <div class="blog-card-img" style="background-image:url('блок 4.png');"></div>
-            <div class="blog-card-body">
-                <div class="blog-meta"><span class="cat">Методология</span><span class="sep">/</span><span class="date">25 марта · 6 мин</span></div>
-                <h3>Сезонная смена ухода — миф или&nbsp;необходимость</h3>
-                <p>Почему BR&nbsp;не&nbsp;продаёт «летние» и&nbsp;«зимние» линейки — и&nbsp;что меняется в&nbsp;протоколе на&nbsp;самом деле.</p>
+        <a href="article-8.html" class="blog-card" style="background-image:url('блок 4.png');">
+            <div class="blog-card-blur"></div>
+            <h3>Сезонная смена ухода — миф или&nbsp;необходимость</h3>
+            <div class="blog-card-foot">
+                <div class="blog-meta"><span class="cat">Методология</span><span class="sep">/</span><span class="date">25 марта 2026 · 6 минут чтения</span></div>
                 <span class="blog-read">Читать</span>
             </div>
         </a>
     </section>
 
     <footer id="footer">
-        <div class="footer-cols">
-            <div class="footer-col"><h4>Каталог</h4><a href="catalog.html">Тоники и лосьоны</a><a href="catalog.html">Сыворотки</a><a href="catalog.html">Кремы для лица</a><a href="catalog.html">Маски</a></div>
-            <div class="footer-col"><h4>Компания</h4><a href="about.html">О бренде</a><a href="index.html#protocol">Методология</a><a href="blog.html">Блог</a><a href="contacts.html">Контакты</a></div>
-            <div class="footer-col"><h4>Помощь</h4><a href="#">Доставка</a><a href="#">Оплата</a><a href="#">Возврат</a><a href="index.html#faq">FAQ</a></div>
-            <div class="footer-col"><h4>Контакты</h4><a href="mailto:hello@biologique-recherche.ru">hello@biologique-recherche.ru</a><a href="tel:+74951234567">+7 (495) 123-45-67</a><a href="contacts.html">Москва, ул. Пример, 1</a></div>
+        <h2 class="footer-reveal-text" aria-hidden="true">Дикий Люкс.<br>Косметология&nbsp;Парижа.</h2>
+        <div class="footer-stage">
+            <div class="footer-brand-card">
+                <div class="footer-brand-mark">
+                    <span class="footer-mark-icon">✦</span>
+                    <span>Дикий Люкс</span>
+                </div>
+                <div class="footer-tagline-block">
+                    <p class="footer-tagline">Косметология Biologique&nbsp;Recherche. <span class="muted">Прямые поставки в&nbsp;Россию с&nbsp;2026&nbsp;года.</span></p>
+                    <div class="footer-touch">
+                        <span class="footer-touch-label">Найти нас</span>
+                        <div class="footer-socials">
+                            <a href="#">TG</a>
+                            <a href="#">VK</a>
+                            <a href="#">IG</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-content-card">
+                <div class="footer-nav-cols">
+                    <div>
+                        <div class="footer-col-head">Навигация</div>
+                        <ul class="footer-col-list">
+                            <li><a href="catalog.html">Каталог</a></li>
+                            <li><a href="about.html">О бренде</a></li>
+                            <li><a href="blog.html">Блог</a></li>
+                            <li><a href="contacts.html">Контакты</a></li>
+                            <li><a href="index.html#faq">FAQ</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="footer-col-head">Компания</div>
+                        <ul class="footer-col-list">
+                            <li><a href="index.html#protocol">Методология</a></li>
+                            <li><a href="#">Кабинеты-партнёры</a></li>
+                            <li><a href="#">Доставка и&nbsp;оплата</a></li>
+                            <li><a href="#">Политика конфиденциальности</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-content-bottom">
+                    <div class="footer-copy">© 2026 Дикий Люкс. Все права защищены.</div>
+                    <div class="footer-cta">
+                        <div class="footer-cta-lead">Уход меняется ежедневно.</div>
+                        <div class="footer-cta-head">Будьте в&nbsp;курсе с&nbsp;Дикий Люкс.</div>
+                        <form class="footer-form" onsubmit="return false;">
+                            <input type="email" placeholder="Введите email">
+                            <button type="submit">Подписаться</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="footer-bottom"><span class="footer-copy">© 2026 Дикий Люкс. Магазин косметики Biologique Recherche.</span><div class="footer-socials"><a href="#">TG</a><a href="#">VK</a><a href="#">IG</a></div></div>
     </footer>
 
     <script>
         const tags = document.querySelectorAll('.blog-tag');
+        const cards = document.querySelectorAll('.blog-card');
+
+        function applyFilter(filter) {
+            cards.forEach(card => {
+                const cat = card.querySelector('.blog-meta .cat')?.textContent.trim() || '';
+                const visible = filter === 'all' || cat === filter;
+                card.style.display = visible ? '' : 'none';
+            });
+        }
+
         tags.forEach(t => t.addEventListener('click', () => {
             tags.forEach(b => b.classList.remove('is-active'));
             t.classList.add('is-active');
+            applyFilter(t.dataset.filter);
         }));
+
+        // Image-aware ambient glow: read the card's own background image into a CSS var
+        cards.forEach(card => {
+            const bg = card.style.backgroundImage;
+            if (bg) card.style.setProperty('--card-img', bg);
+        });
     </script>
 </body>
 </html>

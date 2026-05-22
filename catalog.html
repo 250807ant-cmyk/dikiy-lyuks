@@ -13,7 +13,7 @@
             background: #F2F1ED;
             min-height: 100vh;
             font-family: 'Inter', Helvetica, Arial, sans-serif;
-            overflow-x: hidden;
+            overflow-x: clip;     /* clip instead of hidden — preserves position:sticky on descendants */
             color: #0B0B0E;
         }
         ::-webkit-scrollbar { display: none; width: 0; height: 0; }
@@ -97,10 +97,8 @@
             margin: 0 auto;
         }
 
-        /* ===== CONCERN CATEGORIES (bento tiles) ===== */
+        /* ===== CONCERN CATEGORIES (bento tiles) — full-width, 66px edge padding ===== */
         .catalog-categories {
-            max-width: 1240px;
-            margin: 0 auto;
             padding: 0 66px;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -201,18 +199,29 @@
             transform: translate(4px, -4px);
         }
 
-        /* ===== SEARCH ===== */
+        /* ===== SEARCH — sticky under the navbar on scroll ===== */
         .catalog-search {
-            max-width: 1240px;
-            margin: 0 auto 24px;
-            padding: 0 66px;
+            position: sticky;
+            top: 67px;
+            z-index: 50;
+            margin: 0 0 24px;
+            padding: 16px 66px;
             display: flex;
             justify-content: center;
+            pointer-events: none;          /* transparent strip: only the pill is clickable */
+        }
+        .catalog-search > * { pointer-events: auto; }
+        .catalog-search-box {
+            transition: box-shadow 0.3s ease;
+        }
+        .catalog-search.is-stuck .catalog-search-box {
+            box-shadow: 0 10px 28px rgba(11, 11, 14, 0.10);
         }
         .catalog-search-box {
             position: relative;
             width: 100%;
             max-width: 520px;
+            border-radius: 999px;     /* match the input shape — keeps box-shadow rounded */
         }
         .catalog-search input {
             width: 100%;
@@ -279,8 +288,6 @@
             gap: 10px;
             flex-wrap: wrap;
             padding: 40px 66px 56px;
-            max-width: 1240px;
-            margin: 0 auto;
         }
         .catalog-filter {
             padding: 12px 26px;
@@ -306,10 +313,8 @@
             border-color: #0B0B0E;
         }
 
-        /* ===== GRID ===== */
+        /* ===== GRID — full-width, 66px edge padding ===== */
         .catalog-grid {
-            max-width: 1240px;
-            margin: 0 auto;
             padding: 0 66px 160px;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -412,58 +417,231 @@
         }
 
         /* ===== FOOTER ===== */
+        /* === FOOTER (Kresna-style, mirror of index.html) === */
         #footer {
-            background: #0B0B0E;
+            position: relative;
+            background: #1B3060;
+            padding: 280px 4.58vw 60px;
+            overflow: hidden;
             width: 100vw;
-            padding: 80px 66px 48px;
         }
-        .footer-cols {
+        .footer-reveal-text {
+            position: absolute;
+            top: 20px;
+            left: 4.58vw;
+            right: 4.58vw;
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(28px, 5vw, 92px);
+            font-weight: 400;
+            line-height: 1.05;
+            letter-spacing: -0.025em;
+            color: rgba(255,255,255,0.35);
+            margin: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .footer-stage {
+            position: relative;
+            z-index: 2;
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 40px;
-            padding-bottom: 60px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+            gap: 18px;
         }
-        .footer-col h4 {
-            font-size: 11px;
-            font-weight: 500;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.5);
-            margin-bottom: 20px;
+        .footer-brand-card {
+            background: #F2F1ED;
+            border-radius: 24px;
+            padding: 32px 32px 28px;
+            color: #0B0B0E;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 340px;
+            position: relative;
+            overflow: hidden;
         }
-        .footer-col a {
-            display: block;
-            font-size: 13px;
-            font-weight: 300;
-            color: rgba(255,255,255,0.7);
-            text-decoration: none;
-            line-height: 2;
-            transition: color 0.3s;
+        .footer-brand-card::after {
+            content: '';
+            position: absolute;
+            top: -40%;
+            right: -10%;
+            width: 60%;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(201,160,78,0.22), transparent 70%);
+            pointer-events: none;
         }
-        .footer-col a:hover { color: #FFFFFF; }
-        .footer-bottom {
+        .footer-brand-mark {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding-top: 32px;
+            gap: 12px;
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            position: relative;
+            z-index: 1;
+            color: #0B0B0E;
         }
-        .footer-copy {
-            font-size: 11px;
-            font-weight: 300;
-            color: rgba(255,255,255,0.35);
+        .footer-mark-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: #C9A04E;
+            border-radius: 8px;
+            color: #FFFFFF;
+            font-size: 16px;
         }
-        .footer-socials { display: flex; gap: 20px; }
+        .footer-tagline-block { position: relative; z-index: 1; }
+        .footer-tagline {
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.4;
+            color: #0B0B0E;
+            letter-spacing: -0.005em;
+            margin-bottom: 20px;
+        }
+        .footer-tagline .muted { color: rgba(11,11,14,0.5); }
+        .footer-touch {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .footer-touch-label {
+            font-style: italic;
+            font-weight: 400;
+            font-size: 15px;
+            color: rgba(11,11,14,0.65);
+            flex-shrink: 0;
+        }
+        .footer-socials {
+            display: flex;
+            gap: 8px;
+            padding: 0;
+            border: none;
+        }
         .footer-socials a {
-            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            background: rgba(11,11,14,0.08);
+            border-radius: 10px;
+            color: #0B0B0E;
+            font-size: 11px;
             font-weight: 500;
-            color: rgba(255,255,255,0.5);
+            letter-spacing: 0.05em;
             text-decoration: none;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            transition: color 0.3s;
+            transition: background 0.3s ease, color 0.3s ease;
+            line-height: 1;
         }
-        .footer-socials a:hover { color: #FFFFFF; }
+        .footer-socials a:hover { background: #29457C; color: #FFFFFF; }
+        .footer-content-card {
+            background: #FFFFFF;
+            border-radius: 24px;
+            padding: 32px 36px 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 340px;
+        }
+        .footer-nav-cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+        .footer-col-head {
+            font-style: italic;
+            font-weight: 400;
+            font-size: 14px;
+            color: #C9A04E;
+            margin-bottom: 22px;
+            letter-spacing: -0.005em;
+        }
+        .footer-col-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .footer-col-list a {
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            font-weight: 500;
+            color: #0B0B0E;
+            text-decoration: none;
+            line-height: 1.3;
+            display: inline-block;
+            transition: opacity 0.3s ease;
+        }
+        .footer-col-list a:hover { opacity: 0.55; }
+        .footer-content-bottom {
+            display: grid;
+            grid-template-columns: 1fr 1.4fr;
+            align-items: end;
+            gap: 32px;
+            margin-top: 32px;
+        }
+        .footer-copy {
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            color: rgba(11,11,14,0.5);
+            font-weight: 400;
+        }
+        .footer-cta { text-align: right; }
+        .footer-cta-lead {
+            font-size: 15px;
+            color: rgba(11,11,14,0.5);
+            font-weight: 400;
+            margin-bottom: 2px;
+        }
+        .footer-cta-head {
+            font-size: 17px;
+            font-weight: 600;
+            color: #0B0B0E;
+            margin-bottom: 14px;
+            letter-spacing: -0.005em;
+        }
+        .footer-form {
+            display: inline-flex;
+            align-items: center;
+            background: #F2F1ED;
+            border-radius: 999px;
+            padding: 5px;
+            width: 100%;
+            max-width: 420px;
+        }
+        .footer-form input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 11px 18px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: #0B0B0E;
+            outline: none;
+            min-width: 0;
+        }
+        .footer-form input::placeholder { color: rgba(11,11,14,0.4); }
+        .footer-form button {
+            background: #0B0B0E;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 999px;
+            padding: 11px 24px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.3s ease;
+        }
+        .footer-form button:hover { background: #29457C; }
 
         /* anim */
         .anim {
@@ -615,367 +793,384 @@
         <!-- ===== CLEANSERS ===== -->
         <a href="#" class="cat-card anim" data-cat="cleanser">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/lait-sr-510x375.jpg" alt="Lait S.R."></div>
-            <div class="cat-info"><div class="cat-tag">Очищение</div><div class="cat-name">Lait S.R.</div><div class="cat-bottom"><span class="cat-price">7 900&nbsp;₽<span class="vol">250&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Очищение</div><div class="cat-name">Lait S.R.</div><div class="cat-bottom"><span class="cat-price">10 400&nbsp;₽<span class="vol">250&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="cleanser">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/lait-ev-510x375.jpg" alt="Lait E.V."></div>
-            <div class="cat-info"><div class="cat-tag">Очищение</div><div class="cat-name">Lait E.V.</div><div class="cat-bottom"><span class="cat-price">8 700&nbsp;₽<span class="vol">250&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Очищение</div><div class="cat-name">Lait E.V.</div><div class="cat-bottom"><span class="cat-price">11 200&nbsp;₽<span class="vol">250&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="cleanser">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/lait-dermo-s-510x375.jpg" alt="Lait Dermo-S"></div>
-            <div class="cat-info"><div class="cat-tag">Очищение</div><div class="cat-name">Lait Dermo-S</div><div class="cat-bottom"><span class="cat-price">8 100&nbsp;₽<span class="vol">250&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Очищение</div><div class="cat-name">Lait Dermo-S</div><div class="cat-bottom"><span class="cat-price">10 600&nbsp;₽<span class="vol">250&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="cleanser">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/lait-vip-o2-510x375.jpg" alt="Lait VIP O²"></div>
-            <div class="cat-info"><div class="cat-tag">Очищение</div><div class="cat-name">Lait VIP O²</div><div class="cat-bottom"><span class="cat-price">5 700&nbsp;₽<span class="vol">150&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Очищение</div><div class="cat-name">Lait VIP O²</div><div class="cat-bottom"><span class="cat-price">8 200&nbsp;₽<span class="vol">150&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="cleanser">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/eau_micellaire_biosensible-510x375.webp" alt="Eau Micellaire Biosensible"></div>
-            <div class="cat-info"><div class="cat-tag">Очищение</div><div class="cat-name">Eau Micellaire Biosensible</div><div class="cat-bottom"><span class="cat-price">11 700&nbsp;₽<span class="vol">250&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Очищение</div><div class="cat-name">Eau Micellaire Biosensible</div><div class="cat-bottom"><span class="cat-price">14 200&nbsp;₽<span class="vol">250&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
 
         <!-- ===== LOTIONS ===== -->
         <a href="#" class="cat-card anim" data-cat="tonic">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/mc-110-1-510x375.jpg" alt="Lotion MC110"></div>
-            <div class="cat-info"><div class="cat-tag">Лосьон</div><div class="cat-name">Lotion MC110</div><div class="cat-bottom"><span class="cat-price">11 300&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Лосьон</div><div class="cat-name">Lotion MC110</div><div class="cat-bottom"><span class="cat-price">13 800&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="tonic">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/lotion-p50-150-510x375.jpg" alt="Lotion P50"></div>
-            <div class="cat-info"><div class="cat-tag">Лосьон</div><div class="cat-name">Lotion P50</div><div class="cat-bottom"><span class="cat-price">8 100&nbsp;₽<span class="vol">150&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Лосьон</div><div class="cat-name">Lotion P50</div><div class="cat-bottom"><span class="cat-price">10 600&nbsp;₽<span class="vol">150&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="tonic">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/lotion-p50v-510x375.jpg" alt="Lotion P50V"></div>
-            <div class="cat-info"><div class="cat-tag">Лосьон</div><div class="cat-name">Lotion P50V</div><div class="cat-bottom"><span class="cat-price">10 200&nbsp;₽<span class="vol">150&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Лосьон</div><div class="cat-name">Lotion P50V</div><div class="cat-bottom"><span class="cat-price">12 700&nbsp;₽<span class="vol">150&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="tonic">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/lotion-p50-pigm400-510x375.jpg" alt="Lotion P50 PIGM 400"></div>
-            <div class="cat-info"><div class="cat-tag">Лосьон</div><div class="cat-name">Lotion P50 PIGM 400</div><div class="cat-bottom"><span class="cat-price">9 100&nbsp;₽<span class="vol">150&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Лосьон</div><div class="cat-name">Lotion P50 PIGM 400</div><div class="cat-bottom"><span class="cat-price">11 600&nbsp;₽<span class="vol">150&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="tonic">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/lotion-p50w-510x375.jpg" alt="Lotion P50W"></div>
-            <div class="cat-info"><div class="cat-tag">Лосьон</div><div class="cat-name">Lotion P50W</div><div class="cat-bottom"><span class="cat-price">8 100&nbsp;₽<span class="vol">150&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Лосьон</div><div class="cat-name">Lotion P50W</div><div class="cat-bottom"><span class="cat-price">10 600&nbsp;₽<span class="vol">150&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="tonic">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/l_eauxygenante-510x375.jpg" alt="L'Eauxygénante"></div>
-            <div class="cat-info"><div class="cat-tag">Лосьон</div><div class="cat-name">L'Eauxygénante</div><div class="cat-bottom"><span class="cat-price">5 900&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Лосьон</div><div class="cat-name">L'Eauxygénante</div><div class="cat-bottom"><span class="cat-price">8 400&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
 
         <!-- ===== SERUMS ===== -->
         <a href="#" class="cat-card anim" data-cat="serum">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/serum-progeskin-510x375.jpg" alt="Serum Progeskin"></div>
-            <div class="cat-info"><div class="cat-tag">Сыворотка</div><div class="cat-name">Serum Progeskin</div><div class="cat-bottom"><span class="cat-price">15 800&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Сыворотка</div><div class="cat-name">Serum Progeskin</div><div class="cat-bottom"><span class="cat-price">18 300&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="serum">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/complexe_iribiol-510x375.jpg" alt="Serum Complexe Iribiol"></div>
-            <div class="cat-info"><div class="cat-tag">Сыворотка</div><div class="cat-name">Serum Complexe Iribiol</div><div class="cat-bottom"><span class="cat-price">10 600&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Сыворотка</div><div class="cat-name">Serum Complexe Iribiol</div><div class="cat-bottom"><span class="cat-price">13 100&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="serum">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/serum_extraits_tissulaires-510x375.jpg" alt="Serum Extraits Tissulaires"></div>
-            <div class="cat-info"><div class="cat-tag">Сыворотка</div><div class="cat-name">Serum Extraits Tissulaires</div><div class="cat-bottom"><span class="cat-price">11 200&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Сыворотка</div><div class="cat-name">Serum Extraits Tissulaires</div><div class="cat-bottom"><span class="cat-price">13 700&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="serum">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/serum_oligo_proteines_marines-510x375.jpg" alt="Serum Oligo-protéines Marines"></div>
-            <div class="cat-info"><div class="cat-tag">Сыворотка</div><div class="cat-name">Serum Oligo-protéines Marines</div><div class="cat-bottom"><span class="cat-price">11 200&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Сыворотка</div><div class="cat-name">Serum Oligo-protéines Marines</div><div class="cat-bottom"><span class="cat-price">13 700&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="serum">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/serum_vg_tensil-510x375.jpg" alt="Serum VG Tensil"></div>
-            <div class="cat-info"><div class="cat-tag">Сыворотка</div><div class="cat-name">Serum VG Tensil</div><div class="cat-bottom"><span class="cat-price">13 200&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Сыворотка</div><div class="cat-name">Serum VG Tensil</div><div class="cat-bottom"><span class="cat-price">15 700&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="serum">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/serum_elastine-510x375.jpg" alt="Serum Elastine Authentique"></div>
-            <div class="cat-info"><div class="cat-tag">Сыворотка</div><div class="cat-name">Serum Elastine Authentique</div><div class="cat-bottom"><span class="cat-price">11 200&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Сыворотка</div><div class="cat-name">Serum Elastine Authentique</div><div class="cat-bottom"><span class="cat-price">13 700&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="serum">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/serum_amniotique-510x375.jpg" alt="Serum Amniotique VG"></div>
-            <div class="cat-info"><div class="cat-tag">Сыворотка</div><div class="cat-name">Serum Amniotique VG</div><div class="cat-bottom"><span class="cat-price">15 200&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Сыворотка</div><div class="cat-name">Serum Amniotique VG</div><div class="cat-bottom"><span class="cat-price">17 700&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="serum">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/serum_a_glyca-510x375.jpg" alt="Serum A-Glyca"></div>
-            <div class="cat-info"><div class="cat-tag">Сыворотка</div><div class="cat-name">Serum A-Glyca</div><div class="cat-bottom"><span class="cat-price">15 200&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Сыворотка</div><div class="cat-name">Serum A-Glyca</div><div class="cat-bottom"><span class="cat-price">17 700&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="serum">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/collagene_originel-510x375.jpg" alt="Serum Collagène Originel"></div>
-            <div class="cat-info"><div class="cat-tag">Сыворотка</div><div class="cat-name">Serum Collagène Originel</div><div class="cat-bottom"><span class="cat-price">15 500&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Сыворотка</div><div class="cat-name">Serum Collagène Originel</div><div class="cat-bottom"><span class="cat-price">18 000&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="serum">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/serum_liposmose-510x375.jpg" alt="Serum Liposmose"></div>
-            <div class="cat-info"><div class="cat-tag">Сыворотка</div><div class="cat-name">Serum Liposmose</div><div class="cat-bottom"><span class="cat-price">11 700&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Сыворотка</div><div class="cat-name">Serum Liposmose</div><div class="cat-bottom"><span class="cat-price">14 200&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="serum">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/iso-placenta-510x375.jpg" alt="Serum ISO-Placenta"></div>
-            <div class="cat-info"><div class="cat-tag">Сыворотка</div><div class="cat-name">Serum ISO-Placenta</div><div class="cat-bottom"><span class="cat-price">11 200&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Сыворотка</div><div class="cat-name">Serum ISO-Placenta</div><div class="cat-bottom"><span class="cat-price">13 700&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="serum">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/colostrum_vg-510x375.jpg" alt="Serum Colostrum VG"></div>
-            <div class="cat-info"><div class="cat-tag">Сыворотка</div><div class="cat-name">Serum Colostrum VG</div><div class="cat-bottom"><span class="cat-price">15 800&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Сыворотка</div><div class="cat-name">Serum Colostrum VG</div><div class="cat-bottom"><span class="cat-price">18 300&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="serum">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/serum_dermopore-510x375.jpg" alt="Sérum Dermopore"></div>
-            <div class="cat-info"><div class="cat-tag">Сыворотка</div><div class="cat-name">Sérum Dermopore</div><div class="cat-bottom"><span class="cat-price">12 200&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Сыворотка</div><div class="cat-name">Sérum Dermopore</div><div class="cat-bottom"><span class="cat-price">14 700&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
 
         <!-- ===== CREAMS ===== -->
         <a href="#" class="cat-card anim" data-cat="cream">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2026/03/creme-mec-510x375.jpg" alt="Crème M.E.C."></div>
-            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème M.E.C.</div><div class="cat-bottom"><span class="cat-price">15 500&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème M.E.C.</div><div class="cat-bottom"><span class="cat-price">18 000&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="cream">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/creme-masque-vernix-vg-510x375.jpg" alt="Crème Masque Vernix VG"></div>
-            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème Masque Vernix VG</div><div class="cat-bottom"><span class="cat-price">15 800&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème Masque Vernix VG</div><div class="cat-bottom"><span class="cat-price">18 300&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="cream">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/crvgd-photoroom-510x375.jpg" alt="Crème VG Derm"></div>
-            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème VG Derm</div><div class="cat-bottom"><span class="cat-price">10 400&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème VG Derm</div><div class="cat-bottom"><span class="cat-price">12 900&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="cream">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/creme-pigme-400-510x375.jpg" alt="Crème PIGM 400"></div>
-            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème PIGM 400</div><div class="cat-bottom"><span class="cat-price">20 800&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème PIGM 400</div><div class="cat-bottom"><span class="cat-price">23 300&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="cream">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/cripla-photoroom-510x375.jpg" alt="Crème ISO-Placenta"></div>
-            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème ISO-Placenta</div><div class="cat-bottom"><span class="cat-price">9 900&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème ISO-Placenta</div><div class="cat-bottom"><span class="cat-price">12 400&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="cream">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/crelas-photoroom-510x375.jpg" alt="Crème Elastine"></div>
-            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème Elastine</div><div class="cat-bottom"><span class="cat-price">9 200&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème Elastine</div><div class="cat-bottom"><span class="cat-price">11 700&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="cream">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/crhyd-photoroom-510x375.jpg" alt="Crème Hydravit'S"></div>
-            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème Hydravit'S</div><div class="cat-bottom"><span class="cat-price">10 200&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème Hydravit'S</div><div class="cat-bottom"><span class="cat-price">12 700&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="cream">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/crfru-photoroom-510x375.jpg" alt="Crème aux Acides de Fruits"></div>
-            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème aux Acides de Fruits</div><div class="cat-bottom"><span class="cat-price">9 200&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème aux Acides de Fruits</div><div class="cat-bottom"><span class="cat-price">11 700&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="cream">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/creme-dermo-rl-510x375.jpg" alt="Crème Dermo-RL"></div>
-            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème Dermo-RL</div><div class="cat-bottom"><span class="cat-price">16 900&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème Dermo-RL</div><div class="cat-bottom"><span class="cat-price">19 400&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="cream">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/creme-biofixine-510x375.jpg" alt="Crème Biofixine"></div>
-            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème Biofixine</div><div class="cat-bottom"><span class="cat-price">22 800&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème Biofixine</div><div class="cat-bottom"><span class="cat-price">25 300&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="cream">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/creme-pto-metamorphique-510x375.jpg" alt="Crème PTO Métamorphique"></div>
-            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème PTO Métamorphique</div><div class="cat-bottom"><span class="cat-price">15 800&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème PTO Métamorphique</div><div class="cat-bottom"><span class="cat-price">18 300&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="cream">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/creme-splendide-510x375.jpg" alt="Crème Splendide"></div>
-            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème Splendide</div><div class="cat-bottom"><span class="cat-price">12 900&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème Splendide</div><div class="cat-bottom"><span class="cat-price">15 400&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="cream">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/crder-photoroom-510x375.jpg" alt="Crème Dermopurifiante"></div>
-            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème Dermopurifiante</div><div class="cat-bottom"><span class="cat-price">10 200&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème Dermopurifiante</div><div class="cat-bottom"><span class="cat-price">12 700&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="cream">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/creme-verte-espoir-510x375.jpg" alt="Crème V. Espoir"></div>
-            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème V. Espoir</div><div class="cat-bottom"><span class="cat-price">11 200&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème V. Espoir</div><div class="cat-bottom"><span class="cat-price">13 700&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="cream">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/creme-collagene-510x375.jpg" alt="Crème Collagène"></div>
-            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème Collagène</div><div class="cat-bottom"><span class="cat-price">9 800&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème Collagène</div><div class="cat-bottom"><span class="cat-price">12 300&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="cream">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/grande-creme-510x375.jpg" alt="La Grande Crème"></div>
-            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">La Grande Crème</div><div class="cat-bottom"><span class="cat-price">50 000&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">La Grande Crème</div><div class="cat-bottom"><span class="cat-price">52 500&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="cream">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/creme-grand-millesime-510x375.jpg" alt="Crème Grand Millésime"></div>
-            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème Grand Millésime</div><div class="cat-bottom"><span class="cat-price">15 800&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème Grand Millésime</div><div class="cat-bottom"><span class="cat-price">18 300&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="cream">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/msr-h-510x375.jpg" alt="Crème MSR-H"></div>
-            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème MSR-H</div><div class="cat-bottom"><span class="cat-price">29 500&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème MSR-H</div><div class="cat-bottom"><span class="cat-price">32 000&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="cream">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/creme-vip-o2-510x375.jpg" alt="Crème VIP O²"></div>
-            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème VIP O²</div><div class="cat-bottom"><span class="cat-price">15 800&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Crème VIP O²</div><div class="cat-bottom"><span class="cat-price">18 300&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="cream">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/creme-contour-des-yeux-biosensible-510x375.jpg" alt="Crème Contour des Yeux Biosensible"></div>
-            <div class="cat-info"><div class="cat-tag">Крем для глаз</div><div class="cat-name">Contour des Yeux Biosensible</div><div class="cat-bottom"><span class="cat-price">10 500&nbsp;₽<span class="vol">15&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Крем для глаз</div><div class="cat-name">Contour des Yeux Biosensible</div><div class="cat-bottom"><span class="cat-price">13 000&nbsp;₽<span class="vol">15&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="cream">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/creme-contour-des-yeux-biofixine-510x375.jpg" alt="Crème Contour Yeux Biofixine"></div>
-            <div class="cat-info"><div class="cat-tag">Крем для глаз</div><div class="cat-name">Contour Yeux et Lèvres Biofixine</div><div class="cat-bottom"><span class="cat-price">12 900&nbsp;₽<span class="vol">15&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Крем для глаз</div><div class="cat-name">Contour Yeux et Lèvres Biofixine</div><div class="cat-bottom"><span class="cat-price">15 400&nbsp;₽<span class="vol">15&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="cream">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/crcyvo215-pdp-btoc-niv1-id-134523-photoroom-510x375.jpg" alt="Crème Contour Yeux VIP O²"></div>
-            <div class="cat-info"><div class="cat-tag">Крем для глаз</div><div class="cat-name">Contour des Yeux VIP O²</div><div class="cat-bottom"><span class="cat-price">10 500&nbsp;₽<span class="vol">15&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Крем для глаз</div><div class="cat-name">Contour des Yeux VIP O²</div><div class="cat-bottom"><span class="cat-price">13 000&nbsp;₽<span class="vol">15&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
 
         <!-- ===== MASKS (Masque Bain de Plantes excluded — shown in user's photo) ===== -->
         <a href="#" class="cat-card anim" data-cat="mask">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/biomagic-mask-510x375.jpg" alt="Biomagic Masque"></div>
-            <div class="cat-info"><div class="cat-tag">Маска</div><div class="cat-name">Biomagic Masque</div><div class="cat-bottom"><span class="cat-price">15 300&nbsp;₽<span class="vol">100&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Маска</div><div class="cat-name">Biomagic Masque</div><div class="cat-bottom"><span class="cat-price">17 800&nbsp;₽<span class="vol">100&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="mask">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/masque-biofixine-510x375.jpg" alt="Masque Biofixine"></div>
-            <div class="cat-info"><div class="cat-tag">Маска</div><div class="cat-name">Masque Biofixine</div><div class="cat-bottom"><span class="cat-price">9 200&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Маска</div><div class="cat-name">Masque Biofixine</div><div class="cat-bottom"><span class="cat-price">11 700&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="mask">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/masque-vip-o2-510x375.jpg" alt="Masque VIP O²"></div>
-            <div class="cat-info"><div class="cat-tag">Маска</div><div class="cat-name">Masque VIP O²</div><div class="cat-bottom"><span class="cat-price">15 300&nbsp;₽<span class="vol">100&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Маска</div><div class="cat-name">Masque VIP O²</div><div class="cat-bottom"><span class="cat-price">17 800&nbsp;₽<span class="vol">100&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="mask">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/masque-visolastine-plus-510x375.jpg" alt="Masque Visolastine +"></div>
-            <div class="cat-info"><div class="cat-tag">Маска</div><div class="cat-name">Masque Visolastine +</div><div class="cat-bottom"><span class="cat-price">9 800&nbsp;₽<span class="vol">100&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Маска</div><div class="cat-name">Masque Visolastine +</div><div class="cat-bottom"><span class="cat-price">12 300&nbsp;₽<span class="vol">100&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="mask">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/masque-biosensible-510x375.jpg" alt="Masque Biosensible"></div>
-            <div class="cat-info"><div class="cat-tag">Маска</div><div class="cat-name">Masque Biosensible</div><div class="cat-bottom"><span class="cat-price">7 800&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Маска</div><div class="cat-name">Masque Biosensible</div><div class="cat-bottom"><span class="cat-price">10 300&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="mask">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/masque-vivant-510x375.jpg" alt="Masque Vivant"></div>
-            <div class="cat-info"><div class="cat-tag">Маска</div><div class="cat-name">Masque Vivant</div><div class="cat-bottom"><span class="cat-price">9 900&nbsp;₽<span class="vol">100&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Маска</div><div class="cat-name">Masque Vivant</div><div class="cat-bottom"><span class="cat-price">12 400&nbsp;₽<span class="vol">100&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
 
         <!-- ===== BODY ===== -->
         <a href="#" class="cat-card anim" data-cat="body">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2025/06/pigmcible-510x375.jpg" alt="Cible PIGM 400"></div>
-            <div class="cat-info"><div class="cat-tag">Тело · Пигментация</div><div class="cat-name">Cible PIGM 400</div><div class="cat-bottom"><span class="cat-price">11 800&nbsp;₽<span class="vol">15&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Тело · Пигментация</div><div class="cat-name">Cible PIGM 400</div><div class="cat-bottom"><span class="cat-price">14 300&nbsp;₽<span class="vol">15&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="body">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/lop5c-photoroom-510x375.jpg" alt="Lotion P50 Corps"></div>
-            <div class="cat-info"><div class="cat-tag">Тело</div><div class="cat-name">Lotion P50 Corps</div><div class="cat-bottom"><span class="cat-price">10 800&nbsp;₽<span class="vol">250&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Тело</div><div class="cat-name">Lotion P50 Corps</div><div class="cat-bottom"><span class="cat-price">13 300&nbsp;₽<span class="vol">250&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="body">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/gomp5c-photoroom-510x375.jpg" alt="Gommage P50 Corps"></div>
-            <div class="cat-info"><div class="cat-tag">Тело</div><div class="cat-name">Gommage P50 Corps</div><div class="cat-bottom"><span class="cat-price">12 800&nbsp;₽<span class="vol">200&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Тело</div><div class="cat-name">Gommage P50 Corps</div><div class="cat-bottom"><span class="cat-price">15 300&nbsp;₽<span class="vol">200&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="body">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/huder-photoroom-510x375.jpg" alt="Huile Dermotonique"></div>
-            <div class="cat-info"><div class="cat-tag">Тело · Масло</div><div class="cat-name">Huile Dermotonique</div><div class="cat-bottom"><span class="cat-price">10 200&nbsp;₽<span class="vol">100&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Тело · Масло</div><div class="cat-name">Huile Dermotonique</div><div class="cat-bottom"><span class="cat-price">12 700&nbsp;₽<span class="vol">100&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
 
         <!-- ===== SUN CARE ===== -->
         <a href="#" class="cat-card anim" data-cat="sun">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/prouv-510x375.jpg" alt="Protection U.V. SPF 25"></div>
-            <div class="cat-info"><div class="cat-tag">Sun Care</div><div class="cat-name">Protection U.V. SPF 25</div><div class="cat-bottom"><span class="cat-price">13 600&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Sun Care</div><div class="cat-name">Protection U.V. SPF 25</div><div class="cat-bottom"><span class="cat-price">16 100&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="sun">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/prouv50x-510x375.jpg" alt="Protection U.V. SPF 50"></div>
-            <div class="cat-info"><div class="cat-tag">Sun Care</div><div class="cat-name">Protection U.V. SPF 50</div><div class="cat-bottom"><span class="cat-price">9 800&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Sun Care</div><div class="cat-name">Protection U.V. SPF 50</div><div class="cat-bottom"><span class="cat-price">12 300&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
 
         <!-- ===== FINISHING SERUMS ===== -->
         <a href="#" class="cat-card anim" data-cat="serum">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/serum-fluide-vip-02-510x375.jpg" alt="Fluide VIP O²"></div>
-            <div class="cat-info"><div class="cat-tag">Сыворотка завершающая</div><div class="cat-name">Fluide VIP O²</div><div class="cat-bottom"><span class="cat-price">25 200&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Сыворотка завершающая</div><div class="cat-name">Fluide VIP O²</div><div class="cat-bottom"><span class="cat-price">27 700&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="serum">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/le-grand-serum-510x375.jpg" alt="Le Grand Sérum"></div>
-            <div class="cat-info"><div class="cat-tag">Сыворотка завершающая</div><div class="cat-name">Le Grand Sérum</div><div class="cat-bottom"><span class="cat-price">45 000&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Сыворотка завершающая</div><div class="cat-name">Le Grand Sérum</div><div class="cat-bottom"><span class="cat-price">47 500&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="serum">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/complexe-royal-510x375.jpg" alt="Complexe Royal"></div>
-            <div class="cat-info"><div class="cat-tag">Сыворотка завершающая</div><div class="cat-name">Complexe Royal</div><div class="cat-bottom"><span class="cat-price">24 200&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Сыворотка завершающая</div><div class="cat-name">Complexe Royal</div><div class="cat-bottom"><span class="cat-price">26 700&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="serum">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/serum-grand-millesime-510x375.jpg" alt="Sérum Grand Millésime"></div>
-            <div class="cat-info"><div class="cat-tag">Сыворотка завершающая</div><div class="cat-name">Sérum Grand Millésime</div><div class="cat-bottom"><span class="cat-price">27 200&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Сыворотка завершающая</div><div class="cat-name">Sérum Grand Millésime</div><div class="cat-bottom"><span class="cat-price">29 700&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="serum">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/serum-yall-510x375.jpg" alt="Sérum Yall-O²"></div>
-            <div class="cat-info"><div class="cat-tag">Сыворотка завершающая</div><div class="cat-name">Sérum Yall-O²</div><div class="cat-bottom"><span class="cat-price">27 700&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Сыворотка завершающая</div><div class="cat-name">Sérum Yall-O²</div><div class="cat-bottom"><span class="cat-price">30 200&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="serum">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/silk-plus-510x375.jpg" alt="Silk Plus"></div>
-            <div class="cat-info"><div class="cat-tag">Сыворотка завершающая</div><div class="cat-name">Silk Plus</div><div class="cat-bottom"><span class="cat-price">20 900&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Сыворотка завершающая</div><div class="cat-name">Silk Plus</div><div class="cat-bottom"><span class="cat-price">23 400&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
 
         <!-- ===== SPECIAL SERUMS (Matriciel excluded — in photo) ===== -->
         <a href="#" class="cat-card anim" data-cat="serum">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/serum-biosensible-510x375.jpg" alt="Sérum Biosensible"></div>
-            <div class="cat-info"><div class="cat-tag">Сыворотка специальная</div><div class="cat-name">Sérum Biosensible</div><div class="cat-bottom"><span class="cat-price">13 200&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Сыворотка специальная</div><div class="cat-name">Sérum Biosensible</div><div class="cat-bottom"><span class="cat-price">15 700&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="serum">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/serum-tewl-510x375.jpg" alt="Sérum T.E.W.L."></div>
-            <div class="cat-info"><div class="cat-tag">Сыворотка специальная</div><div class="cat-name">Sérum T.E.W.L.</div><div class="cat-bottom"><span class="cat-price">6 800&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Сыворотка специальная</div><div class="cat-name">Sérum T.E.W.L.</div><div class="cat-bottom"><span class="cat-price">9 300&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="serum">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/serum-erythros-510x375.jpg" alt="Sérum Erythros"></div>
-            <div class="cat-info"><div class="cat-tag">Сыворотка специальная</div><div class="cat-name">Sérum Erythros</div><div class="cat-bottom"><span class="cat-price">13 500&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Сыворотка специальная</div><div class="cat-name">Sérum Erythros</div><div class="cat-bottom"><span class="cat-price">16 000&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="serum">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/serum-pigm400-510x375.jpg" alt="Sérum PIGM 400"></div>
-            <div class="cat-info"><div class="cat-tag">Сыворотка специальная</div><div class="cat-name">Sérum PIGM 400</div><div class="cat-bottom"><span class="cat-price">20 900&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Сыворотка специальная</div><div class="cat-name">Sérum PIGM 400</div><div class="cat-bottom"><span class="cat-price">23 400&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
 
         <!-- ===== EYE CARE ===== -->
         <a href="#" class="cat-card anim" data-cat="eye">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/eye-concealer-1-510x375.jpg" alt="Eye Care Concealer №1"></div>
-            <div class="cat-info"><div class="cat-tag">Глаза · Консилер</div><div class="cat-name">Eye Care Concealer №1</div><div class="cat-bottom"><span class="cat-price">7 200&nbsp;₽<span class="vol">8&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Глаза · Консилер</div><div class="cat-name">Eye Care Concealer №1</div><div class="cat-bottom"><span class="cat-price">9 700&nbsp;₽<span class="vol">8&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="#" class="cat-card anim" data-cat="eye">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/eye-concealer-2-510x375.jpg" alt="Eye Care Concealer №2"></div>
-            <div class="cat-info"><div class="cat-tag">Глаза · Консилер</div><div class="cat-name">Eye Care Concealer №2</div><div class="cat-bottom"><span class="cat-price">7 200&nbsp;₽<span class="vol">8&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Глаза · Консилер</div><div class="cat-name">Eye Care Concealer №2</div><div class="cat-bottom"><span class="cat-price">9 700&nbsp;₽<span class="vol">8&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
 
         <!-- ===== NEW FROM EXCEL ===== -->
         <a href="product.html#gel-adn" class="cat-card anim" data-cat="cream">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/gel-adn-silkgen-510x375.jpg" alt="Gel ADN Silkgen"></div>
-            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Gel ADN Silkgen</div><div class="cat-bottom"><span class="cat-price">16 900&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Gel ADN Silkgen</div><div class="cat-bottom"><span class="cat-price">19 400&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="product.html#cr-emgel-bio" class="cat-card anim" data-cat="cream">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/emulsion-gel-biosensible-510x375.jpg" alt="Émulsion Gel Biosensible"></div>
-            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Émulsion Gel Biosensible</div><div class="cat-bottom"><span class="cat-price">15 500&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Émulsion Gel Biosensible</div><div class="cat-bottom"><span class="cat-price">18 000&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="product.html#cr-emgel-sr" class="cat-card anim" data-cat="cream">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/emulsion-gel-biosensible-sr-510x375.jpg" alt="Émulsion Gel Biosensible S.R."></div>
-            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Émulsion Gel Biosensible S.R.</div><div class="cat-bottom"><span class="cat-price">15 800&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Émulsion Gel Biosensible S.R.</div><div class="cat-bottom"><span class="cat-price">18 300&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="product.html#cr-emor-face" class="cat-card anim" data-cat="cream">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/emulsion-originelle-reg-510x375.jpg" alt="Émulsion Originelle Régénérante"></div>
-            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Émulsion Originelle Régénérante</div><div class="cat-bottom"><span class="cat-price">15 800&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Крем</div><div class="cat-name">Émulsion Originelle Régénérante</div><div class="cat-bottom"><span class="cat-price">18 300&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="product.html#sse-matriciel-face" class="cat-card anim" data-cat="serum">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/05/semat-photoroom-510x375.jpg" alt="Sérum Matriciel Visage"></div>
-            <div class="cat-info"><div class="cat-tag">Сыворотка</div><div class="cat-name">Sérum Matriciel Visage</div><div class="cat-bottom"><span class="cat-price">21 800&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Сыворотка</div><div class="cat-name">Sérum Matriciel Visage</div><div class="cat-bottom"><span class="cat-price">24 300&nbsp;₽<span class="vol">30&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
         <a href="product.html#cr-grande-refill" class="cat-card anim" data-cat="cream">
             <div class="cat-img"><img src="https://profilpro.ru/wp-content/uploads/2024/04/grande-creme-510x375.jpg" alt="La Grande Crème Refill"></div>
-            <div class="cat-info"><div class="cat-tag">Крем · Refill</div><div class="cat-name">La Grande Crème Refill</div><div class="cat-bottom"><span class="cat-price">34 000&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
+            <div class="cat-info"><div class="cat-tag">Крем · Refill</div><div class="cat-name">La Grande Crème Refill</div><div class="cat-bottom"><span class="cat-price">36 500&nbsp;₽<span class="vol">50&nbsp;мл</span></span><span class="cat-btn">В корзину</span></div></div>
         </a>
 
     </section>
 
     <footer id="footer">
-        <div class="footer-cols">
-            <div class="footer-col">
-                <h4>Каталог</h4>
-                <a href="catalog.html">Тоники и лосьоны</a>
-                <a href="catalog.html">Сыворотки</a>
-                <a href="catalog.html">Кремы для лица</a>
-                <a href="catalog.html">Маски</a>
+        <h2 class="footer-reveal-text" aria-hidden="true">Дикий Люкс.<br>Косметология&nbsp;Парижа.</h2>
+        <div class="footer-stage">
+            <div class="footer-brand-card">
+                <div class="footer-brand-mark">
+                    <span class="footer-mark-icon">✦</span>
+                    <span>Дикий Люкс</span>
+                </div>
+                <div class="footer-tagline-block">
+                    <p class="footer-tagline">Косметология Biologique&nbsp;Recherche. <span class="muted">Прямые поставки в&nbsp;Россию с&nbsp;2026&nbsp;года.</span></p>
+                    <div class="footer-touch">
+                        <span class="footer-touch-label">Найти нас</span>
+                        <div class="footer-socials">
+                            <a href="#">TG</a>
+                            <a href="#">VK</a>
+                            <a href="#">IG</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="footer-col">
-                <h4>Компания</h4>
-                <a href="about.html">О бренде</a>
-                <a href="index.html#protocol">Методология</a>
-                <a href="blog.html">Блог</a>
-                <a href="#">Кабинеты-партнёры</a>
-            </div>
-            <div class="footer-col">
-                <h4>Помощь</h4>
-                <a href="#">Доставка</a>
-                <a href="#">Оплата</a>
-                <a href="#">Возврат</a>
-                <a href="index.html#faq">FAQ</a>
-            </div>
-            <div class="footer-col">
-                <h4>Контакты</h4>
-                <a href="mailto:hello@biologique-recherche.ru">hello@biologique-recherche.ru</a>
-                <a href="tel:+74951234567">+7 (495) 123-45-67</a>
-                <a href="#">Москва, ул. Пример, 1</a>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <span class="footer-copy">© 2026 Дикий Люкс. Магазин косметики Biologique Recherche.</span>
-            <div class="footer-socials">
-                <a href="#">TG</a>
-                <a href="#">VK</a>
-                <a href="#">IG</a>
+            <div class="footer-content-card">
+                <div class="footer-nav-cols">
+                    <div>
+                        <div class="footer-col-head">Навигация</div>
+                        <ul class="footer-col-list">
+                            <li><a href="catalog.html">Каталог</a></li>
+                            <li><a href="about.html">О бренде</a></li>
+                            <li><a href="blog.html">Блог</a></li>
+                            <li><a href="contacts.html">Контакты</a></li>
+                            <li><a href="index.html#faq">FAQ</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="footer-col-head">Компания</div>
+                        <ul class="footer-col-list">
+                            <li><a href="index.html#protocol">Методология</a></li>
+                            <li><a href="#">Кабинеты-партнёры</a></li>
+                            <li><a href="#">Доставка и&nbsp;оплата</a></li>
+                            <li><a href="#">Политика конфиденциальности</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-content-bottom">
+                    <div class="footer-copy">© 2026 Дикий Люкс. Все права защищены.</div>
+                    <div class="footer-cta">
+                        <div class="footer-cta-lead">Уход меняется ежедневно.</div>
+                        <div class="footer-cta-head">Будьте в&nbsp;курсе с&nbsp;Дикий Люкс.</div>
+                        <form class="footer-form" onsubmit="return false;">
+                            <input type="email" placeholder="Введите email">
+                            <button type="submit">Подписаться</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </footer>
@@ -1053,6 +1248,24 @@
             });
         }, { threshold: 0.15 });
         document.querySelectorAll('.anim').forEach(el => observer.observe(el));
+
+        // Sticky search shadow when pinned to navbar
+        const searchBar = document.querySelector('.catalog-search');
+        if (searchBar) {
+            let stuckTicking = false;
+            const STICKY_TOP = 67;
+            const handleScroll = () => {
+                if (stuckTicking) return;
+                stuckTicking = true;
+                requestAnimationFrame(() => {
+                    const rect = searchBar.getBoundingClientRect();
+                    searchBar.classList.toggle('is-stuck', Math.round(rect.top) <= STICKY_TOP);
+                    stuckTicking = false;
+                });
+            };
+            window.addEventListener('scroll', handleScroll, { passive: true });
+            handleScroll();
+        }
     </script>
 </body>
 </html>
