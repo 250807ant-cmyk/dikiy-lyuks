@@ -1142,20 +1142,9 @@
             background: #F2F1ED;
             padding: 0;
             position: relative;
-            overflow: hidden;
-        }
-        #testimonials::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: url('maison BR.png') center/cover no-repeat;
-            opacity: 0.6;
-            z-index: 0;
-            pointer-events: none;
         }
         .ts-track {
             position: relative;
-            z-index: 1;
             height: 340vh;
         }
         .ts-pin {
@@ -1167,7 +1156,18 @@
             align-items: center;
             justify-content: center;
             padding: 60px 0 40px;
+            overflow: hidden;
         }
+        .ts-pin::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('maison BR.png') center/cover no-repeat;
+            opacity: 0.6;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .ts-pin > * { position: relative; z-index: 1; }
         .ts-eyebrow {
             font-family: 'Inter', sans-serif;
             font-size: 14px;
