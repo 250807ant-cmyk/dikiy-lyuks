@@ -249,7 +249,9 @@
             color: #FFFFFF;
             margin-bottom: 32px;
             white-space: nowrap;
-            max-width: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
         }
         .ab-strip-title sup {
             font-size: 0.32em;
@@ -300,250 +302,6 @@
             color: rgba(11,11,14,0.65);
         }
         .ab-spread-cap strong { color: #0B0B0E; font-weight: 500; }
-
-        /* === III + V. STORY (Social Club: фото + ОГРОМНЫЙ золотой заголовок поверх + info-блок) === */
-        .ab-story {
-            padding: 60px 0;
-        }
-        .ab-story-card {
-            background: #1B3060;
-            border-radius: 32px;
-            overflow: hidden;
-            color: #FFFFFF;
-        }
-        .ab-story-hero {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 16/10;
-            overflow: hidden;
-        }
-        .ab-story-hero img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-        .ab-story-hero::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, rgba(11,11,14,0.15) 0%, rgba(11,11,14,0) 30%, rgba(11,11,14,0) 50%, rgba(11,11,14,0.7) 100%);
-            pointer-events: none;
-        }
-        .ab-story-hero-top {
-            position: absolute;
-            top: 36px;
-            left: 48px;
-            right: 48px;
-            z-index: 2;
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            gap: 32px;
-        }
-        .ab-story-intro {
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            font-weight: 400;
-            color: rgba(255,255,255,0.9);
-            line-height: 1.45;
-            max-width: 280px;
-            margin: 0;
-        }
-        .ab-story-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255,255,255,0.95);
-            color: #0B0B0E;
-            font-family: 'Inter', sans-serif;
-            font-size: 12px;
-            font-weight: 500;
-            padding: 11px 18px;
-            border-radius: 999px;
-            text-decoration: none;
-            white-space: nowrap;
-            transition: background 0.3s;
-        }
-        .ab-story-pill:hover { background: #C9A04E; color: #FFFFFF; }
-        .ab-story-pill::after { content: '→'; }
-        .ab-story-hero-bottom {
-            position: absolute;
-            left: 48px;
-            right: 48px;
-            bottom: 40px;
-            z-index: 2;
-        }
-        .ab-story-h {
-            font-family: 'Inter', sans-serif;
-            font-size: clamp(56px, 9.2vw, 158px);
-            font-weight: 700;
-            line-height: 0.9;
-            letter-spacing: -0.045em;
-            color: #C9A04E;
-            text-transform: none;
-            margin: 0;
-        }
-        .ab-story-h em {
-            font-style: italic;
-            font-weight: 700;
-        }
-        .ab-story-h sup {
-            font-size: 0.22em;
-            font-weight: 500;
-            margin-left: 8px;
-            vertical-align: super;
-            font-style: normal;
-            color: rgba(201,160,78,0.7);
-        }
-        .ab-story-info {
-            padding: 56px 52px 60px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: end;
-        }
-        .ab-story-info-body p {
-            font-family: 'Inter', sans-serif;
-            font-size: 16px;
-            font-weight: 400;
-            color: rgba(255,255,255,0.88);
-            line-height: 1.5;
-            margin-bottom: 16px;
-            max-width: 560px;
-        }
-        .ab-story-info-body p:last-of-type { margin-bottom: 40px; }
-        .ab-story-info-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 32px;
-            max-width: 560px;
-        }
-        .ab-story-info-stat .num {
-            font-family: 'Inter', sans-serif;
-            font-size: 30px;
-            font-weight: 700;
-            line-height: 1;
-            color: #C9A04E;
-            letter-spacing: -0.03em;
-            margin-bottom: 6px;
-            display: block;
-        }
-        .ab-story-info-stat .lbl {
-            font-family: 'Inter', sans-serif;
-            font-size: 12px;
-            font-weight: 400;
-            color: rgba(255,255,255,0.55);
-            line-height: 1.4;
-            display: block;
-        }
-
-        /* === IV. QUOTE (огромный bold с italic, по референсу Arvede "Our goal") === */
-        .ab-quote {
-            padding: 140px 0 160px;
-        }
-        .ab-quote .container {
-            max-width: 1180px;
-            text-align: center;
-        }
-        .ab-quote-text {
-            font-family: 'Inter', sans-serif;
-            font-size: clamp(44px, 6.4vw, 100px);
-            font-weight: 700;
-            line-height: 1.06;
-            letter-spacing: -0.04em;
-            color: #29457C;
-            margin-bottom: 56px;
-            text-transform: none;
-        }
-        .ab-quote-text em {
-            font-style: italic;
-            font-weight: 700;
-            color: #C9A04E;
-        }
-        .ab-quote-text .muted {
-            color: rgba(41,69,124,0.4);
-        }
-        .ab-quote-desc {
-            font-family: 'Inter', sans-serif;
-            font-size: 15px;
-            font-weight: 400;
-            color: rgba(11,11,14,0.65);
-            line-height: 1.65;
-            max-width: 460px;
-            margin: 0 auto 32px;
-        }
-        .ab-quote-by {
-            font-family: 'Inter', sans-serif;
-            font-size: 10px;
-            font-weight: 500;
-            letter-spacing: 0.2em;
-            color: rgba(11,11,14,0.35);
-            text-transform: uppercase;
-        }
-
-        /* === V. БУТИК — нумерованный список === */
-        .ab-store {
-            padding: 140px 0;
-        }
-        .ab-store .container .row {
-            margin-bottom: 64px;
-        }
-        .ab-list {
-            border-top: 1px solid rgba(11,11,14,0.15);
-        }
-        .ab-list-item {
-            display: grid;
-            grid-template-columns: 80px 1fr;
-            gap: 32px;
-            padding: 36px 0;
-            border-bottom: 1px solid rgba(11,11,14,0.15);
-        }
-        .ab-list-item .n {
-            font-size: 13px;
-            font-weight: 500;
-            letter-spacing: 0.2em;
-            color: #C9A04E;
-            padding-top: 6px;
-        }
-        .ab-list-item h3 {
-            font-size: 20px;
-            font-weight: 400;
-            margin-bottom: 12px;
-            line-height: 1.4;
-            color: #0B0B0E;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-        }
-        .ab-list-item p {
-            font-size: 15px;
-            font-weight: 400;
-            line-height: 1.65;
-            color: rgba(11,11,14,0.65);
-            max-width: 560px;
-        }
-
-        /* === VI. CTA === */
-        .ab-end {
-            padding: 100px 0 160px;
-        }
-        .ab-end .container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            align-items: end;
-        }
-        .ab-end-right {
-            padding-bottom: 6px;
-        }
-        .ab-end-right p {
-            font-size: 15px;
-            font-weight: 400;
-            line-height: 1.65;
-            color: rgba(11,11,14,0.65);
-            margin-bottom: 36px;
-            max-width: 460px;
-        }
 
         /* === FOOTER (Kresna-style) === */
         .footer-shell {
@@ -861,7 +619,7 @@
         </div>
         <div class="ab-spread-pin">
             <div class="ab-spread-pin-inner">
-                <div class="ab-strip-title">BIOLOGIQUE RECHERCHE<sup>®</sup></div>
+                <div class="ab-strip-title"><span>BIOLOGIQUE</span> <span>RECHERCHE</span></div>
                 <div class="ab-strip-meta">
                     <div class="ab-strip-col">
                         <div class="k">Бренд</div>
@@ -891,6 +649,31 @@
             </div>
         </div>
     </section>
+
+    <!-- 02. НАУКА КРАСОТЫ -->
+    <section class="ab-intro">
+        <div class="container">
+            <div class="ab-chapter">02<small>Наука красоты</small></div>
+            <h2 class="ab-h2" style="margin-top: 12px; margin-bottom: 32px;">Передовые методики<br>и чистые составы</h2>
+            <div class="ab-intro-text">
+                <p class="anim">Biologique Recherche использует высокую концентрацию ботанических, морских и биологических экстрактов (более 20% в большинстве продуктов). Все формулы создаются <em>методом холодного отжима</em> в собственной лаборатории во Франции.</p>
+                <p class="anim">Мы полностью отказались от искусственных отдушек, чтобы сохранить структуру активных веществ и избежать аллергических реакций. Холодная форма производства позволяет сохранить 100% эффективности каждого ингредиента.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 03. ФИЛОСОФИЯ БРЕНДА -->
+    <section class="ab-intro" style="padding-top: 0;">
+        <div class="container">
+            <div class="ab-chapter">03<small>Философия бренда</small></div>
+            <h2 class="ab-h2" style="margin-top: 12px; margin-bottom: 32px;">Кожа — это наш<br>внешний мозг</h2>
+            <div class="ab-intro-text">
+                <p class="anim">Ваш эпидермис находится в постоянном контакте с нервной системой и меняется несколько раз за один день. Поэтому мы не верим в устаревшее разделение на классические типы кожи (сухая, жирная, нормальная).</p>
+                <p class="anim">Вместо этого мы фокусируемся на понятии <em>Skin Instant<sup>®</sup></em> — «Состоянии кожи» в данный момент времени. Ваш ежедневный утренний и вечерний протокол должен подстраиваться под вас, а не вы — под крем.</p>
+            </div>
+        </div>
+    </section>
+
     <div class="footer-shell">
     <footer id="footer">
         <h2 class="footer-reveal-text" id="footerRevealText" aria-hidden="true">Дикий Люкс.<br>Косметология&nbsp;Парижа.</h2>
