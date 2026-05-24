@@ -23,9 +23,7 @@
 
         /* ============ HEADER ============ */
         .cart-hero {
-            padding: 160px 66px 32px;
-            max-width: 1240px;
-            margin: 0 auto;
+            padding: 16vh 4.58vw 4vh;
             display: flex;
             justify-content: space-between;
             align-items: end;
@@ -51,29 +49,30 @@
 
         /* ============ LAYOUT ============ */
         .cart-wrap {
-            max-width: 1240px;
-            margin: 0 auto;
-            padding: 32px 66px 120px;
+            padding: 0 4.58vw 12vh;
             display: grid;
-            grid-template-columns: 1fr 380px;
-            gap: 24px;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 360px);
+            gap: 18px;
             align-items: start;
+        }
+        @media (max-width: 900px) {
+            .cart-wrap { grid-template-columns: 1fr; }
         }
         .cart-items {
             background: #FFFFFF;
-            border-radius: 32px;
-            padding: 16px;
-            box-shadow: 0 12px 36px rgba(11,11,14,0.04);
+            border-radius: 24px;
+            padding: 32px 36px;
         }
         .cart-item {
             display: grid;
             grid-template-columns: 120px 1fr auto;
             gap: 24px;
             align-items: center;
-            padding: 20px;
+            padding: 24px 0;
             border-bottom: 1px solid rgba(11,11,14,0.07);
         }
-        .cart-item:last-child { border-bottom: none; }
+        .cart-item:first-child { padding-top: 0; }
+        .cart-item:last-child { border-bottom: none; padding-bottom: 0; }
         .cart-item-img {
             background: #F2F1ED;
             border-radius: 18px;
@@ -88,6 +87,7 @@
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
+            mix-blend-mode: multiply;
         }
         .cart-item-body {
             display: flex;
@@ -102,8 +102,8 @@
             color: rgba(11,11,14,0.45);
         }
         .cart-item-name {
-            font-size: 17px;
-            font-weight: 400;
+            font-size: 18px;
+            font-weight: 500;
             text-transform: uppercase;
             letter-spacing: 0.04em;
             color: #0B0B0E;
@@ -175,9 +175,8 @@
         /* ============ SUMMARY ============ */
         .cart-summary {
             background: #FFFFFF;
-            border-radius: 32px;
+            border-radius: 24px;
             padding: 36px;
-            box-shadow: 0 12px 36px rgba(11,11,14,0.04);
             position: sticky;
             top: 100px;
         }
@@ -287,8 +286,7 @@
             text-align: center;
             padding: 100px 40px;
             background: #FFFFFF;
-            border-radius: 32px;
-            box-shadow: 0 12px 36px rgba(11,11,14,0.04);
+            border-radius: 24px;
             grid-column: 1 / -1;
         }
         .cart-empty h2 {
@@ -423,7 +421,7 @@
             gap: 14px;
         }
         .footer-touch-label {
-            font-style: italic;
+            font-style: normal;
             font-weight: 400;
             font-size: 15px;
             color: rgba(11,11,14,0.65);
@@ -464,14 +462,13 @@
             min-height: 340px;
         }
         .footer-nav-cols {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 32px;
+            display: flex;
+            gap: 120px;
             border-bottom: none;
             padding-bottom: 0;
         }
         .footer-col-head {
-            font-style: italic;
+            font-style: normal;
             font-weight: 400;
             font-size: 14px;
             color: #C9A04E;
@@ -716,7 +713,7 @@
         <div class="footer-stage">
             <div class="footer-brand-card">
                 <div class="footer-brand-mark">
-                    <span class="footer-mark-icon">✦</span>
+                    
                     <span>Дикий Люкс</span>
                 </div>
                 <div class="footer-tagline-block">
